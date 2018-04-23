@@ -5,6 +5,8 @@ using System;
 
 public class Level : MonoBehaviour {
 
+	public GameObject line;
+	public Transform spotsParent;
 	public List<Player> players;
 	public List<Enemy> enemies;
 	public List<Spot> spots;
@@ -18,10 +20,33 @@ public class Level : MonoBehaviour {
 	void Start () {
 		turn = 0;
 		levelDuration = 0f;
+		DrawBridges ();
 		Init ();
 	}
 	protected virtual void Init() {
 
+	}
+	protected virtual void DrawBridges() {
+		spotsParent.GetComponentsInChildren<Spot> (spots);
+		List<Spot> drawnSpots = new List<Spot> ();
+		for (int i = 0; i < spots.Count; ++i) {
+			List<Spot> toDraw = spots [i].bridges;
+			for (int n = 0; n < toDraw.Count; ++n)
+				if (!drawnSpots.Contains (toDraw [n])) {
+					DrawBridge (spots [i], toDraw [n]);
+				}
+			drawnSpots.Add (spots [i]);
+		}
+	}
+	protected virtual void DrawBridge(Spot start, Spot end) {
+		GameObject t = GameObject.Instantiate (this.line, transform);
+		LineRenderer line = t.GetComponent<LineRenderer> ();
+		line.positionCount = 2;
+		line.SetPosition (0, start.position);
+		line.SetPosition (1, end.position);
+		start.AddLine (line);
+		end.AddLine (line);
+		//Utils.CopyLineRenderer (this.line, line);
 	}
 	
 	// Update is called once per frame
@@ -71,18 +96,19 @@ public class Level : MonoBehaviour {
 
 	public void SelectPlayer(Player player) {
 		if (playerTurn) {
-			DrawBridges (player);
+			MarkBridges (player);
 		}
 		selectedPlayer = player;
 		//Display info panel
 	}
-	void DrawBridges(Player player) {
+	void MarkBridges(Player player) {
 		List<Spot> bridges = player.spot.bridges;
 		for (int i = 0; i < bridges.Count; ++i) {
 			if (!bridges [i].occupied)
 				Debug.Log ("Implement me"); // Remarcar dibujo del camino
 		}
 	}
+
 	public void SelectEnemy(Enemy enemy) {
 		selectedEnemy = enemy;
 		//Display info panel

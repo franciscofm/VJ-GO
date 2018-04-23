@@ -6,7 +6,8 @@ public class Spot : Entity {
 
 	public bool occupied;
 	public Entity occupation;
-	public List<Spot> bridges;
+	public List<Spot> bridges = new List<Spot>();
+	public List<LineRenderer> lines = new List<LineRenderer>();
 
 	void Start() {
 		spot = null;
@@ -32,4 +33,11 @@ public class Spot : Entity {
 		bridges.Remove (spot);
 	}
 
+	public void AddLine(LineRenderer line) {
+		lines.Add (line);
+	}
+	public void RemoveLine(LineRenderer line) {
+		lines.Remove (line);
+		Debug.Log ("eliminarla del otro spot");
+	}
 }
