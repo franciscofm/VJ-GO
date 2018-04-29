@@ -11,6 +11,8 @@ public class Level : MonoBehaviour {
 	public List<Enemy> enemies;
 	public List<Spot> spots;
 
+	public AnimationCurve curveMovement;
+
 	uint turn;
 	bool playerTurn;
 	int teamTurn;
@@ -18,14 +20,29 @@ public class Level : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Entity.level = this;
+
 		turn = 0;
 		levelDuration = 0f;
+		playerTurn = true;
+
 		DrawBridges ();
 		Init ();
 	}
 	protected virtual void Init() {
 
 	}
+
+
+	protected virtual void EndAction() {
+
+	}
+
+	protected virtual void EndTurn() {
+		++turn;
+	}
+
+
 	protected virtual void DrawBridges() {
 		spotsParent.GetComponentsInChildren<Spot> (spots);
 		List<Spot> drawnSpots = new List<Spot> ();
@@ -59,14 +76,15 @@ public class Level : MonoBehaviour {
 
 	}
 
-	public void Move(Entity obj, Vector3 newPos, float duration, AnimationCurve curve, Action endAction) {
+	//Mover una entidad de forma generica
+	public void Move(Entity obj, Vector3 newPos, float duration, AnimationCurve curve, Action endAction = null) {
 		if (duration == 0f) {
 			obj.position = newPos;
 		} else {
 			StartCoroutine (MoveRoutine (obj, newPos, duration, curve, endAction));
 		}
 	}
-	IEnumerator MoveRoutine(Entity obj, Vector3 newPos, float duration, AnimationCurve curve, Action endAction) {
+	IEnumerator MoveRoutine(Entity obj, Vector3 newPos, float duration, AnimationCurve curve, Action endAction = null) {
 		float t = 0f;
 		Vector3 startPos = obj.position;
 		while (t < duration) {
@@ -80,10 +98,12 @@ public class Level : MonoBehaviour {
 	}
 
 	Player selectedPlayer;
+	List<Spot> selectedPlayerDestinations;
 	Enemy selectedEnemy;
 
 	public void Select<T>(T t) {
 		//Type type = typeof(T);
+		Debug.Log(t);
 		if (t is Player)
 			SelectPlayer (t as Player);
 		else if (t is Spot)
@@ -91,15 +111,28 @@ public class Level : MonoBehaviour {
 		else if (t is Enemy)
 			SelectEnemy (t as Enemy);
 		else
-			Debug.Log ("Selected entity, wrong coding");
+			Debug.Log ("Selected entity, ERROR");
 	}
 
 	public void SelectPlayer(Player player) {
-		if (playerTurn) {
-			MarkBridges (player);
+		if (selectedPlayer == null) { 	//si no hay jugador seleccionado
+			selectedPlayer = player;
+			selectedPlayerDestinations = player.spot.bridges;
+			if (playerTurn && player.actionsLeft > 0) MarkBridges (player);
+			player.DisplayInfo ();
+		} else { 						//si hay un jugador seleccionado
+			if (playerTurn) UnmarkBridges (player);
+			player.HideInfo ();
+			if (selectedPlayer == player) { //si es el mismo -> no hay
+				selectedPlayer = null;
+				selectedPlayerDestinations = null;
+			} else {
+				selectedPlayer = player;	//si es otro -> cambiamos
+				selectedPlayerDestinations = player.spot.bridges;
+				if (playerTurn && player.actionsLeft > 0) MarkBridges (player);
+				player.DisplayInfo ();
+			}
 		}
-		selectedPlayer = player;
-		//Display info panel
 	}
 	void MarkBridges(Player player) {
 		List<Spot> bridges = player.spot.bridges;
@@ -108,12 +141,38 @@ public class Level : MonoBehaviour {
 				Debug.Log ("Implement me"); // Remarcar dibujo del camino
 		}
 	}
+	void UnmarkBridges(Player player) {
+		List<Spot> bridges = player.spot.bridges;
+		for (int i = 0; i < bridges.Count; ++i) {
+			if (!bridges [i].occupied)
+				Debug.Log ("Implement me"); // Remarcar dibujo del camino
+		}
+	}
 
 	public void SelectEnemy(Enemy enemy) {
-		selectedEnemy = enemy;
-		//Display info panel
+		if (selectedEnemy == null) { 	//si no hay jugador seleccionado
+			selectedEnemy = enemy;
+			enemy.DisplayInfo ();
+		} else { 						//si hay un jugador seleccionado
+			enemy.HideInfo ();
+			if (selectedEnemy == enemy) { //si es el mismo -> no hay
+				selectedEnemy = null;
+			} else {
+				selectedEnemy = enemy;	//si es otro -> cambiamos
+				enemy.DisplayInfo ();
+			}
+		}
 	}
 	public void SelectSpot(Spot spot) {
-		//Si es el turno de
+		if (!playerTurn) return;
+		if (selectedPlayer == null || selectedPlayerDestinations == null) return;
+		if (selectedPlayer.actionsLeft <= 0) return;
+
+		for (int i = 0; i < selectedPlayerDestinations.Count; ++i) {
+			if (spot == selectedPlayerDestinations [i]) {
+				Move (selectedPlayer, spot.transform.position, 1f, curveMovement);
+				--selectedPlayer.actionsLeft;
+			}
+		}
 	}
 }

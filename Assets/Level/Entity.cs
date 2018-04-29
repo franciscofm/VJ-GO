@@ -17,7 +17,15 @@ public class Entity : MonoBehaviour {
 	}
 	public Spot spot; //Donde esta (si es clase Spot = null)
 
-	void OnMouseDown() {
+
+	void OnMouseUp() {
 		level.Select (this);
+	}
+
+	public virtual void DisplayInfo() {
+		Debug.Log ("DisplayInfo not written");
+	}
+	public virtual void HideInfo() {
+		Debug.Log ("HideInfo not written");
 	}
 }
