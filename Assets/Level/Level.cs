@@ -12,6 +12,8 @@ public class Level : MonoBehaviour {
 	public List<Spot> spots;
 
 	public AnimationCurve curveMovement;
+	public Material bridgeNormalMaterial;
+	public Material bridgeMarkedMaterial;
 
 	uint turn;
 	bool playerTurn;
@@ -26,24 +28,57 @@ public class Level : MonoBehaviour {
 		levelDuration = 0f;
 		playerTurn = true;
 
-		DrawBridges ();
-		Init ();
+		StartCoroutine(DrawBridges ());
+		Start2 ();
 	}
-	protected virtual void Init() {
+	protected virtual void Start2() {
 
 	}
 
 
 	protected virtual void EndAction() {
-
+		if (playerTurn) {
+			for (int i = 0; i < players.Count; ++i)
+				if (players [i].actionsLeft > 0)
+					return;
+			playerTurn = false;
+			EndTurn ();
+		} else {
+			for (int i = 0; i < enemies.Count; ++i)
+				if (enemies [i].actionsLeft > 0) {
+					EnemyIA (enemies [i]);
+					return;
+				}
+			playerTurn = true;
+			EndTurn ();
+		}
 	}
 
 	protected virtual void EndTurn() {
 		++turn;
+		if (playerTurn) {
+			for (int i = 0; i < players.Count; ++i)
+				players [i].actionsLeft = players [i].actionsPerTurn;
+			//Animacion de turno de jugador
+			return;
+		}
+		if (!playerTurn) {
+			for (int i = 0; i < enemies.Count; ++i)
+				enemies [i].actionsLeft = enemies [i].actionsPerTurn;
+			if (enemies.Count > 0)
+				EnemyIA (enemies [0]);
+			else {
+				playerTurn = true;
+				EndTurn ();
+			}
+		}
 	}
 
+	protected virtual void EnemyIA(Enemy enemy) {
+		Debug.Log ("EnemyIA");
+	}
 
-	protected virtual void DrawBridges() {
+	protected virtual IEnumerator DrawBridges() {
 		spotsParent.GetComponentsInChildren<Spot> (spots);
 		List<Spot> drawnSpots = new List<Spot> ();
 		for (int i = 0; i < spots.Count; ++i) {
@@ -51,16 +86,19 @@ public class Level : MonoBehaviour {
 			for (int n = 0; n < toDraw.Count; ++n)
 				if (!drawnSpots.Contains (toDraw [n])) {
 					DrawBridge (spots [i], toDraw [n]);
+					yield return new WaitForSeconds (0.1f);
 				}
 			drawnSpots.Add (spots [i]);
 		}
 	}
 	protected virtual void DrawBridge(Spot start, Spot end) {
-		GameObject t = GameObject.Instantiate (this.line, transform);
+		GameObject t = GameObject.Instantiate (this.line, start.transform);
+		t.transform.position = (start.transform.position + end.transform.position) * 0.5f;
 		LineRenderer line = t.GetComponent<LineRenderer> ();
 		line.positionCount = 2;
-		line.SetPosition (0, start.position);
-		line.SetPosition (1, end.position);
+		line.material = bridgeNormalMaterial;
+		line.SetPosition (0, start.transform.position);
+		line.SetPosition (1, end.transform.position);
 		start.AddLine (line);
 		end.AddLine (line);
 		//Utils.CopyLineRenderer (this.line, line);
@@ -79,20 +117,20 @@ public class Level : MonoBehaviour {
 	//Mover una entidad de forma generica
 	public void Move(Entity obj, Vector3 newPos, float duration, AnimationCurve curve, Action endAction = null) {
 		if (duration == 0f) {
-			obj.position = newPos;
+			obj.transform.position = newPos;
 		} else {
 			StartCoroutine (MoveRoutine (obj, newPos, duration, curve, endAction));
 		}
 	}
 	IEnumerator MoveRoutine(Entity obj, Vector3 newPos, float duration, AnimationCurve curve, Action endAction = null) {
 		float t = 0f;
-		Vector3 startPos = obj.position;
+		Vector3 startPos = obj.transform.position;
 		while (t < duration) {
 			yield return null;
 			t += Time.deltaTime;
-			obj.position = Vector3.Lerp(obj.position, newPos, curve.Evaluate(t/duration));
+			obj.transform.position = Vector3.Lerp(startPos, newPos, curve.Evaluate(t/duration));
 		}
-		obj.position = newPos;
+		obj.transform.position = newPos;
 		if (endAction != null)
 			endAction ();
 	}
@@ -104,12 +142,9 @@ public class Level : MonoBehaviour {
 	public void Select<T>(T t) {
 		//Type type = typeof(T);
 		Debug.Log(t);
-		if (t is Player)
-			SelectPlayer (t as Player);
-		else if (t is Spot)
-			SelectSpot (t as Spot);
-		else if (t is Enemy)
-			SelectEnemy (t as Enemy);
+		if (t is Player) SelectPlayer (t as Player);
+		else if (t is Spot) SelectSpot (t as Spot);
+		else if (t is Enemy) SelectEnemy (t as Enemy);
 		else
 			Debug.Log ("Selected entity, ERROR");
 	}
@@ -134,21 +169,6 @@ public class Level : MonoBehaviour {
 			}
 		}
 	}
-	void MarkBridges(Player player) {
-		List<Spot> bridges = player.spot.bridges;
-		for (int i = 0; i < bridges.Count; ++i) {
-			if (!bridges [i].occupied)
-				Debug.Log ("Implement me"); // Remarcar dibujo del camino
-		}
-	}
-	void UnmarkBridges(Player player) {
-		List<Spot> bridges = player.spot.bridges;
-		for (int i = 0; i < bridges.Count; ++i) {
-			if (!bridges [i].occupied)
-				Debug.Log ("Implement me"); // Remarcar dibujo del camino
-		}
-	}
-
 	public void SelectEnemy(Enemy enemy) {
 		if (selectedEnemy == null) { 	//si no hay jugador seleccionado
 			selectedEnemy = enemy;
@@ -167,11 +187,36 @@ public class Level : MonoBehaviour {
 		if (!playerTurn) return;
 		if (selectedPlayer == null || selectedPlayerDestinations == null) return;
 		if (selectedPlayer.actionsLeft <= 0) return;
-
-		for (int i = 0; i < selectedPlayerDestinations.Count; ++i) {
+		bool found = false;
+		for (int i = 0; !found && i < selectedPlayerDestinations.Count; ++i) {
 			if (spot == selectedPlayerDestinations [i]) {
-				Move (selectedPlayer, spot.transform.position, 1f, curveMovement);
+				Debug.Log ("Move called");
+				UnmarkBridges (selectedPlayer);
+				Move (selectedPlayer, spot.transform.position + Vector3.up, 1f, curveMovement, EndAction);
+				selectedPlayer.spot = spot;
 				--selectedPlayer.actionsLeft;
+				found = true;
+				selectedPlayer = null;
+				selectedPlayerDestinations = null;
+			}
+		}
+	}
+
+	void MarkBridges(Player player) {
+		List<Spot> bridges = player.spot.bridges;
+		List<LineRenderer> bridgesLines = player.spot.lines;
+		for (int i = 0; i < bridges.Count; ++i) {
+			//if (!bridges [i].occupied) {
+				bridgesLines[i].material = bridgeMarkedMaterial;
+			//}
+		}
+	}
+	void UnmarkBridges(Player player) {
+		List<Spot> bridges = player.spot.bridges;
+		List<LineRenderer> bridgesLines = player.spot.lines;
+		for (int i = 0; i < bridges.Count; ++i) {
+			if (!bridges [i].occupied) {
+				bridgesLines[i].material = bridgeNormalMaterial;
 			}
 		}
 	}
