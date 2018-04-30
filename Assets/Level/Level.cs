@@ -5,7 +5,10 @@ using System;
 
 public class Level : MonoBehaviour {
 
+	public static Level instance;
+
 	public GameObject line;
+	public GameObject infoPanel;
 	public Transform spotsParent;
 	public List<Player> players;
 	public List<Enemy> enemies;
@@ -19,6 +22,14 @@ public class Level : MonoBehaviour {
 	bool playerTurn;
 	int teamTurn;
 	float levelDuration;
+	GameObject[] infoPanelsObj;
+	InfoPanel[] infoPanelsScr;
+
+	void Awake() {
+		if (instance != null)
+			Destroy (instance.gameObject);
+		instance = this;
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -28,8 +39,22 @@ public class Level : MonoBehaviour {
 		levelDuration = 0f;
 		playerTurn = true;
 
+		infoPanel.gameObject.SetActive (false);
+		infoPanelsObj = new GameObject[2];
+		infoPanelsScr = new InfoPanel[2];
+		infoPanelsObj [0] = infoPanel;
+		infoPanelsScr [0] = infoPanel.GetComponent<InfoPanel> ();
+		infoPanelsObj [1] = Instantiate<GameObject> (infoPanel, infoPanel.transform.parent);
+		infoPanelsScr [1] = infoPanelsObj [1].GetComponent<InfoPanel> ();
+		Rect r = infoPanel.GetComponent<RectTransform> ().rect;
+		InfoPanel.size = new Vector2 (r.width, r.height);
+		InfoPanel.offset = new Vector2 (r.width, -r.height);
+		infoPanelsScr [0].MoveAnchors ();
+		infoPanelsScr [1].MoveAnchors ();
+
 		StartCoroutine(DrawBridges ());
 		Start2 ();
+		EndTurn ();
 	}
 	protected virtual void Start2() {
 
@@ -53,7 +78,6 @@ public class Level : MonoBehaviour {
 			EndTurn ();
 		}
 	}
-
 	protected virtual void EndTurn() {
 		++turn;
 		if (playerTurn) {
@@ -82,18 +106,21 @@ public class Level : MonoBehaviour {
 		spotsParent.GetComponentsInChildren<Spot> (spots);
 		List<Spot> drawnSpots = new List<Spot> ();
 		for (int i = 0; i < spots.Count; ++i) {
+			drawnSpots.Add (spots [i]);
 			List<Spot> toDraw = spots [i].bridges;
 			for (int n = 0; n < toDraw.Count; ++n)
 				if (!drawnSpots.Contains (toDraw [n])) {
 					DrawBridge (spots [i], toDraw [n]);
-					yield return new WaitForSeconds (0.1f);
+					yield return new WaitForSeconds (0.03f);
 				}
-			drawnSpots.Add (spots [i]);
 		}
 	}
 	protected virtual void DrawBridge(Spot start, Spot end) {
 		GameObject t = GameObject.Instantiate (this.line, start.transform);
 		t.transform.position = (start.transform.position + end.transform.position) * 0.5f;
+			#if UNITY_EDITOR 
+			t.name = start.gameObject.name + " to " + end.gameObject.name; 
+			#endif
 		LineRenderer line = t.GetComponent<LineRenderer> ();
 		line.positionCount = 2;
 		line.material = bridgeNormalMaterial;
@@ -140,10 +167,7 @@ public class Level : MonoBehaviour {
 	Enemy selectedEnemy;
 
 	public void Select<T>(T t) {
-		//Type type = typeof(T);
-		Debug.Log(t);
 		if (t is Player) SelectPlayer (t as Player);
-		else if (t is Spot) SelectSpot (t as Spot);
 		else if (t is Enemy) SelectEnemy (t as Enemy);
 		else
 			Debug.Log ("Selected entity, ERROR");
@@ -154,10 +178,10 @@ public class Level : MonoBehaviour {
 			selectedPlayer = player;
 			selectedPlayerDestinations = player.spot.bridges;
 			if (playerTurn && player.actionsLeft > 0) MarkBridges (player);
-			player.DisplayInfo ();
+			DisplayInfo (player, 0);
 		} else { 						//si hay un jugador seleccionado
 			if (playerTurn) UnmarkBridges (player);
-			player.HideInfo ();
+			HideInfo (0);
 			if (selectedPlayer == player) { //si es el mismo -> no hay
 				selectedPlayer = null;
 				selectedPlayerDestinations = null;
@@ -165,21 +189,21 @@ public class Level : MonoBehaviour {
 				selectedPlayer = player;	//si es otro -> cambiamos
 				selectedPlayerDestinations = player.spot.bridges;
 				if (playerTurn && player.actionsLeft > 0) MarkBridges (player);
-				player.DisplayInfo ();
+				DisplayInfo (player, 0);
 			}
 		}
 	}
 	public void SelectEnemy(Enemy enemy) {
 		if (selectedEnemy == null) { 	//si no hay jugador seleccionado
 			selectedEnemy = enemy;
-			enemy.DisplayInfo ();
+			DisplayInfo (enemy, 1);
 		} else { 						//si hay un jugador seleccionado
-			enemy.HideInfo ();
+			HideInfo (1);
 			if (selectedEnemy == enemy) { //si es el mismo -> no hay
 				selectedEnemy = null;
 			} else {
 				selectedEnemy = enemy;	//si es otro -> cambiamos
-				enemy.DisplayInfo ();
+				DisplayInfo (enemy, 1);
 			}
 		}
 	}
@@ -190,8 +214,8 @@ public class Level : MonoBehaviour {
 		bool found = false;
 		for (int i = 0; !found && i < selectedPlayerDestinations.Count; ++i) {
 			if (spot == selectedPlayerDestinations [i]) {
-				Debug.Log ("Move called");
 				UnmarkBridges (selectedPlayer);
+				HideInfo (0);
 				Move (selectedPlayer, spot.transform.position + Vector3.up, 1f, curveMovement, EndAction);
 				selectedPlayer.spot = spot;
 				--selectedPlayer.actionsLeft;
@@ -215,9 +239,17 @@ public class Level : MonoBehaviour {
 		List<Spot> bridges = player.spot.bridges;
 		List<LineRenderer> bridgesLines = player.spot.lines;
 		for (int i = 0; i < bridges.Count; ++i) {
-			if (!bridges [i].occupied) {
+			//if (!bridges [i].occupied) {
 				bridgesLines[i].material = bridgeNormalMaterial;
-			}
+			//}
 		}
+	}
+
+	void DisplayInfo(Entity entity, int panel) {
+		infoPanelsObj [panel].SetActive (true);
+		infoPanelsScr [panel].Show (entity);
+	}
+	void HideInfo(int panel) {
+		infoPanelsScr [panel].Hide ();
 	}
 }

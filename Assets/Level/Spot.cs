@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spot : Entity {
+public class Spot : MonoBehaviour {
 
 	public bool occupied;
 	public Entity occupation;
 	public List<Spot> bridges = new List<Spot>();
 	public List<LineRenderer> lines = new List<LineRenderer>();
 
-	void Start() {
-		spot = null;
+	void OnMouseUp() {
+		Level.instance.SelectSpot (this);
 	}
 
 	public void CreateBridges(List<Spot> spots) {
@@ -38,6 +38,10 @@ public class Spot : Entity {
 	}
 	public void RemoveLine(LineRenderer line) {
 		lines.Remove (line);
-		Debug.Log ("eliminarla del otro spot");
+		for(int i=0; i<bridges.Count; ++i)
+			if(bridges[i].lines.Contains(line)) {
+				bridges [i].lines.Remove(line);
+				return;
+			}
 	}
 }
