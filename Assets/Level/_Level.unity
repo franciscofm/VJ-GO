@@ -1238,7 +1238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1312,7 +1312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1386,7 +1386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1851,10 +1851,10 @@ RectTransform:
   m_Father: {fileID: 1861969543}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5468594}
-  m_AnchorMax: {x: 0.18374774, y: 1}
-  m_AnchoredPosition: {x: 0.0025024414, y: 0}
-  m_SizeDelta: {x: -0, y: 0}
+  m_AnchorMin: {x: 0, y: 0.70838875}
+  m_AnchorMax: {x: 0.12604107, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0.000030517578}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1134500466
 MonoBehaviour:
@@ -1868,10 +1868,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelRect: {fileID: 26142303}
-  rects: []
+  backgroundImage: {fileID: 1134500467}
   nameText: {fileID: 880038191}
   actionsText: {fileID: 828713327}
   descriptionText: {fileID: 858664882}
+  aspectRatioFitter: {fileID: 1134500470}
 --- !u!114 &1134500467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1928,7 +1929,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 1
-  m_AspectRatio: 0.7050301
+  m_AspectRatio: 0.7514953
 --- !u!1 &1167948319
 GameObject:
   m_ObjectHideFlags: 0

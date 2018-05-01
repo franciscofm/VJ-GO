@@ -47,10 +47,9 @@ public class Level : MonoBehaviour {
 		infoPanelsObj [1] = Instantiate<GameObject> (infoPanel, infoPanel.transform.parent);
 		infoPanelsScr [1] = infoPanelsObj [1].GetComponent<InfoPanel> ();
 		Rect r = infoPanel.GetComponent<RectTransform> ().rect;
-		InfoPanel.size = new Vector2 (r.width, r.height);
 		InfoPanel.offset = new Vector2 (r.width, -r.height);
-		infoPanelsScr [0].MoveAnchors ();
-		infoPanelsScr [1].MoveAnchors ();
+		infoPanelsScr [0].Init ();
+		infoPanelsScr [1].Init ();
 
 		StartCoroutine(DrawBridges ());
 		Start2 ();
@@ -59,7 +58,6 @@ public class Level : MonoBehaviour {
 	protected virtual void Start2() {
 
 	}
-
 
 	protected virtual void EndAction() {
 		if (playerTurn) {
@@ -111,7 +109,7 @@ public class Level : MonoBehaviour {
 			for (int n = 0; n < toDraw.Count; ++n)
 				if (!drawnSpots.Contains (toDraw [n])) {
 					DrawBridge (spots [i], toDraw [n]);
-					yield return new WaitForSeconds (0.03f);
+					yield return null;
 				}
 		}
 	}
@@ -141,27 +139,6 @@ public class Level : MonoBehaviour {
 
 	}
 
-	//Mover una entidad de forma generica
-	public void Move(Entity obj, Vector3 newPos, float duration, AnimationCurve curve, Action endAction = null) {
-		if (duration == 0f) {
-			obj.transform.position = newPos;
-		} else {
-			StartCoroutine (MoveRoutine (obj, newPos, duration, curve, endAction));
-		}
-	}
-	IEnumerator MoveRoutine(Entity obj, Vector3 newPos, float duration, AnimationCurve curve, Action endAction = null) {
-		float t = 0f;
-		Vector3 startPos = obj.transform.position;
-		while (t < duration) {
-			yield return null;
-			t += Time.deltaTime;
-			obj.transform.position = Vector3.Lerp(startPos, newPos, curve.Evaluate(t/duration));
-		}
-		obj.transform.position = newPos;
-		if (endAction != null)
-			endAction ();
-	}
-
 	Player selectedPlayer;
 	List<Spot> selectedPlayerDestinations;
 	Enemy selectedEnemy;
@@ -179,9 +156,11 @@ public class Level : MonoBehaviour {
 			selectedPlayerDestinations = player.spot.bridges;
 			if (playerTurn && player.actionsLeft > 0) MarkBridges (player);
 			DisplayInfo (player, 0);
+			player.Select ();
 		} else { 						//si hay un jugador seleccionado
 			if (playerTurn) UnmarkBridges (player);
 			HideInfo (0);
+			player.Unselect ();
 			if (selectedPlayer == player) { //si es el mismo -> no hay
 				selectedPlayer = null;
 				selectedPlayerDestinations = null;
@@ -190,6 +169,7 @@ public class Level : MonoBehaviour {
 				selectedPlayerDestinations = player.spot.bridges;
 				if (playerTurn && player.actionsLeft > 0) MarkBridges (player);
 				DisplayInfo (player, 0);
+				player.Select ();
 			}
 		}
 	}
@@ -197,13 +177,16 @@ public class Level : MonoBehaviour {
 		if (selectedEnemy == null) { 	//si no hay jugador seleccionado
 			selectedEnemy = enemy;
 			DisplayInfo (enemy, 1);
+			enemy.Select ();
 		} else { 						//si hay un jugador seleccionado
 			HideInfo (1);
+			enemy.Unselect ();
 			if (selectedEnemy == enemy) { //si es el mismo -> no hay
 				selectedEnemy = null;
 			} else {
 				selectedEnemy = enemy;	//si es otro -> cambiamos
 				DisplayInfo (enemy, 1);
+				enemy.Select ();
 			}
 		}
 	}
@@ -216,8 +199,15 @@ public class Level : MonoBehaviour {
 			if (spot == selectedPlayerDestinations [i]) {
 				UnmarkBridges (selectedPlayer);
 				HideInfo (0);
-				Move (selectedPlayer, spot.transform.position + Vector3.up, 1f, curveMovement, EndAction);
-				selectedPlayer.spot = spot;
+				selectedPlayer.Move (selectedPlayer, spot.transform.position + Vector3.up, 1f, curveMovement, EndAction);
+				//occupation
+				selectedPlayer.spot.occupied = false;  	//old
+				selectedPlayer.spot.occupation = null; 	//old
+				selectedPlayer.spot.Leave();			//old
+				selectedPlayer.spot = spot;			   	//new
+				spot.occupied = true;					//new
+				spot.occupation = selectedPlayer;		//new
+
 				--selectedPlayer.actionsLeft;
 				found = true;
 				selectedPlayer = null;
