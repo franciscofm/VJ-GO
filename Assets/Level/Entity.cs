@@ -24,7 +24,6 @@ public class Entity : MonoBehaviour {
 		level.Select (this);
 	}
 
-
 	public virtual void Move(Entity obj, Vector3 newPos, float duration, AnimationCurve curve, Action endAction = null) {
 		if (duration == 0f) {
 			obj.transform.position = newPos;
@@ -44,6 +43,13 @@ public class Entity : MonoBehaviour {
 		spot.Entered ();
 		if (endAction != null)
 			endAction ();
+	}
+
+	public void GetActions() {
+
+	}
+	public void ShowActions() {
+
 	}
 
 	public delegate void EntityEvent();
