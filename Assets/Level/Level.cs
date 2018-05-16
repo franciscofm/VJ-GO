@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using System;
 
 public class Level : MonoBehaviour {
@@ -161,6 +162,7 @@ public class Level : MonoBehaviour {
 	public bool entityActing;
 
 	public void Select<T>(T t) {
+		if (EventSystem.current.IsPointerOverGameObject ()) return;
 		if (t is Player) SelectPlayer (t as Player);
 		else if (t is Enemy) SelectEnemy (t as Enemy);
 		else Debug.Log ("Selected entity, ERROR");

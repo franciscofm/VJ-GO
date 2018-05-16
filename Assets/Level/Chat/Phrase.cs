@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Phrase", menuName = "Chat")]
+[CreateAssetMenu(fileName = "Phrase", menuName = "Chat/Phrase")]
 public class Phrase : ScriptableObject {
 	public Position position;
 	public Sprite image;

@@ -39,18 +39,31 @@ public class Chat : MonoBehaviour {
 		leftImageHiddenPos.y -= panel.rect.height;
 		rightImageHiddenPos = rightImageRect.transform.position;
 		rightImageHiddenPos.y -= panel.rect.height;
+
+		leftImageRect.position = leftImageHiddenPos;
+		rightImageRect.position = rightImageHiddenPos;
+		panel.position = panelHiddenPos;
 	}
 
 	List<Phrase> dialog;
 	int i;
 	int leftId, rightId;
-	bool focus = true;
+	bool focusLeft = true;
 	public void Init(List<Phrase> dialog, Action EndChatCallback = null) {
 		this.dialog = dialog;
 		i = -1;
 		leftId = rightId = -1;
-		clickPanel.SetActive (true);
-		Next ();
+		StartCoroutine(
+			MoveRoutine(
+				panel, 
+				panelHiddenPos,
+				panelShownPos, 
+				Values.UI.Chat.ImageTransition,
+				delegate {
+					clickPanel.SetActive (true);
+					Next();
+				}
+			));
 	}
 
 	IEnumerator routine = null;
@@ -70,7 +83,6 @@ public class Chat : MonoBehaviour {
 	}
 
 	public void PanelCallback() {
-		Debug.Log ("Panel callback");
 		if (routine != null) {
 			StopCoroutine (routine);
 			text.text = textToWrite;
@@ -105,7 +117,7 @@ public class Chat : MonoBehaviour {
 		if (i < dialog.Count) {
 			Write (dialog [i].text);
 			if (dialog [i].position == Position.Left) { //lado izq
-				if (!focus) {
+				if (!focusLeft) {
 					StartCoroutine(ScaleRoutine(rightImageRect, 1f, Values.UI.Chat.ImageScale, Values.UI.Chat.ImageTransition));
 					StartCoroutine(ScaleRoutine(leftImageRect, Values.UI.Chat.ImageScale, 1f, Values.UI.Chat.ImageTransition));
 				}
@@ -137,8 +149,9 @@ public class Chat : MonoBehaviour {
 						));
 				}
 				leftId = dialog [i].id;
+				focusLeft = true;
 			} else { //lado der
-				if (focus) {
+				if (focusLeft) {
 					StartCoroutine(ScaleRoutine(leftImageRect, 1f, Values.UI.Chat.ImageScale, Values.UI.Chat.ImageTransition));
 					StartCoroutine(ScaleRoutine(rightImageRect, Values.UI.Chat.ImageScale, 1f, Values.UI.Chat.ImageTransition));
 				}
@@ -170,6 +183,7 @@ public class Chat : MonoBehaviour {
 						));
 				}
 				rightId = dialog [i].id;
+				focusLeft = false;
 			}
 
 		} else 
