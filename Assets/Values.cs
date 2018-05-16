@@ -7,6 +7,10 @@
 
 		public static class Chat {
 			public const float TimePerCharacter = 0.1f;
+			public const float PanelTransition = 0.1f;
+			public const float ImageTransition = 0.1f;
+			public const float ImageAlpha = 0.6f;
+			public const float ImageScale = 0.8f;
 		}
 	}
 }

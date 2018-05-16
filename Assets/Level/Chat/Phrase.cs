@@ -6,6 +6,7 @@ using UnityEngine;
 public class Phrase : ScriptableObject {
 	public Position position;
 	public Sprite image;
+	public int id;
 	public bool inverted;
 	public string text;
 }
