@@ -70,23 +70,23 @@ namespace Audio {
 		static AudioClip[] Narrations;
 		static AudioClip[] Effects;
 
-		static List<ManagerSoundSource> EffectsL;
-		static List<ManagerSoundSource> NarrationsL;
-		static List<ManagerSoundSource> BackgroundsL;
+		static List<Sound> EffectsL;
+		static List<Sound> NarrationsL;
+		static List<Sound> BackgroundsL;
 
-		static List<ManagerSoundSource>[] Channels;
+		static List<Sound>[] Channels;
 
 		public static void Init(GameObject sourceModel) {
 			Source = sourceModel;
 
 			CH_FIRST_FREE = 1;
 			USED_SOURCES = 0;
-			Channels = new List<ManagerSoundSource>[MAX_CHANNELS];
+			Channels = new List<Sound>[MAX_CHANNELS];
 			for (int i = 0; i < MAX_CHANNELS; ++i)
-				Channels [i] = new List<ManagerSoundSource> ();
-			EffectsL = new List<ManagerSoundSource> ();
-			NarrationsL = new List<ManagerSoundSource> ();
-			BackgroundsL = new List<ManagerSoundSource> ();
+				Channels [i] = new List<Sound> ();
+			EffectsL = new List<Sound> ();
+			NarrationsL = new List<Sound> ();
+			BackgroundsL = new List<Sound> ();
 		}
 		public static void LoadNarrations(AudioClip[] narrations) { //pass to dynamic loading
 			Narrations = narrations;
@@ -103,16 +103,16 @@ namespace Audio {
 
 
 		//### NEW SECTION
-		public static ManagerSoundSource PlayNarration(AudioClip narration, int channel, int priority) {
+		public static Sound PlayNarration(AudioClip narration, int channel, int priority) {
 			return PlaySound (FindNarration(narration), false, channel, priority, TYPE_NARRATION);
 		}
-		public static ManagerSoundSource PlayEffect(AudioClip effect) {
+		public static Sound PlayEffect(AudioClip effect) {
 			return PlaySound (effect, false, CH_FIRST_FREE);
 		}
-		public static ManagerSoundSource PlayBackground(AudioClip background) {
+		public static Sound PlayBackground(AudioClip background) {
 			return PlaySound (background, false, CH_BACKGROUND, FLAG_CLEAR_CHANNEL, TYPE_BACKGROUND);
 		}
-		public static ManagerSoundSource PlaySound(
+		public static Sound PlaySound(
 													AudioClip clip, 
 													bool looped = false, 
 													int channel = 1, 
@@ -129,7 +129,7 @@ namespace Audio {
 			if (USED_SOURCES >= MAX_SOURCES) Error ("max number of sources reached.");
 
 			//Type and list reference
-			List<ManagerSoundSource> reference = null;
+			List<Sound> reference = null;
 			switch (type) {
 			case TYPE_EFFECT:
 				reference = EffectsL;
@@ -144,7 +144,7 @@ namespace Audio {
 
 			//Source creation
 			GameObject source = GameObject.Instantiate (Source);
-			ManagerSoundSource mss = source.GetComponent<ManagerSoundSource>();
+			Sound mss = source.GetComponent<Sound>();
 			mss.Init (clip, looped, channel, reference);
 			reference.Add (mss);
 
@@ -183,18 +183,18 @@ namespace Audio {
 			}
 		}
 
-		public static void DiscardSound(ManagerSoundSource mss) { //Called only by ManagerSoundSource
+		public static void DiscardSound(Sound mss) { //Called only by ManagerSoundSource
 			Channels [mss.channel].Remove (mss);
 			mss.reference.Remove (mss);
 			--USED_SOURCES;
 		}
 		public static void StopChannel(int channel) {
-			List<ManagerSoundSource> list = Channels [channel];
+			List<Sound> list = Channels [channel];
 			while (list.Count > 0) 
 				list [0].Stop (true);
 		}
 		public static void StopType(int type = TYPE_EFFECT) {
-			List<ManagerSoundSource> list = null;
+			List<Sound> list = null;
 			switch (type) {
 			case TYPE_EFFECT:
 				list = EffectsL;
@@ -221,7 +221,7 @@ namespace Audio {
 			ChangeTypeVolume (EffectsL,VOLUME_EFFECTS);
 			ChangeTypeVolume (NarrationsL,VOLUME_NARRATIONS);
 		}
-		static void ChangeTypeVolume(List<ManagerSoundSource> list, float volume) {
+		static void ChangeTypeVolume(List<Sound> list, float volume) {
 			for (int i = 0; i < list.Count; ++i)
 				list [i].source.volume = volume * VOLUME_GLOBAL;
 		}

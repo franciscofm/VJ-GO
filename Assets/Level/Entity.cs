@@ -24,22 +24,37 @@ public class Entity : MonoBehaviour {
 		level.Select (this);
 	}
 
-	public virtual void Move(Entity obj, Vector3 newPos, float duration, AnimationCurve curve, Action endAction = null) {
+	public virtual void Move(Entity entity, Spot spot, float duration, AnimationCurve curve, Action endAction = null) {
 		if (duration == 0f) {
-			obj.transform.position = newPos;
+			entity.spot.Leave ();
+			entity.transform.position = spot.transform.position + Vector3.up;
+			entity.spot.occupied = false;
+			entity.spot.occupation = null;
+			entity.spot = spot;
+			spot.occupied = true;
+			spot.occupation = entity;
+			spot.Entered ();
 		} else {
-			StartCoroutine (MoveRoutine (obj, newPos, duration, curve, endAction));
+			StartCoroutine (MoveRoutine (entity, spot, duration, curve, endAction));
 		}
 	}
-	protected virtual IEnumerator MoveRoutine(Entity obj, Vector3 newPos, float duration, AnimationCurve curve, Action endAction = null) {
+	protected virtual IEnumerator MoveRoutine(Entity entity, Spot spot, float duration, AnimationCurve curve, Action endAction = null) {
+		entity.spot.Leave ();
+		entity.spot.occupied = false;
+		entity.spot.occupation = null;
+		entity.spot = null;
+
 		float t = 0f;
-		Vector3 startPos = obj.transform.position;
+		Vector3 startPos = entity.transform.position;
 		while (t < duration) {
 			yield return null;
 			t += Time.deltaTime;
-			obj.transform.position = Vector3.Lerp(startPos, newPos, curve.Evaluate(t/duration));
+			entity.transform.position = Vector3.Lerp(startPos, spot.transform.position + Vector3.up, curve.Evaluate(t/duration));
 		}
-		obj.transform.position = newPos;
+
+		entity.spot = spot;
+		spot.occupied = true;
+		spot.occupation = entity;
 		spot.Entered ();
 		if (endAction != null)
 			endAction ();

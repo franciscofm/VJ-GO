@@ -10,7 +10,12 @@ public class Spot : MonoBehaviour {
 	public bool occupied;
 	public Entity occupation;
 	public List<Spot> bridges = new List<Spot>();
-	public List<LineRenderer> lines = new List<LineRenderer>();
+	//public List<LineRenderer> lines = new List<LineRenderer>();
+	public List<BridgeToLine> bridgesToLines = new List<BridgeToLine> ();
+	public class BridgeToLine {
+		public Spot spot;
+		public LineRenderer line;
+	}
 
 	void Start() {
 		if(type == Type.Start) GetComponent<MeshRenderer> ().material.color = Color.yellow;
@@ -41,17 +46,21 @@ public class Spot : MonoBehaviour {
 		bridges.Remove (spot);
 	}
 
-	public void AddLine(LineRenderer line) {
-		lines.Add (line);
+	public void AddLine(LineRenderer line, Spot spot) {
+		BridgeToLine newLine = new BridgeToLine ();
+		newLine.line = line;
+		newLine.spot = spot;
+		bridgesToLines.Add (newLine);
 	}
-	public void RemoveLine(LineRenderer line) {
-		lines.Remove (line);
-		for(int i=0; i<bridges.Count; ++i)
-			if(bridges[i].lines.Contains(line)) {
-				bridges [i].lines.Remove(line);
-				return;
-			}
-	}
+
+//	public void RemoveLine(LineRenderer line) {
+//		lines.Remove (line);
+//		for(int i=0; i<bridges.Count; ++i)
+//			if(bridges[i].lines.Contains(line)) {
+//				bridges [i].lines.Remove(line);
+//				return;
+//			}
+//	}
 
 	public delegate void SpotEvent();
 	public event SpotEvent OnEnter;

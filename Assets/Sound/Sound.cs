@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Audio {
 
-	public class ManagerSoundSource : MonoBehaviour {
+	public class Sound : MonoBehaviour {
 
 		public AudioSource source;
 		public AudioClip clip;
@@ -12,11 +12,11 @@ namespace Audio {
 
 		IEnumerator routine;
 
-		public List<ManagerSoundSource> reference;
+		public List<Sound> reference;
 		public int channel;
 
 		public void Init(AudioClip clip, bool loop, int channel,
-			List<ManagerSoundSource> reference) {
+			List<Sound> reference) {
 			this.clip = clip;
 			this.loop = loop;
 			this.channel = channel;
