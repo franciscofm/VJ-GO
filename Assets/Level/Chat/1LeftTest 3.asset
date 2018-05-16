@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62955230ae666ac4d9910b1dc87369ec, type: 3}
+  m_Name: 1LeftTest 3
+  m_EditorClassIdentifier: 
+  position: 1
+  image: {fileID: 21300000, guid: d9b1ea7594a8dcc4099bb94d1d574c38, type: 3}
+  id: 3
+  inverted: 0
+  text: This is the second sentence.

@@ -10,7 +10,8 @@ public class Chat : MonoBehaviour {
 	public RectTransform panel;
 	Vector2 panelHiddenPos, panelShownPos;
 	[Header("Images")]
-	public RectTransform leftImageRect, rightImageRect;
+	public RectTransform leftImageRect;
+	public RectTransform rightImageRect;
 	public RectTransform leftOutside, rightOutside;
 	public RectTransform leftShown, rightShown;
 	Vector2 leftImageOutsidePos, rightImageOutsidePos;
@@ -35,7 +36,9 @@ public class Chat : MonoBehaviour {
 		leftImageShownPos = leftShown.transform.position;
 		rightImageShownPos = rightShown.transform.position;
 		leftImageHiddenPos = leftImageRect.transform.position;
+		leftImageHiddenPos.y -= panel.rect.height;
 		rightImageHiddenPos = rightImageRect.transform.position;
+		rightImageHiddenPos.y -= panel.rect.height;
 	}
 
 	List<Phrase> dialog;
@@ -58,6 +61,7 @@ public class Chat : MonoBehaviour {
 	}
 	IEnumerator WriteRoutine() {
 		CustomYieldInstruction wait = new WaitForSecondsRealtime (Values.UI.Chat.TimePerCharacter);
+		this.text.text = "";
 		for (int i = 0; i < textToWrite.Length; ++i) {
 			this.text.text = string.Concat (this.text.text, textToWrite [i]);
 			yield return wait;
@@ -66,6 +70,7 @@ public class Chat : MonoBehaviour {
 	}
 
 	public void PanelCallback() {
+		Debug.Log ("Panel callback");
 		if (routine != null) {
 			StopCoroutine (routine);
 			text.text = textToWrite;
@@ -74,10 +79,26 @@ public class Chat : MonoBehaviour {
 		}
 	}
 	IEnumerator MoveRoutine(RectTransform rect, Vector2 start, Vector2 end, float duration, Action EndCallback = null) {
-		yield return null;
+		float t = 0f;
+		rect.position = start;
+		while (t < duration) {
+			yield return null;
+			t += Time.deltaTime;
+			rect.position = Vector2.Lerp (start, end, t / duration);
+		}
+		if (EndCallback != null)
+			EndCallback ();
 	}
 	IEnumerator ScaleRoutine(RectTransform rect, float start, float end, float duration, Action EndCallback = null) {
-		yield return null;
+		float t = 0f;
+		rect.localScale = start * Vector3.one;
+		while (t < duration) {
+			yield return null;
+			t += Time.deltaTime;
+			rect.localScale = Mathf.Lerp (start, end, t / duration) * Vector3.one;
+		}
+		if (EndCallback != null)
+			EndCallback ();
 	}
 	void Next() {
 		++i;
@@ -89,6 +110,7 @@ public class Chat : MonoBehaviour {
 					StartCoroutine(ScaleRoutine(leftImageRect, Values.UI.Chat.ImageScale, 1f, Values.UI.Chat.ImageTransition));
 				}
 				if (leftId == -1) { //aparece ese lado por primera vez
+					leftImage.sprite = dialog [i].image;
 					StartCoroutine(
 						MoveRoutine(
 							leftImageRect, 
@@ -114,12 +136,14 @@ public class Chat : MonoBehaviour {
 							}
 						));
 				}
+				leftId = dialog [i].id;
 			} else { //lado der
 				if (focus) {
 					StartCoroutine(ScaleRoutine(leftImageRect, 1f, Values.UI.Chat.ImageScale, Values.UI.Chat.ImageTransition));
 					StartCoroutine(ScaleRoutine(rightImageRect, Values.UI.Chat.ImageScale, 1f, Values.UI.Chat.ImageTransition));
 				}
 				if (rightId == -1) { //aparece ese lado por primera vez
+					rightImage.sprite = dialog [i].image;
 					StartCoroutine(
 						MoveRoutine(
 							rightImageRect, 
@@ -145,6 +169,7 @@ public class Chat : MonoBehaviour {
 							}
 						));
 				}
+				rightId = dialog [i].id;
 			}
 
 		} else 

@@ -9,5 +9,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62955230ae666ac4d9910b1dc87369ec, type: 3}
-  m_Name: Phrase
+  m_Name: 1LeftTest
   m_EditorClassIdentifier: 
+  position: 0
+  image: {fileID: 21300000, guid: d9b1ea7594a8dcc4099bb94d1d574c38, type: 3}
+  id: 1
+  inverted: 0
+  text: This is the first sentence.

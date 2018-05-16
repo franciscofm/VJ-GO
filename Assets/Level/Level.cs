@@ -8,11 +8,14 @@ public class Level : MonoBehaviour {
 	public static Level instance;
 
 	public TeamInfo teamInfo;
+	public Chat chat;
+
 	public GameObject line;
 	public Transform spotsParent;
 	public List<Player> players;
 	public List<Enemy> enemies;
 	public List<Spot> spots;
+	public List<Phrase> dialog;
 
 	public AnimationCurve curveMovement;
 	public Material bridgeNormalMaterial;
@@ -43,6 +46,9 @@ public class Level : MonoBehaviour {
 		finishedPlayers = 0;
 
 		teamInfo.Init (players);
+		chat.Init (dialog, delegate {
+			Debug.Log("Finished test");
+		});
 		StartCoroutine(DrawBridges ());
 		Start2 ();
 		EndTurn ();

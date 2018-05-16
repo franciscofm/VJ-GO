@@ -652,6 +652,7 @@ GameObject:
   - component: {fileID: 380869472}
   - component: {fileID: 380869474}
   - component: {fileID: 380869473}
+  - component: {fileID: 380869475}
   m_Layer: 0
   m_Name: Click
   m_TagString: Untagged
@@ -683,13 +684,13 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 380869471}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -710,6 +711,58 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 380869471}
+--- !u!114 &380869475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 380869471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 0
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 380869473}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1693718756}
+        m_MethodName: PanelCallback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &397537002
 GameObject:
   m_ObjectHideFlags: 0
@@ -1034,7 +1087,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.65652084, y: 0.9802222}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.17999268, y: 0.000034332275}
+  m_AnchoredPosition: {x: -0.17999268, y: 0.000061035156}
   m_SizeDelta: {x: 0.35998535, y: -0.00006866455}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &613188262
@@ -1319,6 +1372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamInfo: {fileID: 1861969544}
+  chat: {fileID: 1693718756}
   line: {fileID: 1162964297106024, guid: 750b3518d10e9df499b2b3952695ca15, type: 2}
   spotsParent: {fileID: 113629275}
   players:
@@ -1326,6 +1380,11 @@ MonoBehaviour:
   enemies:
   - {fileID: 2109112142}
   spots: []
+  dialog:
+  - {fileID: 11400000, guid: 5751752ba33e56d41aaa9b3ce51c40f1, type: 2}
+  - {fileID: 11400000, guid: 5fecc9e5e3d3f24479cfff763f4a462f, type: 2}
+  - {fileID: 11400000, guid: 6ef83d49d244054418b808cf1ed67a1c, type: 2}
+  - {fileID: 11400000, guid: 60ce811aa19edaa4ca943ceabed0f545, type: 2}
   curveMovement:
     serializedVersion: 2
     m_Curve:
@@ -1434,7 +1493,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.2965517, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.2965517, b: 1, a: 0}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1902,7 +1961,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8206897, g: 0, b: 1, a: 1}
+  m_Color: {r: 0.8206897, g: 0, b: 1, a: 0.322}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2291,7 +2350,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.2965517, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.2965517, b: 1, a: 0}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -3240,6 +3299,7 @@ GameObject:
   - component: {fileID: 1693718755}
   - component: {fileID: 1693718754}
   - component: {fileID: 1693718753}
+  - component: {fileID: 1693718756}
   m_Layer: 0
   m_Name: Chat
   m_TagString: Untagged
@@ -3323,6 +3383,26 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1693718756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1693718751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee862528092b4c247b2205612a4f8a6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickPanel: {fileID: 380869471}
+  panel: {fileID: 357265118}
+  leftImageRect: {fileID: 1601263613}
+  rightImageRect: {fileID: 1435654003}
+  leftOutside: {fileID: 1988204509}
+  rightOutside: {fileID: 955394970}
+  leftShown: {fileID: 1277197996}
+  rightShown: {fileID: 779091137}
+  text: {fileID: 628638602}
 --- !u!1 &1725141226
 GameObject:
   m_ObjectHideFlags: 0
@@ -4033,7 +4113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8206897, g: 0, b: 1, a: 1}
+  m_Color: {r: 0.8206897, g: 0, b: 1, a: 0.322}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
