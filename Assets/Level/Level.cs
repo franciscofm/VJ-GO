@@ -42,6 +42,7 @@ public class Level : MonoBehaviour {
 		totalEnemies = (uint)enemies.Count;
 		finishedPlayers = 0;
 
+		teamInfo.Init (players);
 		StartCoroutine(DrawBridges ());
 		Start2 ();
 		EndTurn ();
@@ -156,8 +157,7 @@ public class Level : MonoBehaviour {
 	public void Select<T>(T t) {
 		if (t is Player) SelectPlayer (t as Player);
 		else if (t is Enemy) SelectEnemy (t as Enemy);
-		else
-			Debug.Log ("Selected entity, ERROR");
+		else Debug.Log ("Selected entity, ERROR");
 	}
 
 	public void SelectPlayer(Player player) {
@@ -188,7 +188,6 @@ public class Level : MonoBehaviour {
 		teamInfo.SelectEnemy (enemy);
 		if (selectedPlayer != null) {
 			selectedEnemy = enemy;
-			//TODO show actions
 			selectedPlayer.GetActions();
 			selectedEnemy.ShowActions();
 		}
@@ -212,14 +211,6 @@ public class Level : MonoBehaviour {
 					selectedPlayerDestinations = null;
 					entityActing = false;
 				});
-
-				//occupation
-//				selectedPlayer.spot.occupied = false;  	//old
-//				selectedPlayer.spot.occupation = null; 	//old
-//				selectedPlayer.spot.Leave();			//old
-//				selectedPlayer.spot = spot;			   	//new
-//				spot.occupied = true;					//new
-//				spot.occupation = selectedPlayer;		//new
 
 				--selectedPlayer.actionsLeft;
 				found = true;

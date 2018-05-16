@@ -16,18 +16,19 @@ public class EntityInfo : MonoBehaviour {
 	public void Init (string name, Sprite image) {
 		group = GetComponent<CanvasGroup> ();
 		death.SetActive (false);
+		group.alpha = Values.UI.EntityInfo.Aplha;
 		this.name.text = name;
 		this.image.sprite = image;
 	}
 	public void Select() {
-		StartCoroutine (Routine (Utils.EntityInfo.Aplha, 1f));
+		StartCoroutine (Routine (Values.UI.EntityInfo.Aplha, 1f));
 	}
 	public void Unselect() {
-		StartCoroutine (Routine (1f, Utils.EntityInfo.Aplha));
+		StartCoroutine (Routine (1f, Values.UI.EntityInfo.Aplha));
 	}
 	IEnumerator Routine(float fr, float to) {
 		float t = 0f;
-		float d = Utils.EntityInfo.Transition;
+		float d = Values.UI.EntityInfo.Transition;
 		while (t < d) {
 			yield return null;
 			t += Time.deltaTime;

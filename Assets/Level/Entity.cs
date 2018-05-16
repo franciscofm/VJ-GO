@@ -18,6 +18,7 @@ public class Entity : MonoBehaviour {
 	public int actionsLeft;
 	public int team = 0;
 	public Color color = Color.white;
+	public Sprite image;
 	public Spot spot; //Donde esta
 
 	void OnMouseUp() {
