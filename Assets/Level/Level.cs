@@ -111,7 +111,6 @@ public class Level : MonoBehaviour {
 		line.SetPosition (1, end.transform.position);
 		start.AddLine (line);
 		end.AddLine (line);
-		//Utils.CopyLineRenderer (this.line, line);
 	}
 	
 	// Update is called once per frame
