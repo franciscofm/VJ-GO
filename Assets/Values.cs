@@ -13,4 +13,12 @@
 			public const float ImageScale = 0.8f;
 		}
 	}
+
+	public static class Menu {
+		public const float LightOpen = 7.63f;
+		public const float LightCloseDuration = 0.4f;
+		public const float SelectLevelDuration = 3f;
+		public const string LightCubesAnimation = "LightCubes";
+		public const float LightCubesDuration = 2f;
+	}
 }

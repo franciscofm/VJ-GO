@@ -7,6 +7,7 @@ using System;
 public class Level : MonoBehaviour {
 
 	public static Level instance;
+	public static Menu.Controller menu;
 
 	public TeamInfo teamInfo;
 	public Chat chat;
