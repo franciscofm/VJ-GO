@@ -31,6 +31,7 @@ namespace Menu {
 		public RectTransform panelRightMask;
 		[Header("Select Level UI")]
 		public GameObject selectLevelUI;
+		public Transform scrollViewContent;
 
 		[HideInInspector]
 		public Level loadedlevel;
@@ -136,7 +137,11 @@ namespace Menu {
    		}
 
 		public void Exit() {
-
+			#if UNITY_EDITOR
+			UnityEditor.EditorApplication.isPlaying = false;
+			#else
+			Application.Quit();
+			#endif
 		}
 
 		//tutorialUI
@@ -148,7 +153,32 @@ namespace Menu {
 			if(!lightOn && !textIn)
 				StartCoroutine(ShowTutorialRoutine ());
 		}
+		public void ReturnFromTutorial() {
+			panelLeftMask.anchoredPosition = Vector2.zero;
+			panelCenterMask.anchoredPosition = Vector2.zero;
+			panelRightMask.anchoredPosition = Vector2.zero;
+			panelLeftMask.sizeDelta = Vector2.zero;
+			panelCenterMask.sizeDelta = Vector2.zero;
+			panelRightMask.sizeDelta = Vector2.zero;
+			menuScene.SetActive (true);
+			menuUI.SetActive (true);
+			tutorialUI.SetActive (false);
+			StartCoroutine (SpotLightRoutine (false));
+			StartCoroutine (TextsInRoutine());
+		}
+		public void PlayTutorial() {
+
+		}
 		IEnumerator ShowTutorialRoutine(Action callback = null) {
+			YieldInstruction offset = new WaitForSeconds(Values.Menu.Tutorial.PanelOffset);
+			StartCoroutine (ExpandPanelRoutine(panelLeftMask, true));
+			yield return offset;
+			StartCoroutine (ExpandPanelRoutine(panelCenterMask, false));
+			yield return offset;
+			StartCoroutine (ExpandPanelRoutine(panelRightMask, true));
+			if (callback != null) callback ();
+		}
+		IEnumerator CloseTutorialRoutine(Action callback = null) {
 			YieldInstruction offset = new WaitForSeconds(Values.Menu.Tutorial.PanelOffset);
 			StartCoroutine (ExpandPanelRoutine(panelLeftMask, true));
 			yield return offset;
@@ -172,7 +202,7 @@ namespace Menu {
 			}
 		}
 
-		//levelSelect callbacks
+		//levelSelect
 		public void SelectLevel(string level) {
 			floor.SetActive (false);
 			StartCoroutine (SelectLevelRoutine (level));
