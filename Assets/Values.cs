@@ -15,10 +15,13 @@
 	}
 
 	public static class Menu {
-		public const float LightOpen = 7.63f;
-		public const float LightCloseDuration = 0.4f;
+		public const float LightOpen = 47f;
+		public const float LightCloseDuration = 1f;
 		public const float SelectLevelDuration = 3f;
 		public const string LightCubesAnimation = "LightCubes";
 		public const float LightCubesDuration = 2f;
+
+		public const float TextDuration = 0.4f;
+		public const float TextOffset = 0.2f;
 	}
 }
