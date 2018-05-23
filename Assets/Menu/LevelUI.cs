@@ -33,7 +33,7 @@ namespace Menu {
 		}
 
 		public void Select() {
-			Debug.Log ("Selected");
+			//Debug.Log ("Selected");
 			controller.SelectLevel (scene);
 		}
 	}
