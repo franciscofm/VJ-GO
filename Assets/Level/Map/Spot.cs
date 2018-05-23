@@ -10,7 +10,7 @@ public class Spot : MonoBehaviour {
 	public bool occupied;
 	public Entity occupation;
 	public List<Spot> bridges = new List<Spot>();
-	//public List<LineRenderer> lines = new List<LineRenderer>();
+
 	public List<BridgeToLine> bridgesToLines = new List<BridgeToLine> ();
 	public class BridgeToLine {
 		public Spot spot;
@@ -63,10 +63,20 @@ public class Spot : MonoBehaviour {
 //	}
 
 	public delegate void SpotEvent();
+
 	public event SpotEvent OnEnter;
-	public void Entered() { if(OnEnter!=null) OnEnter (); }
+	public void Entered() {
+		Debug.Log ("Entered event raised: " + gameObject.name);
+		if(OnEnter!=null) OnEnter ();
+	}
 	public event SpotEvent OnLeave;
-	public void Leave() { if(OnLeave!=null) OnLeave (); }
+	public void Leave() {
+		Debug.Log ("Leave event raised: " + gameObject.name);
+		if(OnLeave!=null) OnLeave ();
+	}
 	public event SpotEvent OnStay;
-	public void Stay() { if(OnStay!=null) OnStay (); }
+	public void Stay() {
+		Debug.Log ("Stay event raised: " + gameObject.name);
+		if(OnStay!=null) OnStay ();
+	}
 }

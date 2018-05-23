@@ -57,12 +57,13 @@ public class TeamInfo : MonoBehaviour {
 		for (int i = 0; i < enemiesInfo.Count; ++i) {
 			if (enemy == enemiesInfo [i].entity) {
 				enemiesInfo [i].info.Select ();
-				selectedEnemy = playersInfo [i].info;
+				selectedEnemy = enemiesInfo [i].info;
 				return;
 			}
 		}
 	}
 	public void ClearSelectEnemy() {
+		if (selectedEnemy == null) return;
 		selectedEnemy.Unselect ();
 		selectedEnemy = null;
 	}

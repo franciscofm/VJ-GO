@@ -33,11 +33,19 @@ namespace Menu {
 		public GameObject selectLevelUI;
 		public Transform scrollViewContent;
 
-		[HideInInspector]
+		[Header("Public debug")]
 		public Level loadedlevel;
 
 		Animator animatorScene;
+		void Awake() {
+			LevelUI.controller = this;
+		}
 		void Start() {
+			menuScene.SetActive (true);
+			menuUI.SetActive (true);
+			tutorialUI.SetActive (true);
+			selectLevelUI.SetActive (true);
+
 			StartMenuUI ();
 			StartTutorialUI ();
 
@@ -75,8 +83,7 @@ namespace Menu {
 		}
 
 		//menuUI
-		bool lightOn;
-		bool textIn;
+		public bool lightOn, textIn;
 		void StartMenuUI() {
 			
 		}
@@ -107,16 +114,14 @@ namespace Menu {
 			}
 			if (callback != null) callback ();
 		}
-
+		//Callbacks
 		public void ShowTutorial() {
-			StartCoroutine(SpotLightRoutine(true, delegate {
-				ShowTutorialRequest();
-			}));
+			StartCoroutine(SpotLightRoutine(true));
 			StartCoroutine (TextsOutRoutine( delegate {
 				menuScene.SetActive(false);
 				menuUI.SetActive(false);
 				tutorialUI.SetActive(true);
-				ShowTutorialRequest();
+				StartCoroutine(ShowTutorialRoutine ());
 			}));
 		}
 		public void ShowSelectLevel() {
@@ -135,7 +140,6 @@ namespace Menu {
 				}
 			));
    		}
-
 		public void Exit() {
 			#if UNITY_EDITOR
 			UnityEditor.EditorApplication.isPlaying = false;
@@ -145,13 +149,9 @@ namespace Menu {
 		}
 
 		//tutorialUI
-		float height;
+		public float height;
 		void StartTutorialUI() {
 			height = panelTutorial.rect.height;
-		}
-		void ShowTutorialRequest() {
-			if(!lightOn && !textIn)
-				StartCoroutine(ShowTutorialRoutine ());
 		}
 		public void ReturnFromTutorial() {
 			panelLeftMask.anchoredPosition = Vector2.zero;
@@ -182,7 +182,7 @@ namespace Menu {
 			YieldInstruction offset = new WaitForSeconds(Values.Menu.Tutorial.PanelOffset);
 			StartCoroutine (ExpandPanelRoutine(panelLeftMask, true));
 			yield return offset;
-			StartCoroutine (ExpandPanelRoutine(panelCenterMask, false));
+			StartCoroutine (ExpandPanelRoutine(panelCenterMask, true));
 			yield return offset;
 			StartCoroutine (ExpandPanelRoutine(panelRightMask, true));
 			if (callback != null) callback ();
@@ -196,7 +196,6 @@ namespace Menu {
 			while (t < d) {
 				yield return null;
 				t += Time.deltaTime;
-				//rect.yMin = Mathf.Lerp (0, height, t / d);
 				mask.sizeDelta = new Vector2(0f,Mathf.Lerp(0f, sizeDeltaY, t/d));
 				mask.anchoredPosition = new Vector2(0f,Mathf.Lerp(0f, anchoredPositionY, t/d));
 			}

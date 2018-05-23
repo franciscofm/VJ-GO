@@ -61,6 +61,10 @@ public class Entity : MonoBehaviour {
 			endAction ();
 	}
 
+	public virtual void Pass() {
+
+	}
+
 	public void GetActions() {
 
 	}

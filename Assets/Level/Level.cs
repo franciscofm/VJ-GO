@@ -17,29 +17,32 @@ public class Level : MonoBehaviour {
 	public List<Player> players;
 	public List<Enemy> enemies;
 	public List<Spot> spots;
-	//public List<Phrase> dialog;
 
 	public AnimationCurve curveMovement;
 	public Material bridgeNormalMaterial;
 	public Material bridgeMarkedMaterial;
 
-	uint turn;
-	bool playerTurn;
-	int teamTurn;
-	float levelDuration;
+	[Header("Private")]
+	public uint turn;
+	public bool playerTurn;
+	public int teamTurn;
+	public float levelDuration;
 
-	uint totalPlayers, finishedPlayers;
-	uint totalEnemies;//, killedEnemies;
+	public uint totalBonus, pickedBonus;
+	public uint totalPlayers, finishedPlayers;
+	public uint totalEnemies; //, killedEnemies;
 
 	void Awake() {
 		if (instance != null) Destroy (instance.gameObject);
 		instance = this;
+
+
+		Entity.level = this;
+		Bonus.level = this;
 	}
 
 	// Use this for initialization
 	void Start () {
-		Entity.level = this;
-
 		turn = 0;
 		levelDuration = 0f;
 		playerTurn = true;
@@ -47,10 +50,8 @@ public class Level : MonoBehaviour {
 		totalEnemies = (uint)enemies.Count;
 		finishedPlayers = 0;
 
-		teamInfo.Init (players);
-//		chat.Init (dialog, delegate {
-//			Debug.Log("Finished test");
-//		});
+		teamInfo.Init (players, enemies);
+
 		StartCoroutine(DrawBridges ());
 		Start2 ();
 		EndTurn ();
@@ -78,6 +79,7 @@ public class Level : MonoBehaviour {
 		}
 	}
 	public virtual void EndActionEnemy(Enemy current) {
+		teamInfo.ClearSelectEnemy ();
 		if (!playerTurn) {
 			for (int i = 0; i < enemies.Count; ++i)
 				if (enemies [i].actionsLeft > 0) {
@@ -113,6 +115,7 @@ public class Level : MonoBehaviour {
 	}
 
 	protected virtual void EnemyIA(Enemy enemy) {
+		teamInfo.SelectEnemy (enemy);
 		enemy.IA ();
 	}
 
@@ -156,14 +159,13 @@ public class Level : MonoBehaviour {
 
 	}
 
-	[Header("Private")]
 	public Player selectedPlayer;
 	public List<Spot> selectedPlayerDestinations;
 	public Enemy selectedEnemy;
 	public bool entityActing;
 
 	public void Select<T>(T t) {
-		if (EventSystem.current.IsPointerOverGameObject ()) return;
+		if (EventSystem.current.IsPointerOverGameObject ()) return; //Chat and GUI escape
 		if (t is Player) SelectPlayer (t as Player);
 		else if (t is Enemy) SelectEnemy (t as Enemy);
 		else Debug.Log ("Selected entity, ERROR");
@@ -193,10 +195,14 @@ public class Level : MonoBehaviour {
 		}
 	}
 	public void SelectEnemy(Enemy enemy) {
-		teamInfo.ClearSelectEnemy ();
-		teamInfo.SelectEnemy (enemy);
-		if (selectedPlayer != null) {
+		if (selectedEnemy == null) {
+			teamInfo.SelectEnemy (enemy);
 			selectedEnemy = enemy;
+		} else {
+			teamInfo.ClearSelectEnemy ();
+			selectedEnemy = null;
+		}
+		if (selectedPlayer != null) {
 			selectedPlayer.GetActions();
 			selectedEnemy.ShowActions();
 		}
@@ -212,6 +218,8 @@ public class Level : MonoBehaviour {
 			if (spot == selectedPlayerDestinations [i]) {
 				UnmarkBridges (selectedPlayer);
 				teamInfo.ClearSelectPlayer ();
+				teamInfo.ClearSelectEnemy ();
+				selectedEnemy = null;
 
 				entityActing = true;
 				selectedPlayer.Move (selectedPlayer, spot, 1f, curveMovement, delegate {
@@ -242,5 +250,10 @@ public class Level : MonoBehaviour {
 				bridges[i].line.material = bridgeNormalMaterial;
 			//}
 		}
+	}
+
+	public void PickBonus() {
+		++pickedBonus;
+		//Animacion bonus cogido
 	}
 }

@@ -11,6 +11,8 @@ namespace Menu {
 		public Text description;
 		public Image stars;
 
+		public static Controller controller;
+
 		public void SetValues(string name, string description, Sprite image, float stars) {
 			this.name.text = name;
 			this.description.text = description;
