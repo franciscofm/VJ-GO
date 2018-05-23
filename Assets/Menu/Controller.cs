@@ -9,10 +9,9 @@ namespace Menu {
 	public class Controller : MonoBehaviour {
 		[Header("Menu Scene")]
 		public GameObject menuScene;
-		public GameObject floor;
-		public GameObject cubeHidden;
-		public GameObject cubesShown1;
-		public GameObject cubesShown2;
+		public GameObject cubeHiddenEdges;
+		public GameObject cubesShown1Edges;
+		public GameObject cubesShown2Edges;
 		public Light spotLight;
 		public Camera camera;
 		[Header("Menu UI")]
@@ -23,6 +22,7 @@ namespace Menu {
 		public Transform startTutorial, endTutorial;
 		public Transform textExit;
 		public Transform startExit, endExit;
+		public Image fadeScreen;
 		[Header("Tutorial UI")]
 		public GameObject tutorialUI;
 		public RectTransform panelTutorial;
@@ -32,6 +32,13 @@ namespace Menu {
 		[Header("Select Level UI")]
 		public GameObject selectLevelUI;
 		public Transform scrollViewContent;
+		public GameObject scrollViewRow;
+		public GameObject scrollViewLevelUI;
+		public List<LevelUIEntry> scrollViewContentEntries;
+		[Header("Keyboard controll")]
+		public int keyboardFocus;
+		public enum Focus { Menu, Tutorial, SelectLevel }
+		public Focus focus;
 
 		[Header("Public debug")]
 		public Level loadedlevel;
@@ -48,19 +55,83 @@ namespace Menu {
 
 			StartMenuUI ();
 			StartTutorialUI ();
+			StartSelectLevelUI ();
 
 			menuScene.SetActive (true);
 			menuUI.SetActive (true);
 			tutorialUI.SetActive (false);
 			selectLevelUI.SetActive (false);
 
+			focus = Focus.Menu;
+			keyboardFocus = 0;
+			fadeScreen.color = Values.Colors.transparentBlack;
+
 			animatorScene = menuScene.GetComponent<Animator> ();
-			//asegurar que el cubo que brilla esta apagado
-			cubeHidden.transform.GetChild (0).gameObject.SetActive (false);
+			//asegurar cubos apagados
+			cubeHiddenEdges.SetActive (false);
+			cubesShown1Edges.SetActive (false);
+			cubesShown2Edges.SetActive (false);
+
 			//Cambiar por animacion de encender foco
 			StartCoroutine (SpotLightRoutine (false, delegate {
 				StartCoroutine(TextsInRoutine());
 			}));
+		}
+		void Update() {
+			if (!Input.anyKeyDown) return;
+			switch (focus) {
+			case Focus.Menu:
+				if (Input.GetKeyDown (KeyCode.S)) {
+					++keyboardFocus;
+					keyboardFocus %= 3;
+				}
+				if (Input.GetKeyDown (KeyCode.W)) {
+					--keyboardFocus;
+					if (keyboardFocus < 0)
+						keyboardFocus = 2;
+				}
+				if (Input.GetKeyDown (KeyCode.Space)) {
+					switch(keyboardFocus) {
+					case 0:
+						ShowSelectLevel();
+						break;
+					case 1:
+						ShowTutorial ();
+						break;
+					case 2:
+						Exit ();
+						break;
+					}
+				}
+				break;
+			case Focus.Tutorial:
+				if (Input.GetKeyDown (KeyCode.Escape))
+					ReturnFromTutorial ();
+				if (Input.GetKeyDown (KeyCode.Space))
+					PlayTutorial ();
+				break;
+			case Focus.SelectLevel:
+				if (Input.GetKeyDown (KeyCode.S)) {
+					scrollViewContent.GetChild (keyboardFocus).GetComponent<LevelUI> ().Unfocus ();
+					keyboardFocus = Math.Min (keyboardFocus + 2, scrollViewContent.childCount -1);
+					scrollViewContent.GetChild (keyboardFocus).GetComponent<LevelUI> ().Focus ();
+				} else if (Input.GetKeyDown (KeyCode.W)) {
+					scrollViewContent.GetChild (keyboardFocus).GetComponent<LevelUI> ().Unfocus ();
+					keyboardFocus = Math.Max (keyboardFocus - 2, 0);
+					scrollViewContent.GetChild (keyboardFocus).GetComponent<LevelUI> ().Focus ();
+				} else if (Input.GetKeyDown (KeyCode.D)) {
+					scrollViewContent.GetChild (keyboardFocus).GetComponent<LevelUI> ().Unfocus ();
+					keyboardFocus = Math.Min (keyboardFocus + 1, scrollViewContent.childCount -1);
+					scrollViewContent.GetChild (keyboardFocus).GetComponent<LevelUI> ().Focus ();
+				} else if (Input.GetKeyDown (KeyCode.A)) {
+					scrollViewContent.GetChild (keyboardFocus).GetComponent<LevelUI> ().Unfocus ();
+					keyboardFocus = Math.Max (keyboardFocus - 1, 0);
+					scrollViewContent.GetChild (keyboardFocus).GetComponent<LevelUI> ().Focus ();
+				} else if (Input.GetKeyDown (KeyCode.Space)) {
+					scrollViewContent.GetChild (keyboardFocus).GetComponent<LevelUI> ().Select ();
+				}
+				break;
+			}
 		}
 
 		IEnumerator SpotLightRoutine(bool close, Action callback = null) {
@@ -121,7 +192,9 @@ namespace Menu {
 				menuScene.SetActive(false);
 				menuUI.SetActive(false);
 				tutorialUI.SetActive(true);
-				StartCoroutine(ShowTutorialRoutine ());
+				StartCoroutine(ShowTutorialRoutine (delegate {
+					focus = Focus.Tutorial;
+				}));
 			}));
 		}
 		public void ShowSelectLevel() {
@@ -135,6 +208,8 @@ namespace Menu {
 						delegate {
 							//mostrar selectLevelUI
 							selectLevelUI.SetActive(true);
+							focus = Focus.SelectLevel;
+							keyboardFocus = 0;
 						}
 					));
 				}
@@ -164,7 +239,10 @@ namespace Menu {
 			menuUI.SetActive (true);
 			tutorialUI.SetActive (false);
 			StartCoroutine (SpotLightRoutine (false));
-			StartCoroutine (TextsInRoutine());
+			StartCoroutine (TextsInRoutine(delegate {
+				focus = Focus.Menu;
+				keyboardFocus = 0;
+			}));
 		}
 		public void PlayTutorial() {
 
@@ -202,8 +280,16 @@ namespace Menu {
 		}
 
 		//levelSelect
+		public string levelToLoad;
+		void StartSelectLevelUI() {
+			Transform lastRow = null;
+			for (int i = 0; i < scrollViewContentEntries.Count; ++i) {
+				if (i % 2 == 0) lastRow = Instantiate (scrollViewRow, scrollViewContent).transform;
+				LevelUI level = Instantiate (scrollViewLevelUI, lastRow).GetComponent<LevelUI>();
+				level.SetValues (scrollViewContentEntries [i], 0f);
+			}
+		}
 		public void SelectLevel(string level) {
-			floor.SetActive (false);
 			StartCoroutine (SelectLevelRoutine (level));
 		}
 		IEnumerator SelectLevelRoutine (string level) {
@@ -211,18 +297,32 @@ namespace Menu {
 			menuUI.SetActive (false);
 			tutorialUI.SetActive (false);
 			selectLevelUI.SetActive (false);
+			//Precarga
+			//Encender los otros dos cubos y reproducir sonido
+			cubesShown1Edges.SetActive (true);
+			cubesShown2Edges.SetActive (true);
+			//Esperar momentaneamente
+			yield return new WaitForSeconds (Values.Menu.SelectLevel.SelectWait);
+			//Fade a negro
+			float t = 0f;
+			float d = Values.Menu.SelectLevel.SelectFade;
+			while (t < d) {
+				yield return null;
+				t += Time.deltaTime;
+				fadeScreen.color = Color.Lerp (Values.Colors.transparentBlack, Color.black, t / d);
+			}
+			//Esperar momentaneamente
+			yield return new WaitForSeconds (Values.Menu.SelectLevel.SelectWait);
+			//Desactivar cosas
+			menuScene.SetActive (false);
 
-			yield return new WaitForSeconds (Values.Menu.SelectLevel.SelectDuration);
-
-			//deactive menu objects
-			menuScene.SetActive(false);
-
-			//load level
-			GoToLevel (level);
+			//Cargar nivel
+			UnityEngine.SceneManagement.SceneManager.LoadScene (level, UnityEngine.SceneManagement.LoadSceneMode.Additive);
 		}
-		void GoToLevel(string level) {
-
-		}
+		public void ReturnFromSelectLevel() {
+			focus = Focus.Menu;
+			keyboardFocus = 0;
+   		}
 	}
 
 }

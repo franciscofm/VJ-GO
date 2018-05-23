@@ -1718,11 +1718,12 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1672468332917376}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bafe2020ed6b5a0418f4a11939f5a913, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lineMaterial: {fileID: 2100000, guid: 1baf2fbecffba4e449c411da95cd6096, type: 2}
 --- !u!114 &114280810353705682
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2044,6 +2045,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafe2020ed6b5a0418f4a11939f5a913, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lineMaterial: {fileID: 2100000, guid: 01d547aebec962343bf092ee411f4819, type: 2}
 --- !u!114 &114486312417439296
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2333,10 +2335,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuScene: {fileID: 1627192980933552}
-  floor: {fileID: 1827630408497736}
-  cubeHidden: {fileID: 1545029079120612}
-  cubesShown1: {fileID: 1839354935027412}
-  cubesShown2: {fileID: 1672468332917376}
+  cubeHiddenEdges: {fileID: 1686537208028286}
+  cubesShown1Edges: {fileID: 1146766585570780}
+  cubesShown2Edges: {fileID: 1182966399209986}
   spotLight: {fileID: 108938083543685286}
   camera: {fileID: 20578161961393030}
   menuUI: {fileID: 1522027524661492}
@@ -2356,10 +2357,19 @@ MonoBehaviour:
   panelRightMask: {fileID: 224915527763043588}
   selectLevelUI: {fileID: 1943046664775908}
   scrollViewContent: {fileID: 224517172567797762}
+  scrollViewRow: {fileID: 1702401818079182, guid: 966faa0c239dcc94abda6a28fa92b2ed,
+    type: 2}
+  scrollViewLevelUI: {fileID: 1590919837437854, guid: ea1ccd1aa124cca4d8e7eba75265fed6,
+    type: 2}
+  scrollViewContentEntries:
+  - {fileID: 11400000, guid: 26b377e56a9543f4cbe1f7161621c230, type: 2}
+  keyboardFocus: 0
+  focus: 0
   loadedlevel: {fileID: 0}
   lightOn: 0
   textIn: 0
   height: 0
+  levelToLoad: 
 --- !u!114 &114652187040018966
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2921,11 +2931,12 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1839354935027412}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bafe2020ed6b5a0418f4a11939f5a913, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lineMaterial: {fileID: 2100000, guid: 1baf2fbecffba4e449c411da95cd6096, type: 2}
 --- !u!124 &124085315098394976
 Behaviour:
   m_ObjectHideFlags: 1

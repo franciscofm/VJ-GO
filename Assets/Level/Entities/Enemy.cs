@@ -21,7 +21,6 @@ public class Enemy : Entity {
 	public Entity target;
 	public Spot next;
 	void Seek() { //Move to closest, no pathfinding
-		List<Spot.BridgeToLine> bridgesToLines = spot.bridgesToLines;
 		List<Spot> bridges = spot.bridges;
 		Vector3 targetPos = target.transform.position;
 		float d = Vector3.Distance (targetPos, bridges [0].transform.position);

@@ -1,4 +1,6 @@
-﻿public static class Values {
+﻿using UnityEngine;
+
+public static class Values {
 	public static class UI {
 		public static class EntityInfo {
 			public const float Transition = 0.2f;
@@ -26,12 +28,18 @@
 		}
 
 		public static class SelectLevel {
-			public const float SelectDuration = 3f;
+			public const float SelectWait = 3f;
+			public const float SelectFade = 1f;
 		}
 
 		public static class Tutorial {
 			public const float PanelOffset = 0.1f;
 			public const float PanelDuration = 0.4f;
 		}
+	}
+
+	public static class Colors {
+		public static Color transparentBlack = new Color(0f,0f,0f,0f);
+		public static Color transparentWhite = new Color(1f,1f,1f,1f);
 	}
 }
