@@ -11,6 +11,7 @@ public static class Utils {
 		obj.transform.parent = parent;
 		obj.transform.localPosition = Vector3.zero;
 		obj.transform.localRotation = Quaternion.identity;
+		obj.transform.localScale = Vector3.one;
 
 		LineRenderer line = obj.AddComponent<LineRenderer> ();
 		line.useWorldSpace = false;
