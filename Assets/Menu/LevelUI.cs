@@ -28,15 +28,14 @@ namespace Menu {
 		}
 
 		public void FadeIn(float wait) {
-			StartCoroutine (FadeRoutine (0f, 1f, wait));
+			StartCoroutine (FadeRoutine (0f, 1f, Values.Menu.SelectLevel.LevelUIFadeIn, wait));
 		}
 		public void FadeOut() {
-			StartCoroutine (FadeRoutine (1f, 0f));
+			StartCoroutine (FadeRoutine (1f, 0f, Values.Menu.SelectLevel.LevelUIFadeOut));
 		}
-		IEnumerator FadeRoutine(float a, float b, float wait = 0f) {
+		IEnumerator FadeRoutine(float a, float b, float d, float wait = 0f) {
 			if (wait != 0f) yield return new WaitForSeconds (wait);
 			float t = 0f;
-			float d = Values.Menu.SelectLevel.LevelUIDuration;
 			while (t < d) {
 				yield return null;
 				t += Time.deltaTime;
@@ -45,10 +44,10 @@ namespace Menu {
 		}
 
 		public void Focus() {
-			StartCoroutine (FadeRoutine (1f, Values.Menu.SelectLevel.LevelUIScale));
+			StartCoroutine (ScaleRoutine (1f, Values.Menu.SelectLevel.LevelUIScale));
 		}
 		public void Unfocus() {
-			StartCoroutine (FadeRoutine (Values.Menu.SelectLevel.LevelUIScale, 1f));
+			StartCoroutine (ScaleRoutine (Values.Menu.SelectLevel.LevelUIScale, 1f));
 		}
 		IEnumerator ScaleRoutine(float a, float b) {
 			float t = 0f;

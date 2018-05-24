@@ -33,7 +33,8 @@ public static class Values {
 			public const float SelectWait = 3f;
 			public const float SelectFade = 1f;
 
-			public const float LevelUIDuration = 0.15f;
+			public const float LevelUIFadeIn = 0.15f;
+			public const float LevelUIFadeOut = 0.4f;
 			public const float LevelUIOffset = 0.1f;
 
 			public const float LevelUIScale = 1.1f;

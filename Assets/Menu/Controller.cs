@@ -43,6 +43,7 @@ namespace Menu {
 		public Focus focus;
 
 		[Header("Public debug")]
+		public bool inGame;
 		public bool lightOn, textIn;
 		public float height;
 		public Level loadedlevel;
@@ -73,6 +74,7 @@ namespace Menu {
 			focus = Focus.Menu;
 			keyboardFocus = 0;
 			fadeScreen.color = Values.Colors.transparentBlack;
+			inGame = false;
 
 			animatorScene = menuScene.GetComponent<Animator> ();
 			//asegurar cubos apagados
@@ -88,16 +90,27 @@ namespace Menu {
 			}));
 		}
 		void ReturnFromLevel () {
-			//TODO: Fade in
 			menuScene.SetActive (true);
 			menuUI.SetActive (true);
 			tutorialUI.SetActive (false);
 			selectLevelUI.SetActive (false);
 
+			cubeHiddenEdges.SetActive (false);
+			cubesShown1Edges.SetActive (false);
+			cubesShown2Edges.SetActive (false);
+
+			textSelectLevel.position = startSelectLevel.position;
+			textTutorial.position = startTutorial.position;
+			textExit.position = startExit.position;
+			StartCoroutine (TextsInRoutine ());
+			StartCoroutine (SpotLightRoutine (false));
+			StartCoroutine (ScreenFadeRoutine (Color.black, Values.Colors.transparentBlack));
+
 			focus = Focus.Menu;
 			keyboardFocus = 0;
 		}
 		void Update() {
+			if (inGame) return;
 			if (!Input.anyKeyDown) return;
 			switch (focus) {
 			case Focus.Menu:
@@ -259,7 +272,8 @@ namespace Menu {
 
 		//tutorialUI
 		void StartTutorialUI() {
-			height = panelTutorial.rect.height;
+			//height = panelTutorial.rect.height;
+			height = Screen.height;
 		}
 		public void ReturnFromTutorial() {
 			panelLeftMask.anchoredPosition = Vector2.zero;
@@ -331,7 +345,8 @@ namespace Menu {
 			//Hide UIs
 			menuUI.SetActive (false);
 			tutorialUI.SetActive (false);
-			selectLevelUI.SetActive (false);
+			for (int i = 0; i < levelUIs.Count; ++i)
+				levelUIs [i].FadeOut ();
 			//Precarga
 			//Encender los otros dos cubos y reproducir sonido
 			cubesShown1Edges.SetActive (true);
@@ -343,6 +358,7 @@ namespace Menu {
 				//Esperar momentaneamente
 				StartCoroutine(WaitRoutine(Values.Menu.SelectLevel.SelectWait, delegate {
 					//Desactivar cosas
+					selectLevelUI.SetActive(false);
 					menuScene.SetActive (false);
 					//Cargar nivel
 					LoadLevel(level);
@@ -356,10 +372,15 @@ namespace Menu {
 
 		void LoadLevel(string level) {
 			loadedLevelName = level;
+			inGame = true;
 			SceneManager.LoadScene (level, UnityEngine.SceneManagement.LoadSceneMode.Additive);
+			StartCoroutine (ScreenFadeRoutine (Color.black, Values.Colors.transparentBlack, delegate {
+				loadedlevel.StartLevel();
+			}));
 		}
 		public void FinishLevel() {
-			StartCoroutine(ScreenFadeRoutine(Color.black, Values.Colors.transparentBlack, delegate {
+			inGame = false;
+			StartCoroutine(ScreenFadeRoutine(Values.Colors.transparentBlack, Color.black, delegate {
 				//Unload current level
 				SceneManager.UnloadSceneAsync (loadedLevelName);
 				//Load next level

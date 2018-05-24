@@ -686,7 +686,7 @@ GameObject:
   m_IsActive: 1
 --- !u!1 &1751130280026990
 GameObject:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
@@ -893,7 +893,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1949854864538884
 GameObject:
   m_ObjectHideFlags: 1
@@ -939,7 +939,6 @@ Transform:
   - {fileID: 4385407206203710}
   - {fileID: 4511314848597668}
   - {fileID: 4295970311047696}
-  - {fileID: 224242281795461754}
   m_Father: {fileID: 4539925618587016}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1051,6 +1050,7 @@ Transform:
   - {fileID: 224160657744619494}
   - {fileID: 224725262345491768}
   - {fileID: 224566974190530492}
+  - {fileID: 224242281795461754}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2441,11 +2441,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 26b377e56a9543f4cbe1f7161621c230, type: 2}
   keyboardFocus: 0
   focus: 0
+  inGame: 0
   lightOn: 0
   textIn: 0
   height: 0
   loadedlevel: {fileID: 0}
   loadedLevelName: 
+  levelUIs: []
   levelToLoad: 
 --- !u!114 &114652187040018966
 MonoBehaviour:
@@ -3509,8 +3511,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 224346704617899892}
-  m_Father: {fileID: 4039721548615550}
-  m_RootOrder: 6
+  m_Father: {fileID: 4539925618587016}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

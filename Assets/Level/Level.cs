@@ -35,6 +35,7 @@ public class Level : MonoBehaviour {
 	public uint totalEnemies; //, killedEnemies;
 
 	public bool teamInfoEnabled;
+	public bool blocked;
 
 	void Awake() {
 		if (instance != null) Destroy (instance.gameObject);
@@ -71,6 +72,10 @@ public class Level : MonoBehaviour {
 	}
 	protected virtual void Start2() {
 
+	}
+	//Called by controller, allows movement
+	public virtual void StartLevel() {
+		blocked = false;
 	}
 
 	//Called by Start
@@ -190,7 +195,7 @@ public class Level : MonoBehaviour {
 	public bool entityActing;
 
 	public void Select<T>(T t) {
-		if (entityActing) return;
+		if (entityActing || blocked) return;
 		if (EventSystem.current.IsPointerOverGameObject ()) return; //Chat and GUI escape
 		if (t is Player) SelectPlayer (t as Player);
 		else if (t is Enemy) SelectEnemy (t as Enemy);
