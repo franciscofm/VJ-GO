@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace Menu {
 	
@@ -41,11 +42,16 @@ namespace Menu {
 		public Focus focus;
 
 		[Header("Public debug")]
+		public bool lightOn, textIn;
+		public float height;
 		public Level loadedlevel;
+		public string loadedLevelName;
+		public static Controller instance;
 
 		Animator animatorScene;
 		void Awake() {
 			LevelUI.controller = this;
+			Level.menu = this;
 		}
 		void Start() {
 			menuScene.SetActive (true);
@@ -154,7 +160,6 @@ namespace Menu {
 		}
 
 		//menuUI
-		public bool lightOn, textIn;
 		void StartMenuUI() {
 			
 		}
@@ -224,7 +229,6 @@ namespace Menu {
 		}
 
 		//tutorialUI
-		public float height;
 		void StartTutorialUI() {
 			height = panelTutorial.rect.height;
 		}
@@ -317,12 +321,23 @@ namespace Menu {
 			menuScene.SetActive (false);
 
 			//Cargar nivel
-			UnityEngine.SceneManagement.SceneManager.LoadScene (level, UnityEngine.SceneManagement.LoadSceneMode.Additive);
+			LoadLevel(level);
 		}
 		public void ReturnFromSelectLevel() {
 			focus = Focus.Menu;
 			keyboardFocus = 0;
    		}
+
+		void LoadLevel(string level) {
+			loadedLevelName = level;
+			SceneManager.LoadScene (level, UnityEngine.SceneManagement.LoadSceneMode.Additive);
+		}
+		public void FinishLevel() {
+			//Unload current level
+			SceneManager.UnloadSceneAsync (loadedLevelName);
+			//Load next level
+
+		}
 	}
 
 }

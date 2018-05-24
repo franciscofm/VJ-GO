@@ -39,13 +39,13 @@ public class Level : MonoBehaviour {
 	void Awake() {
 		if (instance != null) Destroy (instance.gameObject);
 		instance = this;
-
+		menu.loadedlevel = this;
 
 		Entity.level = this;
 		Bonus.level = this;
 	}
 
-	// Use this for initialization
+
 	void Start () {
 		turn = 0;
 		levelDuration = 0f;
@@ -73,16 +73,52 @@ public class Level : MonoBehaviour {
 
 	}
 
+	//Called by Start
+	protected virtual IEnumerator DrawBridges() {
+		List<Spot> drawnSpots = new List<Spot> ();
+		for (int i = 0; i < spots.Count; ++i) {
+			drawnSpots.Add (spots [i]);
+			List<Spot> toDraw = spots [i].bridges;
+			for (int n = 0; n < toDraw.Count; ++n) {
+				if (!drawnSpots.Contains (toDraw [n])) {
+					DrawBridge (spots [i], toDraw [n]);
+				}
+				yield return null;
+			}
+		}
+	}
+	//Called by DrawBridges
+	protected virtual void DrawBridge(Spot start, Spot end) {
+		GameObject t = GameObject.Instantiate (this.line, start.transform);
+		t.transform.position = (start.transform.position + end.transform.position) * 0.5f;
+		#if UNITY_EDITOR 
+		t.name = start.gameObject.name + " to " + end.gameObject.name; 
+		#endif
+		LineRenderer line = t.GetComponent<LineRenderer> ();
+		line.positionCount = 2;
+		line.material = bridgeNormalMaterial;
+		line.SetPosition (0, start.transform.position);
+		line.SetPosition (1, end.transform.position);
+
+		start.AddLine (line, end);
+		end.AddLine (line, start);
+	}
+
+	//Called after select spot and moving a player
 	protected virtual void EndActionPlayer(Player current) {
 		if (playerTurn) {
 			if (current.spot.type == Spot.Type.End) {
 				++finishedPlayers;
 				players.Remove (current);
-				Destroy (current.gameObject);
-				if (players.Count == 0) {
-					EndLevel ();
-					return;
-				}
+				current.spot.occupied = false;
+				current.spot.occupation = null;
+				//TODO: 
+				current.Finish(delegate {
+					if (players.Count == 0) {
+						EndLevel ();
+						return;
+					}
+				});
 			}
 			for (int i = 0; i < players.Count; ++i)
 				if (players [i].actionsLeft > 0)
@@ -91,6 +127,7 @@ public class Level : MonoBehaviour {
 			EndTurn ();
 		}
 	}
+	//Called by Enemy after IA
 	public virtual void EndActionEnemy(Enemy current) {
 		teamInfo.ClearSelectEnemy ();
 		if (!playerTurn) {
@@ -103,6 +140,7 @@ public class Level : MonoBehaviour {
 			EndTurn ();
 		}
 	}
+	//Called by EndActionPlayer & EndActionEnemy
 	protected virtual void EndTurn() {
 		++turn;
 		if (playerTurn) {
@@ -122,9 +160,12 @@ public class Level : MonoBehaviour {
 			}
 		}
 	}
+	//Called by EndActionPlayer
 	protected virtual void EndLevel() {
-		if (finishedPlayers == totalPlayers) Debug.Log ("Passed level");
-		else Debug.Log ("Failed level");
+		if (finishedPlayers == totalPlayers) { 
+			Debug.Log ("Passed level");
+			menu.FinishLevel ();
+		} else Debug.Log ("Failed level");
 	}
 
 	protected virtual void EnemyIA(Enemy enemy) {
@@ -132,36 +173,8 @@ public class Level : MonoBehaviour {
 		enemy.IA ();
 	}
 
-	protected virtual IEnumerator DrawBridges() {
-		List<Spot> drawnSpots = new List<Spot> ();
-		for (int i = 0; i < spots.Count; ++i) {
-			drawnSpots.Add (spots [i]);
-			List<Spot> toDraw = spots [i].bridges;
-			for (int n = 0; n < toDraw.Count; ++n) {
-				if (!drawnSpots.Contains (toDraw [n])) {
-					DrawBridge (spots [i], toDraw [n]);
-				}
-				yield return null;
-			}
-		}
-	}
-	protected virtual void DrawBridge(Spot start, Spot end) {
-		GameObject t = GameObject.Instantiate (this.line, start.transform);
-		t.transform.position = (start.transform.position + end.transform.position) * 0.5f;
-			#if UNITY_EDITOR 
-			t.name = start.gameObject.name + " to " + end.gameObject.name; 
-			#endif
-		LineRenderer line = t.GetComponent<LineRenderer> ();
-		line.positionCount = 2;
-		line.material = bridgeNormalMaterial;
-		line.SetPosition (0, start.transform.position);
-		line.SetPosition (1, end.transform.position);
-
-		start.AddLine (line, end);
-		end.AddLine (line, start);
-	}
 	
-	// Update is called once per frame
+
 	void Update () {
 		float delta = Time.deltaTime;
 		levelDuration += delta;

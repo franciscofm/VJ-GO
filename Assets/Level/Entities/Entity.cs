@@ -13,7 +13,7 @@ public class Entity : MonoBehaviour {
 	public static Level level;
 
 	public string Name = "Unknown";
-	public string description = "";
+	public string description = "Some stupid description";
 	public int actionsPerTurn = 1;
 	public int actionsLeft;
 	public int team = 0;
@@ -61,7 +61,15 @@ public class Entity : MonoBehaviour {
 			endAction ();
 	}
 
-	public virtual void Pass() {
+
+	public virtual void Finish(Action callback = null) {
+		if (callback != null) callback ();
+		Destroy (gameObject);
+	}
+	public virtual void Die(Action callback = null) {
+
+	}
+	public virtual void Pass(Action callback = null) {
 
 	}
 
@@ -74,7 +82,7 @@ public class Entity : MonoBehaviour {
 
 	public delegate void EntityEvent();
 	public event EntityEvent OnSelect;
-	public void Select() { if(OnSelect!=null) OnSelect (); }
+	public virtual void Select() { if(OnSelect!=null) OnSelect (); }
 	public event EntityEvent OnUnselect;
-	public void Unselect() { if(OnUnselect!=null) OnUnselect (); }
+	public virtual void Unselect() { if(OnUnselect!=null) OnUnselect (); }
 }
