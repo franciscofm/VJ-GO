@@ -11,14 +11,16 @@ public class Level : MonoBehaviour {
 
 	public TeamInfo teamInfo;
 	public Chat chat;
-
-	public GameObject line;
+	[Header("Entities")]
 	public Transform spotsParent;
-	public List<Player> players;
-	public List<Enemy> enemies;
-	public List<Spot> spots;
-
+	public Transform playersParent;
+	public Transform enemiesParent;
+	[HideInInspector] public List<Player> players;
+	[HideInInspector] public List<Enemy> enemies;
+	[HideInInspector] public List<Spot> spots;
+	[Header("Bridges")]
 	public AnimationCurve curveMovement;
+	public GameObject line;
 	public Material bridgeNormalMaterial;
 	public Material bridgeMarkedMaterial;
 
@@ -31,6 +33,8 @@ public class Level : MonoBehaviour {
 	public uint totalBonus, pickedBonus;
 	public uint totalPlayers, finishedPlayers;
 	public uint totalEnemies; //, killedEnemies;
+
+	public bool teamInfoEnabled;
 
 	void Awake() {
 		if (instance != null) Destroy (instance.gameObject);
@@ -46,11 +50,20 @@ public class Level : MonoBehaviour {
 		turn = 0;
 		levelDuration = 0f;
 		playerTurn = true;
+
+		spotsParent.GetComponentsInChildren<Spot> (spots);
+		playersParent.GetComponentsInChildren<Player> (players);
+		enemiesParent.GetComponentsInChildren<Enemy> (enemies);
+
 		totalPlayers = (uint)players.Count;
 		totalEnemies = (uint)enemies.Count;
 		finishedPlayers = 0;
+		teamInfoEnabled = false;
 
-		teamInfo.Init (players, enemies);
+		if (players.Count > 1 || enemies.Count > 0) {
+			teamInfoEnabled = true;
+			teamInfo.Init (players, enemies);
+		}
 
 		StartCoroutine(DrawBridges ());
 		Start2 ();
@@ -120,7 +133,6 @@ public class Level : MonoBehaviour {
 	}
 
 	protected virtual IEnumerator DrawBridges() {
-		spotsParent.GetComponentsInChildren<Spot> (spots);
 		List<Spot> drawnSpots = new List<Spot> ();
 		for (int i = 0; i < spots.Count; ++i) {
 			drawnSpots.Add (spots [i]);
@@ -165,6 +177,7 @@ public class Level : MonoBehaviour {
 	public bool entityActing;
 
 	public void Select<T>(T t) {
+		if (entityActing) return;
 		if (EventSystem.current.IsPointerOverGameObject ()) return; //Chat and GUI escape
 		if (t is Player) SelectPlayer (t as Player);
 		else if (t is Enemy) SelectEnemy (t as Enemy);
@@ -176,11 +189,11 @@ public class Level : MonoBehaviour {
 			selectedPlayer = player;
 			selectedPlayerDestinations = player.spot.bridges;
 			if (playerTurn && player.actionsLeft > 0) MarkBridges (player);
-			teamInfo.SelectPlayer (player);
+			if(teamInfoEnabled) teamInfo.SelectPlayer (player);
 			player.Select ();
 		} else { 						//si hay un jugador seleccionado
 			if (playerTurn) UnmarkBridges (player);
-			teamInfo.ClearSelectPlayer ();
+			if(teamInfoEnabled) teamInfo.ClearSelectPlayer ();
 			player.Unselect ();
 			if (selectedPlayer == player) { //si es el mismo -> no hay
 				selectedPlayer = null;
@@ -189,7 +202,7 @@ public class Level : MonoBehaviour {
 				selectedPlayer = player;	//si es otro -> cambiamos
 				selectedPlayerDestinations = player.spot.bridges;
 				if (playerTurn && player.actionsLeft > 0) MarkBridges (player);
-				teamInfo.SelectPlayer (player);
+				if(teamInfoEnabled) teamInfo.SelectPlayer (player);
 				player.Select ();
 			}
 		}
@@ -217,8 +230,10 @@ public class Level : MonoBehaviour {
 		for (int i = 0; !found && i < selectedPlayerDestinations.Count; ++i) {
 			if (spot == selectedPlayerDestinations [i]) {
 				UnmarkBridges (selectedPlayer);
-				teamInfo.ClearSelectPlayer ();
-				teamInfo.ClearSelectEnemy ();
+				if (teamInfoEnabled) {
+					teamInfo.ClearSelectPlayer ();
+					teamInfo.ClearSelectEnemy ();
+				}
 				selectedEnemy = null;
 
 				entityActing = true;
@@ -244,11 +259,10 @@ public class Level : MonoBehaviour {
 		}
 	}
 	void UnmarkBridges(Player player) {
+		if (player.spot == null) return;
 		List<Spot.BridgeToLine> bridges = player.spot.bridgesToLines;
 		for (int i = 0; i < bridges.Count; ++i) {
-			//if (!bridges [i].occupied) {
-				bridges[i].line.material = bridgeNormalMaterial;
-			//}
+			bridges [i].line.material = bridgeNormalMaterial;
 		}
 	}
 

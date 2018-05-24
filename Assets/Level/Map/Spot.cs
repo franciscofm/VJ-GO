@@ -18,8 +18,8 @@ public class Spot : MonoBehaviour {
 	}
 
 	void Start() {
-		if(type == Type.Start) GetComponent<MeshRenderer> ().material.color = Color.yellow;
-		if(type == Type.End) GetComponent<MeshRenderer> ().material.color = Color.cyan;
+//		if(type == Type.Start) GetComponent<MeshRenderer> ().material.color = Color.yellow;
+//		if(type == Type.End) GetComponent<MeshRenderer> ().material.color = Color.cyan;
 	}
 
 	void OnMouseUp() {
