@@ -18,6 +18,8 @@ public static class Values {
 
 	public static class Menu {
 		public static class Scene {
+			public const float StartWait = 1f;
+
 			public const float LightOpen = 47f;
 			public const float LightCloseDuration = 1f;
 			public const string LightCubesAnimation = "LightCubes";

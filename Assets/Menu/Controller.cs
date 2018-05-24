@@ -35,6 +35,7 @@ namespace Menu {
 		public Transform scrollViewContent;
 		public GameObject scrollViewRow;
 		public GameObject scrollViewLevelUI;
+		[Tooltip("Tienen que estar en orden")]
 		public List<LevelUIEntry> scrollViewContentEntries;
 		[Header("Keyboard controll")]
 		public int keyboardFocus;
@@ -53,7 +54,7 @@ namespace Menu {
 			LevelUI.controller = this;
 			Level.menu = this;
 		}
-		void Start() {
+		IEnumerator Start() {
 			menuScene.SetActive (true);
 			menuUI.SetActive (true);
 			tutorialUI.SetActive (true);
@@ -78,10 +79,22 @@ namespace Menu {
 			cubesShown1Edges.SetActive (false);
 			cubesShown2Edges.SetActive (false);
 
+			yield return new WaitForSeconds (Values.Menu.Scene.StartWait);
+
 			//Cambiar por animacion de encender foco
 			StartCoroutine (SpotLightRoutine (false, delegate {
 				StartCoroutine(TextsInRoutine());
 			}));
+		}
+		void ReturnFromLevel () {
+			//TODO: Fade in
+			menuScene.SetActive (true);
+			menuUI.SetActive (true);
+			tutorialUI.SetActive (false);
+			selectLevelUI.SetActive (false);
+
+			focus = Focus.Menu;
+			keyboardFocus = 0;
 		}
 		void Update() {
 			if (!Input.anyKeyDown) return;
@@ -156,6 +169,16 @@ namespace Menu {
 		IEnumerator WaitAnimationRoutine(Animator anim, string play, float duration, Action callback = null) {
 			anim.Play (play);
 			yield return new WaitForSeconds (duration);
+			if (callback != null) callback ();
+		}
+		IEnumerator ScreenFadeRoutine(Color a, Color b, Action callback = null) {
+			float t = 0f;
+			float d = Values.Menu.SelectLevel.SelectFade;
+			while (t < d) {
+				yield return null;
+				t += Time.deltaTime;
+				fadeScreen.color = Color.Lerp (a, b, t / d);
+			}
 			if (callback != null) callback ();
 		}
 
@@ -308,20 +331,15 @@ namespace Menu {
 			//Esperar momentaneamente
 			yield return new WaitForSeconds (Values.Menu.SelectLevel.SelectWait);
 			//Fade a negro
-			float t = 0f;
-			float d = Values.Menu.SelectLevel.SelectFade;
-			while (t < d) {
-				yield return null;
-				t += Time.deltaTime;
-				fadeScreen.color = Color.Lerp (Values.Colors.transparentBlack, Color.black, t / d);
-			}
-			//Esperar momentaneamente
-			yield return new WaitForSeconds (Values.Menu.SelectLevel.SelectWait);
-			//Desactivar cosas
-			menuScene.SetActive (false);
+			StartCoroutine(ScreenFadeRoutine(Values.Colors.transparentBlack, Color.black, delegate {
+				//Esperar momentaneamente
+				yield return new WaitForSeconds (Values.Menu.SelectLevel.SelectWait);
+				//Desactivar cosas
+				menuScene.SetActive (false);
 
-			//Cargar nivel
-			LoadLevel(level);
+				//Cargar nivel
+				LoadLevel(level);
+			}));
 		}
 		public void ReturnFromSelectLevel() {
 			focus = Focus.Menu;
@@ -333,10 +351,24 @@ namespace Menu {
 			SceneManager.LoadScene (level, UnityEngine.SceneManagement.LoadSceneMode.Additive);
 		}
 		public void FinishLevel() {
-			//Unload current level
-			SceneManager.UnloadSceneAsync (loadedLevelName);
-			//Load next level
-
+			StartCoroutine(ScreenFadeRoutine(Color.black, Values.Colors.transparentBlack, delegate {
+				//Unload current level
+				SceneManager.UnloadSceneAsync (loadedLevelName);
+				//Load next level
+				bool found = false;
+				for (int i = 0; i < scrollViewContentEntries.Count && !found; ++i) {
+					if (scrollViewContentEntries [i].Scene == loadedLevelName) {
+						found = true;
+						if (i + 1 < scrollViewContentEntries.Count) {
+							loadedLevelName = scrollViewContentEntries [i + 1].Scene;
+							LoadLevel (loadedLevelName);
+						} else {
+							ReturnFromLevel ();
+						}
+					}
+				}
+				if (!found) ReturnFromLevel ();
+			}));
 		}
 	}
 
