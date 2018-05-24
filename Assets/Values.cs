@@ -32,6 +32,12 @@ public static class Values {
 		public static class SelectLevel {
 			public const float SelectWait = 3f;
 			public const float SelectFade = 1f;
+
+			public const float LevelUIDuration = 0.15f;
+			public const float LevelUIOffset = 0.1f;
+
+			public const float LevelUIScale = 1.1f;
+			public const float LevelUIScaleDuration = 0.1f;
 		}
 
 		public static class Tutorial {

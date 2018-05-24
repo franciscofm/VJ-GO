@@ -48,6 +48,7 @@ namespace Menu {
 		public Level loadedlevel;
 		public string loadedLevelName;
 		public static Controller instance;
+		public List<LevelUI> levelUIs;
 
 		Animator animatorScene;
 		void Awake() {
@@ -130,29 +131,29 @@ namespace Menu {
 					PlayTutorial ();
 				break;
 			case Focus.SelectLevel:
-				if (Input.GetKeyDown (KeyCode.S)) {
-					scrollViewContent.GetChild (keyboardFocus).GetComponent<LevelUI> ().Unfocus ();
-					keyboardFocus = Math.Min (keyboardFocus + 2, scrollViewContent.childCount -1);
-					scrollViewContent.GetChild (keyboardFocus).GetComponent<LevelUI> ().Focus ();
-				} else if (Input.GetKeyDown (KeyCode.W)) {
-					scrollViewContent.GetChild (keyboardFocus).GetComponent<LevelUI> ().Unfocus ();
-					keyboardFocus = Math.Max (keyboardFocus - 2, 0);
-					scrollViewContent.GetChild (keyboardFocus).GetComponent<LevelUI> ().Focus ();
-				} else if (Input.GetKeyDown (KeyCode.D)) {
-					scrollViewContent.GetChild (keyboardFocus).GetComponent<LevelUI> ().Unfocus ();
-					keyboardFocus = Math.Min (keyboardFocus + 1, scrollViewContent.childCount -1);
-					scrollViewContent.GetChild (keyboardFocus).GetComponent<LevelUI> ().Focus ();
-				} else if (Input.GetKeyDown (KeyCode.A)) {
-					scrollViewContent.GetChild (keyboardFocus).GetComponent<LevelUI> ().Unfocus ();
-					keyboardFocus = Math.Max (keyboardFocus - 1, 0);
-					scrollViewContent.GetChild (keyboardFocus).GetComponent<LevelUI> ().Focus ();
-				} else if (Input.GetKeyDown (KeyCode.Space)) {
+				if (Input.GetKeyDown (KeyCode.Space)) {
 					scrollViewContent.GetChild (keyboardFocus).GetComponent<LevelUI> ().Select ();
+				} else {
+					levelUIs [keyboardFocus].Unfocus ();
+					if (Input.GetKeyDown (KeyCode.S)) {
+						keyboardFocus = Math.Min (keyboardFocus + 2, scrollViewContent.childCount - 1);
+					} else if (Input.GetKeyDown (KeyCode.W)) {
+						keyboardFocus = Math.Max (keyboardFocus - 2, 0);
+					} else if (Input.GetKeyDown (KeyCode.D)) {
+						keyboardFocus = Math.Min (keyboardFocus + 1, scrollViewContent.childCount - 1);
+					} else if (Input.GetKeyDown (KeyCode.A)) {
+						keyboardFocus = Math.Max (keyboardFocus - 1, 0);
+					}
+					levelUIs [keyboardFocus].Focus ();
 				}
 				break;
 			}
 		}
 
+		IEnumerator WaitRoutine(float t, Action callback) {
+			yield return new WaitForSeconds (t);
+			callback ();
+		}
 		IEnumerator SpotLightRoutine(bool close, Action callback = null) {
 			float t = 0f;
 			float d = Values.Menu.Scene.LightCloseDuration;
@@ -238,6 +239,11 @@ namespace Menu {
 							selectLevelUI.SetActive(true);
 							focus = Focus.SelectLevel;
 							keyboardFocus = 0;
+							for(int i=0; i<levelUIs.Count; ++i) {
+								levelUIs[i].canvasGroup.alpha = 0f;
+								levelUIs[i].FadeIn(Values.Menu.SelectLevel.LevelUIOffset * (1+i));
+								//--> StartCoroutine(levelUIs[i].FadeIn());
+							}
 						}
 					));
 				}
@@ -309,11 +315,13 @@ namespace Menu {
 		//levelSelect
 		public string levelToLoad;
 		void StartSelectLevelUI() {
+			levelUIs = new List<LevelUI> ();
 			Transform lastRow = null;
 			for (int i = 0; i < scrollViewContentEntries.Count; ++i) {
 				if (i % 2 == 0) lastRow = Instantiate (scrollViewRow, scrollViewContent).transform;
 				LevelUI level = Instantiate (scrollViewLevelUI, lastRow).GetComponent<LevelUI>();
 				level.SetValues (scrollViewContentEntries [i], 0f);
+				levelUIs.Add (level);
 			}
 		}
 		public void SelectLevel(string level) {
@@ -333,12 +341,12 @@ namespace Menu {
 			//Fade a negro
 			StartCoroutine(ScreenFadeRoutine(Values.Colors.transparentBlack, Color.black, delegate {
 				//Esperar momentaneamente
-				yield return new WaitForSeconds (Values.Menu.SelectLevel.SelectWait);
-				//Desactivar cosas
-				menuScene.SetActive (false);
-
-				//Cargar nivel
-				LoadLevel(level);
+				StartCoroutine(WaitRoutine(Values.Menu.SelectLevel.SelectWait, delegate {
+					//Desactivar cosas
+					menuScene.SetActive (false);
+					//Cargar nivel
+					LoadLevel(level);
+				}));
 			}));
 		}
 		public void ReturnFromSelectLevel() {
