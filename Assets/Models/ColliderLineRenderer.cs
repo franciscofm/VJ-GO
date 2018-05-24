@@ -5,6 +5,7 @@ using UnityEngine;
 public class ColliderLineRenderer : MonoBehaviour {
 
 	public Material lineMaterial;
+	public float width = 0.01f;
 	Transform firstChild;
 
 	// Use this for initialization
@@ -54,7 +55,7 @@ public class ColliderLineRenderer : MonoBehaviour {
 		line.v1 = start;
 		line.v2 = end;
 		lines.Add (line);
-		Utils.DrawlLineAttached (firstChild, start, end, lineMaterial);
+		Utils.DrawlLineAttached (firstChild, start, end, lineMaterial, width);
 	}
 
 	class Line {
