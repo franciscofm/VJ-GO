@@ -9,9 +9,10 @@ public class TeamInfo : MonoBehaviour {
 	public RectTransform enemyVerticalLayout;
 	public GameObject enemyPanel;
 
-	class Relation { public Entity entity; public EntityInfo info; }
-	List<Relation> playersInfo;
-	List<Relation> enemiesInfo;
+    [System.Serializable]
+	public class Relation { public Entity entity; public EntityInfo info; }
+	public List<Relation> playersInfo;
+	public List<Relation> enemiesInfo;
 
 	public void Init(List<Player> players, List<Enemy> enemies = null) {
 		playersInfo = new List<Relation> ();
