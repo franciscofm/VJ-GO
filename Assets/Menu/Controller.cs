@@ -30,6 +30,7 @@ namespace Menu {
 		public RectTransform panelLeftMask;
 		public RectTransform panelCenterMask;
 		public RectTransform panelRightMask;
+		public LevelUIEntry tutorialEntry;
 		[Header("Select Level UI")]
 		public GameObject selectLevelUI;
 		public Transform scrollViewContent;
@@ -146,18 +147,28 @@ namespace Menu {
 			case Focus.SelectLevel:
 				if (Input.GetKeyDown (KeyCode.Space)) {
 					scrollViewContent.GetChild (keyboardFocus).GetComponent<LevelUI> ().Select ();
+				} else if (Input.GetKeyDown (KeyCode.Escape)) {
+					ReturnFromSelectLevel ();
 				} else {
-					levelUIs [keyboardFocus].Unfocus ();
+					int previousFocus = keyboardFocus;
+					bool changed = false;
 					if (Input.GetKeyDown (KeyCode.S)) {
 						keyboardFocus = Math.Min (keyboardFocus + 2, scrollViewContent.childCount - 1);
+						changed = true;
 					} else if (Input.GetKeyDown (KeyCode.W)) {
 						keyboardFocus = Math.Max (keyboardFocus - 2, 0);
+						changed = true;
 					} else if (Input.GetKeyDown (KeyCode.D)) {
 						keyboardFocus = Math.Min (keyboardFocus + 1, scrollViewContent.childCount - 1);
+						changed = true;
 					} else if (Input.GetKeyDown (KeyCode.A)) {
 						keyboardFocus = Math.Max (keyboardFocus - 1, 0);
+						changed = true;
 					}
-					levelUIs [keyboardFocus].Focus ();
+					if (changed) {
+						levelUIs [previousFocus].Unfocus ();
+						levelUIs [keyboardFocus].Focus ();
+					}
 				}
 				break;
 			}
@@ -292,7 +303,12 @@ namespace Menu {
 			}));
 		}
 		public void PlayTutorial() {
-
+			StartCoroutine (CloseTutorialRoutine (delegate {
+				StartCoroutine(ScreenFadeRoutine(Values.Colors.transparentBlack, Color.black, delegate {
+					LoadLevel (tutorialEntry.Scene);
+					tutorialUI.SetActive(false);
+				}));
+			}));
 		}
 		IEnumerator ShowTutorialRoutine(Action callback = null) {
 			YieldInstruction offset = new WaitForSeconds(Values.Menu.Tutorial.PanelOffset);
@@ -300,19 +316,17 @@ namespace Menu {
 			yield return offset;
 			StartCoroutine (ExpandPanelRoutine(panelCenterMask, false));
 			yield return offset;
-			StartCoroutine (ExpandPanelRoutine(panelRightMask, true));
-			if (callback != null) callback ();
+			StartCoroutine (ExpandPanelRoutine(panelRightMask, true, callback));
 		}
 		IEnumerator CloseTutorialRoutine(Action callback = null) {
 			YieldInstruction offset = new WaitForSeconds(Values.Menu.Tutorial.PanelOffset);
-			StartCoroutine (ExpandPanelRoutine(panelLeftMask, true));
+			StartCoroutine (CollapsePanelRoutine(panelLeftMask, true));
 			yield return offset;
-			StartCoroutine (ExpandPanelRoutine(panelCenterMask, true));
+			StartCoroutine (CollapsePanelRoutine(panelCenterMask, true));
 			yield return offset;
-			StartCoroutine (ExpandPanelRoutine(panelRightMask, true));
-			if (callback != null) callback ();
+			StartCoroutine (CollapsePanelRoutine(panelRightMask, true, callback));
 		}
-		IEnumerator ExpandPanelRoutine(RectTransform mask, bool topDown) {
+		IEnumerator ExpandPanelRoutine(RectTransform mask, bool topDown, Action callback = null) {
 			float t = 0f;
 			float d = Values.Menu.Tutorial.PanelDuration;
 			float sizeDeltaY = -height;
@@ -324,6 +338,21 @@ namespace Menu {
 				mask.sizeDelta = new Vector2(0f,Mathf.Lerp(0f, sizeDeltaY, t/d));
 				mask.anchoredPosition = new Vector2(0f,Mathf.Lerp(0f, anchoredPositionY, t/d));
 			}
+			if (callback != null) callback ();
+		}
+		IEnumerator CollapsePanelRoutine(RectTransform mask, bool topDown, Action callback = null) {
+			float t = 0f;
+			float d = Values.Menu.Tutorial.PanelDuration;
+			float sizeDeltaY = -height;
+			float anchoredPositionY = topDown ? -height * 0.5f : height * 0.5f;
+			Rect rect = mask.rect;
+			while (t < d) {
+				yield return null;
+				t += Time.deltaTime;
+				mask.sizeDelta = new Vector2(0f,Mathf.Lerp(sizeDeltaY, 0f, t/d));
+				mask.anchoredPosition = new Vector2(0f,Mathf.Lerp(anchoredPositionY, 0f, t/d));
+			}
+			if (callback != null) callback ();
 		}
 
 		//levelSelect
@@ -366,6 +395,11 @@ namespace Menu {
 			}));
 		}
 		public void ReturnFromSelectLevel() {
+			for (int i = 0; i < levelUIs.Count; ++i)
+				levelUIs [i].FadeOut ();
+			StartCoroutine (WaitRoutine (Values.Menu.SelectLevel.LevelUIFadeOut, delegate {
+				ReturnFromLevel();
+			}));
 			focus = Focus.Menu;
 			keyboardFocus = 0;
    		}
@@ -375,6 +409,7 @@ namespace Menu {
 			inGame = true;
 			SceneManager.LoadScene (level, UnityEngine.SceneManagement.LoadSceneMode.Additive);
 			StartCoroutine (ScreenFadeRoutine (Color.black, Values.Colors.transparentBlack, delegate {
+				loadedlevel.debug = false;
 				loadedlevel.StartLevel();
 			}));
 		}

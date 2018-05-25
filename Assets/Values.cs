@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 public static class Values {
+
 	public static class UI {
 		public static class EntityInfo {
 			public const float Transition = 0.2f;
@@ -14,6 +15,12 @@ public static class Values {
 			public const float ImageAlpha = 0.6f;
 			public const float ImageScale = 0.8f;
 		}
+	}
+
+	public static class Camera {
+		public const float Speed = 5f;
+		public const float ShowSpotToSpot = 3f;
+		public const float ZoomMax = 5f;
 	}
 
 	public static class Menu {
@@ -34,7 +41,7 @@ public static class Values {
 			public const float SelectFade = 1f;
 
 			public const float LevelUIFadeIn = 0.15f;
-			public const float LevelUIFadeOut = 0.4f;
+			public const float LevelUIFadeOut = 0.7f;
 			public const float LevelUIOffset = 0.1f;
 
 			public const float LevelUIScale = 1.1f;

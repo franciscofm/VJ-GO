@@ -5,12 +5,17 @@ using UnityEngine.EventSystems;
 using System;
 
 public class Level : MonoBehaviour {
-
+	
 	public static Level instance;
 	public static Menu.Controller menu;
 
+	[Header("Testing")]
+	public bool debug = true;
+	public GameObject eventSystem;
+	[Header("Scene references")]
 	public TeamInfo teamInfo;
 	public Chat chat;
+	public CameraMovement cam;
 	[Header("Entities")]
 	public Transform spotsParent;
 	public Transform playersParent;
@@ -36,11 +41,16 @@ public class Level : MonoBehaviour {
 
 	public bool teamInfoEnabled;
 	public bool blocked;
+	public bool gameInitialized = false;
 
 	void Awake() {
 		if (instance != null) Destroy (instance.gameObject);
 		instance = this;
-		menu.loadedlevel = this;
+		if (!debug) {
+			menu.loadedlevel = this;
+			if(eventSystem != null)
+				eventSystem.SetActive (false);
+		}
 
 		Entity.level = this;
 		Bonus.level = this;
@@ -61,13 +71,10 @@ public class Level : MonoBehaviour {
 		finishedPlayers = 0;
 		teamInfoEnabled = false;
 
-		if (players.Count > 1 || enemies.Count > 0) {
-			teamInfoEnabled = true;
-			teamInfo.Init (players, enemies);
-		}
-
 		StartCoroutine(DrawBridges ());
 		Start2 ();
+		gameInitialized = true;
+
 		EndTurn ();
 	}
 	protected virtual void Start2() {
@@ -75,7 +82,17 @@ public class Level : MonoBehaviour {
 	}
 	//Called by controller, allows movement
 	public virtual void StartLevel() {
+		StartCoroutine(StartLevelRoutine());
+	}
+	protected virtual IEnumerator StartLevelRoutine() {
+		while (!gameInitialized)
+			yield return null;
 		blocked = false;
+		if (players.Count > 1 || enemies.Count > 0) {
+			teamInfoEnabled = true;
+			teamInfo.Init (players, enemies);
+			//TODO: HUD entra aqui
+		}
 	}
 
 	//Called by Start
@@ -169,7 +186,8 @@ public class Level : MonoBehaviour {
 	protected virtual void EndLevel() {
 		if (finishedPlayers == totalPlayers) { 
 			Debug.Log ("Passed level");
-			menu.FinishLevel ();
+			if(!debug)
+				menu.FinishLevel ();
 		} else Debug.Log ("Failed level");
 	}
 

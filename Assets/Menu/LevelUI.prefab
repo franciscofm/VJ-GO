@@ -209,6 +209,7 @@ MonoBehaviour:
   Stars: {fileID: 114898222977495834}
   Scene: 
   canvasGroup: {fileID: 225859593191799292}
+  rectTransform: {fileID: 224930288646336944}
 --- !u!114 &114518273956975914
 MonoBehaviour:
   m_ObjectHideFlags: 1
