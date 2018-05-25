@@ -74,7 +74,7 @@ public class Level : MonoBehaviour {
 		StartCoroutine(DrawBridges ());
 		Start2 ();
 		gameInitialized = true;
-
+        if (debug) StartLevel();
 		EndTurn ();
 	}
 	protected virtual void Start2() {
@@ -89,6 +89,7 @@ public class Level : MonoBehaviour {
 			yield return null;
 		blocked = false;
 		if (players.Count > 1 || enemies.Count > 0) {
+            Debug.Log("Hola");
 			teamInfoEnabled = true;
 			teamInfo.Init (players, enemies);
 			//TODO: HUD entra aqui
