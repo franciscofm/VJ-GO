@@ -1,18 +1,16 @@
 fileFormatVersion: 2
-guid: 9b9c6f60f0d1d5e4b8b839372742f910
-timeCreated: 1527274962
+guid: 8ef729db0da48e84ab883c74e38e8edc
+timeCreated: 1527335167
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
-    2100000: unnamed
+    2100000: No Name
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Sphere
-    7400000: Default Take
-    9500000: //RootNode
+    4300000: Cone
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -87,7 +85,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
