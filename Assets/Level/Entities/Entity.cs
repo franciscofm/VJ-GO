@@ -21,6 +21,7 @@ public class Entity : MonoBehaviour {
 	public Sprite image;
 	public Spot spot; //Donde esta
 
+
 	void OnMouseUp() {
 		level.Select (this);
 	}
