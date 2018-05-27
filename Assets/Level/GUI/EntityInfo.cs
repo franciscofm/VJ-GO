@@ -8,9 +8,11 @@ public class EntityInfo : MonoBehaviour {
 	new public Text name;
 	public GameObject death;
 	public Image image;
-	public Image health;
-	public Image actions;
+	public Transform actionsParent;
+	public GameObject action;
+
 	CanvasGroup group;
+	List<GameObject> totalActions;
 
 	// Use this for initialization
 	public void Init (string name, Sprite image) {
@@ -36,13 +38,34 @@ public class EntityInfo : MonoBehaviour {
 		}
 	}
 
-	public void SetHealth(float value) {
-		health.fillAmount = value;
-		if (value == 0f)
-			Kill ();
+	public void SetTotalActions(int a) {
+		if (totalActions == null)
+			totalActions = new List<GameObject> ();
+		else {
+			while (totalActions.Count > 0) {
+				Destroy (totalActions [0]);
+				totalActions.RemoveAt (0);
+			}
+		}
+		for (int i = 0; i < a; ++i) {
+			totalActions.Add (Instantiate (action, actionsParent));
+		}
 	}
-	public void SetActions(float value) {
-		actions.fillAmount = value;
+	public void UseAction() {
+		for (int i = 0; i < totalActions.Count; ++i)
+			if (totalActions [i].activeSelf) {
+				totalActions [i].SetActive (false);
+				return;
+			}
+	}
+	public void RecoverActions(int a) {
+		int recovered = 0;
+		for (int i = 0; i < totalActions.Count && recovered < a; ++i) {
+			if (!totalActions [i].activeSelf) {
+				totalActions [i].SetActive (true);
+				++recovered;
+			}
+		}
 	}
 	public void Kill() {
 		death.SetActive (true);
