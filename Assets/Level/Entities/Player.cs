@@ -5,7 +5,6 @@ using UnityEngine;
 
 
 public class Player : Entity { 
-    public Animator anim;
     protected override IEnumerator MoveRoutine(Entity entity, Spot spot, float duration, AnimationCurve curve, Action endAction = null)
     {
         anim.Play("moveAnimation");

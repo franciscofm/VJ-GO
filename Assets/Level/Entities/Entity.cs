@@ -20,6 +20,7 @@ public class Entity : MonoBehaviour {
 	public Color color = Color.white;
 	public Sprite image;
 	public Spot spot; //Donde esta
+	public Animator anim;
 
 
 	void OnMouseUp() {
