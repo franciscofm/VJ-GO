@@ -21,6 +21,11 @@ public static class Values {
 		public const float Speed = 5f;
 		public const float ShowSpotToSpot = 3f;
 		public const float ZoomMax = 5f;
+		public const float OffsetNear = 2f;
+		public const float OffsetFar = 8f;
+
+		public const float FreeSpeed = 5f;
+		public const float FreeRelocationTime = 4f;
 	}
 
 	public static class Menu {

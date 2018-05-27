@@ -271,6 +271,7 @@ GameObject:
   - component: {fileID: 156151563}
   - component: {fileID: 156151562}
   - component: {fileID: 156151561}
+  - component: {fileID: 156151565}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -334,13 +335,29 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 156151560}
-  m_LocalRotation: {x: -0.34015462, y: 0.42764422, z: -0.17773715, w: -0.8184283}
-  m_LocalPosition: {x: 9.494485, y: 13.76872, z: -4.0221405}
+  m_LocalRotation: {x: 0.34413502, y: 0, z: 0, w: 0.9389202}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 270954177}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 40.258003, y: 0, z: 0}
+--- !u!114 &156151565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 156151560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 459716df7f36a094ab0636debdad3be5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blocked: 0
+  locked: 1
+  target: {fileID: 0}
+  zoomScale: 0
+  cameraRotation: {x: 0, y: 0, z: 0}
 --- !u!1 &189350121
 GameObject:
   m_ObjectHideFlags: 0
@@ -369,7 +386,7 @@ Transform:
   - {fileID: 1914488830}
   - {fileID: 368289976}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &258219721
 GameObject:
@@ -456,6 +473,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineMaterial: {fileID: 2100000, guid: 192663785be809c44ac3c84a2f83c15e, type: 2}
   width: 0.02
+--- !u!1 &270954176
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 270954177}
+  m_Layer: 0
+  m_Name: CameraParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &270954177
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 270954176}
+  m_LocalRotation: {x: 0, y: -0.38821527, z: 0, w: 0.9215687}
+  m_LocalPosition: {x: 5.495249, y: 11.879654, z: -5.042959}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 156151564}
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: -45.687, z: 0}
 --- !u!1 &368289971
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,7 +736,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &793064490
 GameObject:
@@ -778,7 +824,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &812391448
 GameObject:
@@ -900,7 +946,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &908261738
 GameObject:
@@ -933,7 +979,7 @@ MonoBehaviour:
   eventSystem: {fileID: 847866279}
   teamInfo: {fileID: 0}
   chat: {fileID: 0}
-  cam: {fileID: 0}
+  cam: {fileID: 156151565}
   spotsParent: {fileID: 1070595202}
   playersParent: {fileID: 1001259955}
   enemiesParent: {fileID: 799166085}
@@ -1111,7 +1157,7 @@ Transform:
   m_Children:
   - {fileID: 975306307}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1070595201
 GameObject:
@@ -1143,7 +1189,7 @@ Transform:
   - {fileID: 793064492}
   - {fileID: 1987477544}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1914488825
 GameObject:
@@ -1479,7 +1525,7 @@ Prefab:
     - target: {fileID: 224921775022170430, guid: e01d1788828263640a661f908828f3d6,
         type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 224921775022170430, guid: e01d1788828263640a661f908828f3d6,
         type: 2}
