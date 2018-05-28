@@ -449,7 +449,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clickPanel: {fileID: 1052130012802558}
-  panel: {fileID: 224871958449329032}
+  panel: {fileID: 224425438719322002}
   leftImageRect: {fileID: 224525986453139486}
   rightImageRect: {fileID: 224316697856000350}
   leftOutside: {fileID: 224843231661783404}

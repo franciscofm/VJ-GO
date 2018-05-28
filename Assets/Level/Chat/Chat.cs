@@ -8,6 +8,7 @@ public class Chat : MonoBehaviour {
 	public GameObject clickPanel;
 	[Header("Panel")]
 	public RectTransform panel;
+	public RectTransform panelOutside;
 	Vector2 panelHiddenPos, panelShownPos;
 	[Header("Images")]
 	public RectTransform leftImageRect;
@@ -21,6 +22,8 @@ public class Chat : MonoBehaviour {
 	[Header("Text")]
 	public Text text;
 
+	bool initialized = false;
+
 	void Start() {
 		leftImage = leftImageRect.GetComponent<Image> ();
 		rightImage = rightImageRect.GetComponent<Image> ();
@@ -28,21 +31,22 @@ public class Chat : MonoBehaviour {
 		rightImage.preserveAspect = true;
 
 		panelShownPos = panel.transform.position;
-		panelHiddenPos = panelShownPos;
-		panelHiddenPos.y -= panel.rect.height;
+		panelHiddenPos = panelOutside.position;
 
-		leftImageOutsidePos = leftOutside.transform.position;
-		rightImageOutsidePos = rightOutside.transform.position;
-		leftImageShownPos = leftShown.transform.position;
-		rightImageShownPos = rightShown.transform.position;
-		leftImageHiddenPos = leftImageRect.transform.position;
+		leftImageOutsidePos = leftOutside.position;
+		rightImageOutsidePos = rightOutside.position;
+		leftImageShownPos = leftShown.position;
+		rightImageShownPos = rightShown.position;
+		leftImageHiddenPos = leftImageRect.position;
 		leftImageHiddenPos.y -= panel.rect.height;
-		rightImageHiddenPos = rightImageRect.transform.position;
+		rightImageHiddenPos = rightImageRect.position;
 		rightImageHiddenPos.y -= panel.rect.height;
 
 		leftImageRect.position = leftImageHiddenPos;
 		rightImageRect.position = rightImageHiddenPos;
 		panel.position = panelHiddenPos;
+
+		initialized = true;
 	}
 
 	List<Phrase> dialog;
@@ -50,6 +54,16 @@ public class Chat : MonoBehaviour {
 	int leftId, rightId;
 	bool focusLeft = true;
 	public void Init(List<Phrase> dialog, Action EndChatCallback = null) {
+		if (initialized)
+			InitCode (dialog, EndChatCallback);
+		else
+			StartCoroutine (InitRoutine (dialog, EndChatCallback));
+	}
+	IEnumerator InitRoutine(List<Phrase> dialog, Action EndChatCallback = null) {
+		yield return new WaitForEndOfFrame ();
+		InitCode (dialog, EndChatCallback);
+	}
+	void InitCode(List<Phrase> dialog, Action EndChatCallback = null) {
 		this.dialog = dialog;
 		i = -1;
 		leftId = rightId = -1;
