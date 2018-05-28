@@ -5,7 +5,7 @@ public static class Values {
 	public static class UI {
 		public static class EntityInfo {
 			public const float Transition = 0.2f;
-			public const float Aplha = 0.4f;
+			public const float Aplha = 0.8f;
 		}
 
 		public static class Chat {
@@ -21,6 +21,11 @@ public static class Values {
 		public const float Speed = 5f;
 		public const float ShowSpotToSpot = 3f;
 		public const float ZoomMax = 5f;
+		public const float OffsetNear = 2f;
+		public const float OffsetFar = 8f;
+
+		public const float FreeSpeed = 5f;
+		public const float FreeRelocationTime = 4f;
 	}
 
 	public static class Menu {
@@ -29,8 +34,8 @@ public static class Values {
 
 			public const float LightOpen = 47f;
 			public const float LightCloseDuration = 1f;
-			public const string LightCubesAnimation = "LightCubes";
-			public const float LightCubesDuration = 2f;
+			public const string LightHiddenAnimation = "Light";
+			public const float LightHiddenDuration = 2f;
 
 			public const float TextDuration = 0.4f;
 			public const float TextOffset = 0.2f;

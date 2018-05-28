@@ -14,6 +14,7 @@ namespace Menu {
 		public GameObject cubesShown1Edges;
 		public GameObject cubesShown2Edges;
 		public Light spotLight;
+		public Animator animatorScene;
 		public Camera camera;
 		[Header("Menu UI")]
 		public GameObject menuUI;
@@ -52,7 +53,6 @@ namespace Menu {
 		public static Controller instance;
 		public List<LevelUI> levelUIs;
 
-		Animator animatorScene;
 		void Awake() {
 			LevelUI.controller = this;
 			Level.menu = this;
@@ -76,8 +76,8 @@ namespace Menu {
 			keyboardFocus = 0;
 			fadeScreen.color = Values.Colors.transparentBlack;
 			inGame = false;
+			spotLight.spotAngle = 0f;
 
-			animatorScene = menuScene.GetComponent<Animator> ();
 			//asegurar cubos apagados
 			cubeHiddenEdges.SetActive (false);
 			cubesShown1Edges.SetActive (false);
@@ -210,7 +210,7 @@ namespace Menu {
 		//menuUI
 		void StartMenuUI() {
 			
-		}
+   		}
 		IEnumerator TextsInRoutine(Action callback = null) {
 			YieldInstruction offset = new WaitForSeconds(Values.Menu.Scene.TextOffset);
 			StartCoroutine (TextRoutine (textSelectLevel,startSelectLevel.position,endSelectLevel.position));
@@ -257,7 +257,7 @@ namespace Menu {
 				delegate {
 					//encender luces de los neones de los cubos
 					StartCoroutine(WaitAnimationRoutine(
-						animatorScene, Values.Menu.Scene.LightCubesAnimation, Values.Menu.Scene.LightCubesDuration,
+						animatorScene, Values.Menu.Scene.LightHiddenAnimation, Values.Menu.Scene.LightHiddenDuration,
 						delegate {
 							//mostrar selectLevelUI
 							selectLevelUI.SetActive(true);

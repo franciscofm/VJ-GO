@@ -71,6 +71,10 @@ public class Level : MonoBehaviour {
 		finishedPlayers = 0;
 		teamInfoEnabled = false;
 
+		cam.cameraRotation = (players [0].transform.position - cam.transform.position).normalized;
+		cam.zoomScale = Values.Camera.ZoomMax;
+		cam.FollowPlayer (players [0].transform);
+
 		StartCoroutine(DrawBridges ());
 		Start2 ();
 		gameInitialized = true;
@@ -193,6 +197,7 @@ public class Level : MonoBehaviour {
 	}
 
 	protected virtual void EnemyIA(Enemy enemy) {
+		cam.target = enemy.transform;
 		teamInfo.SelectEnemy (enemy);
 		enemy.IA ();
 	}
@@ -202,7 +207,7 @@ public class Level : MonoBehaviour {
 	void Update () {
 		float delta = Time.deltaTime;
 		levelDuration += delta;
-		Update2 (delta);	
+		Update2 (delta);
 	}
 	protected virtual void Update2(float delta) {
 
@@ -306,5 +311,12 @@ public class Level : MonoBehaviour {
 	public void PickBonus() {
 		++pickedBonus;
 		//Animacion bonus cogido
+	}
+	public Transform RequestTarget() {
+		for (int i = 0; i < players.Count; ++i) {
+			if (players [i].actionsLeft > 0)
+				return players [i].transform;
+		}
+		return null;
 	}
 }

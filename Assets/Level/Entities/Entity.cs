@@ -20,6 +20,8 @@ public class Entity : MonoBehaviour {
 	public Color color = Color.white;
 	public Sprite image;
 	public Spot spot; //Donde esta
+	public Animator anim;
+
 
 	void OnMouseUp() {
 		level.Select (this);
@@ -41,6 +43,7 @@ public class Entity : MonoBehaviour {
 	}
 	protected virtual IEnumerator MoveRoutine(Entity entity, Spot spot, float duration, AnimationCurve curve, Action endAction = null) {
 		entity.spot.Leave ();
+		transform.localRotation = Quaternion.LookRotation(spot.transform.position - entity.spot.transform.position);
 		entity.spot.occupied = false;
 		entity.spot.occupation = null;
 		entity.spot = null;
