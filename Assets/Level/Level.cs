@@ -42,6 +42,7 @@ public class Level : MonoBehaviour {
 	public bool teamInfoEnabled;
 	public bool blocked;
 	public bool gameInitialized = false;
+	public bool bridgesDrawn;
 
 	void Awake() {
 		if (instance != null) Destroy (instance.gameObject);
@@ -70,6 +71,7 @@ public class Level : MonoBehaviour {
 		totalEnemies = (uint)enemies.Count;
 		finishedPlayers = 0;
 		teamInfoEnabled = false;
+		bridgesDrawn = false;
 
 		cam.cameraRotation = (players [0].transform.position - cam.transform.position).normalized;
 		cam.zoomScale = Values.Camera.ZoomMax;
@@ -110,9 +112,11 @@ public class Level : MonoBehaviour {
 				if (!drawnSpots.Contains (toDraw [n])) {
 					DrawBridge (spots [i], toDraw [n]);
 				}
-				yield return null;
+				if(n != toDraw.Count -1)
+					yield return null;
 			}
 		}
+		bridgesDrawn = true;
 	}
 	//Called by DrawBridges
 	protected virtual void DrawBridge(Spot start, Spot end) {
@@ -201,8 +205,7 @@ public class Level : MonoBehaviour {
 		teamInfo.SelectEnemy (enemy);
 		enemy.IA ();
 	}
-
-	
+		
 
 	void Update () {
 		float delta = Time.deltaTime;

@@ -90,8 +90,8 @@ LineRenderer:
         outSlope: 0.36457562
         tangentMode: 0
       - serializedVersion: 2
-        time: 0.4375069
-        value: 0.9999962
+        time: 0.5
+        value: 1
         inSlope: 0
         outSlope: 0
         tangentMode: 0
