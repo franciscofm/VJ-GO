@@ -75,7 +75,7 @@ public class Level : MonoBehaviour {
 
 		cam.cameraRotation = (players [0].transform.position - cam.transform.position).normalized;
 		cam.zoomScale = Values.Camera.ZoomMax;
-		cam.FollowPlayer (players [0].transform);
+		cam.Follow (players [0].transform);
 
 		StartCoroutine(DrawBridges ());
 		Start2 ();
@@ -168,6 +168,7 @@ public class Level : MonoBehaviour {
 					return;
 				}
 			playerTurn = true;
+			cam.Follow (players [0].transform);
 			EndTurn ();
 		}
 	}
