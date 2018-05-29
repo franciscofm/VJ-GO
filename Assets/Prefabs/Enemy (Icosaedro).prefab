@@ -155,13 +155,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae8eb27d626a61646bd177722ce9405c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Unknown
-  description: Some stupid description
+  Name: Icosahedron
+  description: An indifferent enemy
   actionsPerTurn: 1
   actionsLeft: 0
-  team: 0
-  color: {r: 1, g: 1, b: 1, a: 1}
-  image: {fileID: 0}
+  team: 2
+  color: {r: 1, g: 0, b: 0, a: 1}
+  image: {fileID: 21300000, guid: ff83ef21be965d7499a9d38919649ddd, type: 3}
   spot: {fileID: 0}
   anim: {fileID: 0}
   Route:

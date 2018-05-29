@@ -160,7 +160,7 @@ MonoBehaviour:
   actionsPerTurn: 1
   actionsLeft: 0
   team: 1
-  color: {r: 1, g: 1, b: 1, a: 1}
+  color: {r: 0.94482756, g: 0, b: 1, a: 1}
   image: {fileID: 21300000, guid: 41c8e2bf7c0d4a340b2f4e372adb6f1b, type: 3}
   spot: {fileID: 0}
   anim: {fileID: 95337691024253062}

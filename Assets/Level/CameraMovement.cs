@@ -39,9 +39,9 @@ public class CameraMovement : MonoBehaviour {
 		focusing = true;
 		StartCoroutine (routine = FocusRoutine (target));
 	}
-	public void ShowMap(List<Vector3> positions, float zoomScale) {
+	public void ShowMap(List<Vector3> positions, Transform followUp, float zoomScale) {
 		showing = true;
-		StartCoroutine (routine = ShowMapRoutine (positions));
+		StartCoroutine (routine = ShowMapRoutine (positions,followUp));
 	}
 	IEnumerator FocusRoutine(Transform target) {
 		Vector3 pos = parent.position;
