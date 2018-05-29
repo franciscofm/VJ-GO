@@ -509,48 +509,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 07499f093aa95c645a5498d4e2d75402, type: 2}
   m_IsPrefabParent: 0
---- !u!1001 &296802506
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4343307032998508, guid: 18854c64da801014597d024c95d12322, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 3.1520026
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343307032998508, guid: 18854c64da801014597d024c95d12322, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 6.79
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343307032998508, guid: 18854c64da801014597d024c95d12322, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 3.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343307032998508, guid: 18854c64da801014597d024c95d12322, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343307032998508, guid: 18854c64da801014597d024c95d12322, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343307032998508, guid: 18854c64da801014597d024c95d12322, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343307032998508, guid: 18854c64da801014597d024c95d12322, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343307032998508, guid: 18854c64da801014597d024c95d12322, type: 2}
-      propertyPath: m_RootOrder
-      value: 10
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 18854c64da801014597d024c95d12322, type: 2}
-  m_IsPrefabParent: 0
 --- !u!114 &316438503 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114162703167945872, guid: e01d1788828263640a661f908828f3d6,
