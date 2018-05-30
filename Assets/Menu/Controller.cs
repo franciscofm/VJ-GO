@@ -98,6 +98,7 @@ namespace Menu {
 			tutorialUI.SetActive (false);
 			selectLevelUI.SetActive (false);
 
+			animatorScene.Play (Values.Menu.Scene.IdleHiddenAnimation);
 			cubeHiddenEdges.SetActive (false);
 			cubesShown1Edges.SetActive (false);
 			cubesShown2Edges.SetActive (false);
@@ -409,6 +410,11 @@ namespace Menu {
 			focus = Focus.Menu;
 			keyboardFocus = 0;
    		}
+		void UpdateSelectLevelUI(string level, float completion) {
+			for (int i = 0; i < levelUIs.Count; ++i)
+				if (levelUIs [i].Scene == level)
+					levelUIs [i].UpdateCompletion (completion);
+		}
 
 		void LoadLevel(string level) {
 			loadedLevelName = level;
@@ -421,6 +427,7 @@ namespace Menu {
 		}
 		public void FinishLevel() {
 			inGame = false;
+			ScoreGame ();
 			StartCoroutine(ScreenFadeRoutine(Values.Colors.transparentBlack, Color.black, delegate {
 				//Unload current level
 				SceneManager.UnloadSceneAsync (loadedLevelName);
@@ -439,6 +446,40 @@ namespace Menu {
 				}
 				if (!found) ReturnFromLevel ();
 			}));
+		}
+		public void ExitLevel() {
+			inGame = false;
+			StartCoroutine(ScreenFadeRoutine(Values.Colors.transparentBlack, Color.black, delegate {
+				//Unload current level
+				SceneManager.UnloadSceneAsync (loadedLevelName);
+				//Load menu 
+				ReturnFromLevel ();
+			}));
+		}
+		void ScoreGame() {
+			List<LevelRegistry> registries = DataManager.SaveState.Registries;
+			float completion = loadedlevel.GetCompletion ();
+			bool found = false;
+			bool update = false;
+			for (int i = 0; i < registries.Count && !found; ++i) {
+				if (registries [i].Level == loadedLevelName) {
+					found = true;
+					if (registries [i].Completion < completion) {
+						registries [i].Completion = completion;
+						update = true;
+					}
+				}
+			}
+			if (!found) {
+				update = true;
+				LevelRegistry newRegistry = new LevelRegistry ();
+				newRegistry.Level = loadedLevelName;
+				newRegistry.Completion = completion;
+				registries.Add (newRegistry);
+			}
+			DataManager.SaveData ();
+			if (update)
+				UpdateSelectLevelUI (loadedLevelName, completion);
 		}
 	}
 

@@ -356,9 +356,15 @@ MonoBehaviour:
   blocked: 0
   locked: 1
   requested: 0
+  showing: 0
+  focusing: 0
   target: {fileID: 0}
   zoomScale: 0
   cameraRotation: {x: 0, y: 0, z: 0}
+  offsetDiff: 0
+  offsetNear: 0
+  zoomMax: 0
+  speed: 0
 --- !u!1 &189350121
 GameObject:
   m_ObjectHideFlags: 0
@@ -896,7 +902,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c90020c84e5443a409a46a6dad70f509, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 1
+  debug: 0
   eventSystem: {fileID: 847866279}
   teamInfo: {fileID: 0}
   chat: {fileID: 0}

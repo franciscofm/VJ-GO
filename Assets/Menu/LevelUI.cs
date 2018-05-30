@@ -26,7 +26,11 @@ namespace Menu {
 			Description.text = description;
 			Image.sprite = image;
 			Completion.fillAmount = completion;
-			CompletionText.text = ((int)completion) + "%";
+			CompletionText.text = 100 * ((int)completion) + "%";
+		}
+		public void UpdateCompletion(float completion) {
+			CompletionText.text = 100 * (int)completion + "%";
+			Completion.fillAmount = completion;
 		}
 
 		public void FadeIn(float wait) {

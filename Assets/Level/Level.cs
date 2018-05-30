@@ -328,4 +328,7 @@ public class Level : MonoBehaviour {
 		}
 		return null;
 	}
+	public float GetCompletion() {
+		return (1f + pickedBonus) / (1f + totalBonus);
+	}
 }

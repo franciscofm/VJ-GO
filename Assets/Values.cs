@@ -35,6 +35,7 @@ public static class Values {
 
 			public const float LightOpen = 47f;
 			public const float LightCloseDuration = 1f;
+			public const string IdleHiddenAnimation = "Idle";
 			public const string LightHiddenAnimation = "Light";
 			public const float LightHiddenDuration = 2f;
 
