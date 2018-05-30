@@ -33,6 +33,10 @@ public static class Values {
 		
 	}
 
+	public static class Spot {
+		public const float OffsetLines = 0.6f;
+	}
+
 	public static class Menu {
 		public static class Scene {
 			public const float StartWait = 1f;

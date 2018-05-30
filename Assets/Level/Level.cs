@@ -128,8 +128,11 @@ public class Level : MonoBehaviour {
 		LineRenderer line = t.GetComponent<LineRenderer> ();
 		line.positionCount = 2;
 		line.material = bridgeNormalMaterial;
-		line.SetPosition (0, start.transform.position);
-		line.SetPosition (1, end.transform.position);
+
+		Vector3 dir = end.transform.position - start.transform.position;
+		dir = dir.normalized * Values.Spot.OffsetLines;
+		line.SetPosition (0, start.transform.position + dir);
+		line.SetPosition (1, end.transform.position - dir);
 
 		start.AddLine (line, end);
 		end.AddLine (line, start);
