@@ -66,17 +66,17 @@ public class Spot : MonoBehaviour {
 
 	public event SpotEvent OnEnter;
 	public void Entered() {
-		Debug.Log ("Entered event raised: " + gameObject.name);
+		//Debug.Log ("Entered event raised: " + gameObject.name);
 		if(OnEnter!=null) OnEnter ();
 	}
 	public event SpotEvent OnLeave;
 	public void Leave() {
-		Debug.Log ("Leave event raised: " + gameObject.name);
+		//Debug.Log ("Leave event raised: " + gameObject.name);
 		if(OnLeave!=null) OnLeave ();
 	}
 	public event SpotEvent OnStay;
 	public void Stay() {
-		Debug.Log ("Stay event raised: " + gameObject.name);
+		//Debug.Log ("Stay event raised: " + gameObject.name);
 		if(OnStay!=null) OnStay ();
 	}
 }
