@@ -16,6 +16,8 @@ namespace Menu {
 		public Light spotLight;
 		public Animator animatorScene;
 		public Camera camera;
+		public AudioClip selectLevelSound;
+		public AudioSource sceneSource;
 		[Header("Menu UI")]
 		public GameObject menuUI;
 		public Transform textSelectLevel;
@@ -79,6 +81,7 @@ namespace Menu {
 			fadeScreen.color = Values.Colors.transparentBlack;
 			inGame = false;
 			spotLight.spotAngle = 0f;
+			sceneSource.clip = selectLevelSound;
 
 			//asegurar cubos apagados
 			cubeHiddenEdges.SetActive (false);
@@ -381,6 +384,7 @@ namespace Menu {
 			//Hide UIs
 			menuUI.SetActive (false);
 			tutorialUI.SetActive (false);
+			sceneSource.Play ();
 			for (int i = 0; i < levelUIs.Count; ++i)
 				levelUIs [i].FadeOut ();
 			//Precarga

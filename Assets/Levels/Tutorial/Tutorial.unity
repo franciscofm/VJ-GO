@@ -429,9 +429,15 @@ MonoBehaviour:
   blocked: 0
   locked: 1
   requested: 0
+  showing: 0
+  focusing: 0
   target: {fileID: 1205808211}
   zoomScale: 0
   cameraRotation: {x: 0, y: 0, z: 0}
+  offsetDiff: 0
+  offsetNear: 0
+  zoomMax: 0
+  speed: 0
 --- !u!1 &189330677
 GameObject:
   m_ObjectHideFlags: 0
@@ -1180,6 +1186,10 @@ Prefab:
       propertyPath: spot
       value: 
       objectReference: {fileID: 1949206153}
+    - target: {fileID: 1480604446512386, guid: 19f36ff591ee995498c3b282ab898cbf, type: 2}
+      propertyPath: m_Name
+      value: player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 19f36ff591ee995498c3b282ab898cbf, type: 2}
   m_IsPrefabParent: 0

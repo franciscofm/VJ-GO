@@ -29,6 +29,10 @@ public static class Values {
 		public const float FreeRelocationTime = 4f;
 	}
 
+	public static class Entity {
+		
+	}
+
 	public static class Menu {
 		public static class Scene {
 			public const float StartWait = 1f;

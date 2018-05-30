@@ -21,10 +21,20 @@ public class Entity : MonoBehaviour {
 	public Sprite image;
 	public Spot spot; //Donde esta
 	public Animator anim;
-
+	public Transform linesParent;
+	protected GameObject[] lines;
+	protected bool enabled = true;
 
 	void OnMouseUp() {
 		level.Select (this);
+	}
+
+	IEnumerator Start() {
+		yield return new WaitForEndOfFrame();
+		Start2 ();
+	}
+	protected virtual void Start2() {
+
 	}
 
 	public virtual void Move(Entity entity, Spot spot, float duration, AnimationCurve curve, Action endAction = null) {
@@ -50,10 +60,12 @@ public class Entity : MonoBehaviour {
 
 		float t = 0f;
 		Vector3 startPos = entity.transform.position;
+		Quaternion startRot = entity.transform.rotation;
 		while (t < duration) {
 			yield return null;
 			t += Time.deltaTime;
-			entity.transform.position = Vector3.Lerp(startPos, spot.transform.position + Vector3.up, curve.Evaluate(t/duration));
+			entity.transform.position = Vector3.Lerp(startPos, spot.transform.position, curve.Evaluate(t/duration));
+			entity.transform.localRotation = Quaternion.Lerp (startRot, spot.transform.localRotation, curve.Evaluate (t / duration));
 		}
 
 		entity.spot = spot;
