@@ -19,7 +19,8 @@ public static class Values {
 
 	public static class Camera {
 		public const float Speed = 5f;
-		public const float ShowSpotToSpot = 3f;
+		public const float FocusTime = 1f;
+		public const float ShowSpotToSpot = 1f;
 		public const float ZoomMax = 5f;
 		public const float OffsetNear = 2f;
 		public const float OffsetFar = 8f;

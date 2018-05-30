@@ -75,7 +75,7 @@ public class Level : MonoBehaviour {
 
 		cam.cameraRotation = (players [0].transform.position - cam.transform.position).normalized;
 		cam.zoomScale = Values.Camera.ZoomMax;
-		cam.Follow (players [0].transform);
+		cam.Focus (players [0].transform);
 
 		StartCoroutine(DrawBridges ());
 		Start2 ();
@@ -95,7 +95,7 @@ public class Level : MonoBehaviour {
 			yield return null;
 		blocked = false;
 		if (players.Count > 1 || enemies.Count > 0) {
-            Debug.Log("Hola");
+            //Debug.Log("Hola");
 			teamInfoEnabled = true;
 			teamInfo.Init (players, enemies);
 			//TODO: HUD entra aqui
@@ -168,7 +168,8 @@ public class Level : MonoBehaviour {
 					return;
 				}
 			playerTurn = true;
-			cam.Follow (players [0].transform);
+			if(players.Count > 0)
+				cam.Focus (players [0].transform);
 			EndTurn ();
 		}
 	}
@@ -202,9 +203,12 @@ public class Level : MonoBehaviour {
 	}
 
 	protected virtual void EnemyIA(Enemy enemy) {
-		cam.target = enemy.transform;
-		teamInfo.SelectEnemy (enemy);
-		enemy.IA ();
+		cam.Focus (enemy.transform, delegate {
+			cam.Follow(enemy.transform);
+			//cam.target = enemy.transform;
+			teamInfo.SelectEnemy (enemy);
+			enemy.IA ();
+		});
 	}
 		
 
@@ -283,6 +287,7 @@ public class Level : MonoBehaviour {
 				selectedEnemy = null;
 
 				entityActing = true;
+				cam.Follow (selectedPlayer.transform);
 				selectedPlayer.Move (selectedPlayer, spot, 1f, curveMovement, delegate {
 					EndActionPlayer(selectedPlayer);
 					selectedPlayer = null;

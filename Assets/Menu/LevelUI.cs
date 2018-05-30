@@ -9,22 +9,24 @@ namespace Menu {
 		public Image Image;
 		public Text Name;
 		public Text Description;
-		public Image Stars;
+		public Image Completion;
+		public Text CompletionText;
 		public string Scene;
 		public CanvasGroup canvasGroup;
 		public RectTransform rectTransform;
 
 		public static Controller controller;
 
-		public void SetValues(LevelUIEntry entry, float stars) {
+		public void SetValues(LevelUIEntry entry, float completion) {
 			this.Scene = entry.Scene;
-			SetValues (entry.Name, entry.Description, entry.Image, stars);
+			SetValues (entry.Name, entry.Description, entry.Image, completion);
 		}
-		public void SetValues(string name, string description, Sprite image, float stars) {
+		public void SetValues(string name, string description, Sprite image, float completion) {
 			Name.text = name;
 			Description.text = description;
 			Image.sprite = image;
-			Stars.fillAmount = stars;
+			Completion.fillAmount = completion;
+			CompletionText.text = ((int)completion) + "%";
 		}
 
 		public void FadeIn(float wait) {

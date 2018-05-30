@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,19 +35,23 @@ public class CameraMovement : MonoBehaviour {
 	public void Follow(Transform target) {
 		this.target = target;
 		locked = true;
+		focusing = false;
+		showing = false;
 	}
-	public void Focus(Transform target) {
+	public void Focus(Transform target, Action callback = null) {
 		focusing = true;
-		StartCoroutine (routine = FocusRoutine (target));
+		showing = false;
+		locked = false;
+		StartCoroutine (routine = FocusRoutine (target, callback));
 	}
 	public void ShowMap(List<Vector3> positions, Transform followUp, float zoomScale) {
 		showing = true;
 		StartCoroutine (routine = ShowMapRoutine (positions,followUp));
 	}
-	IEnumerator FocusRoutine(Transform target) {
+	IEnumerator FocusRoutine(Transform target, Action callback = null) {
 		Vector3 pos = parent.position;
 		float t = 0f;
-		float d = Values.Camera.ShowSpotToSpot;
+		float d = Values.Camera.FocusTime;
 		while (t < d) {
 			yield return null;
 			t += Time.deltaTime;
@@ -55,6 +60,7 @@ public class CameraMovement : MonoBehaviour {
 			parent.position = Vector3.Lerp (pos, finalPos, t/d);
 		}
 		focusing = false;
+		if (callback != null) callback ();
 	}
 	IEnumerator ShowMapRoutine(List<Vector3> positions, Transform followUp) {
 		for (int i = 0; i < positions.Count; ++i) {
@@ -62,7 +68,7 @@ public class CameraMovement : MonoBehaviour {
 			float t = 0f;
 			float d = Values.Camera.ShowSpotToSpot;
 			while (t < d) {
-				yield return null;
+				yield return null; 
 				t += Time.deltaTime;
 				float distance = (offsetDiff * zoomScale / zoomMax) + offsetNear;
 				Vector3 finalPos = positions[i] - (distance * cameraRotation);

@@ -56,6 +56,8 @@ namespace Menu {
 		void Awake() {
 			LevelUI.controller = this;
 			Level.menu = this;
+
+			DataManager.LoadData ();
 		}
 		IEnumerator Start() {
 			menuScene.SetActive (true);
@@ -359,11 +361,15 @@ namespace Menu {
 		public string levelToLoad;
 		void StartSelectLevelUI() {
 			levelUIs = new List<LevelUI> ();
+			List<LevelRegistry> registries = DataManager.SaveState.Registries;
 			Transform lastRow = null;
 			for (int i = 0; i < scrollViewContentEntries.Count; ++i) {
 				if (i % 2 == 0) lastRow = Instantiate (scrollViewRow, scrollViewContent).transform;
 				LevelUI level = Instantiate (scrollViewLevelUI, lastRow).GetComponent<LevelUI>();
-				level.SetValues (scrollViewContentEntries [i], 0f);
+				float completion = 0f;
+				if (i < registries.Count)
+					completion = registries [i].Completion;
+				level.SetValues (scrollViewContentEntries [i], completion);
 				levelUIs.Add (level);
 			}
 		}
