@@ -345,6 +345,7 @@ GameObject:
   - component: {fileID: 156151562}
   - component: {fileID: 156151561}
   - component: {fileID: 156151565}
+  - component: {fileID: 156151566}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -438,6 +439,18 @@ MonoBehaviour:
   offsetNear: 0
   zoomMax: 0
   speed: 0
+--- !u!114 &156151566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 156151560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: f7ef187f60b9abb4a8e67e78c569c0b3, type: 2}
 --- !u!1 &189330677
 GameObject:
   m_ObjectHideFlags: 0
@@ -1089,6 +1102,17 @@ Prefab:
       propertyPath: panelOutside
       value: 
       objectReference: {fileID: 2099616921}
+    - target: {fileID: 114278977711995328, guid: 5f3b545d24bb8d24f894f6f528de2957,
+        type: 2}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: a9169a7c86deafe4f89f4bf62a5f5d35,
+        type: 3}
+    - target: {fileID: 114278977711995328, guid: 5f3b545d24bb8d24f894f6f528de2957,
+        type: 2}
+      propertyPath: m_FontData.m_MaxSize
+      value: 60
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5f3b545d24bb8d24f894f6f528de2957, type: 2}
   m_IsPrefabParent: 0

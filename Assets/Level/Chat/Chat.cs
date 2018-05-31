@@ -221,6 +221,7 @@ public class Chat : MonoBehaviour {
 								Values.UI.Chat.ImageTransition,
 								delegate {
 									clickPanel.SetActive (false);
+									text.text = "";
 								}
 							));
 					}
@@ -242,6 +243,7 @@ public class Chat : MonoBehaviour {
 									Values.UI.Chat.ImageTransition,
 									delegate {
 										clickPanel.SetActive (false);
+										text.text = "";
 									}
 								));
 					}
