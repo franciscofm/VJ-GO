@@ -15,12 +15,13 @@ public class EntityInfo : MonoBehaviour {
 	List<GameObject> totalActions;
 
 	// Use this for initialization
-	public void Init (string name, Sprite image) {
+	public void Init (string name, Sprite image, int actions) {
 		group = GetComponent<CanvasGroup> ();
 		death.SetActive (false);
 		group.alpha = Values.UI.EntityInfo.Aplha;
 		this.name.text = name;
 		this.image.sprite = image;
+		SetTotalActions (actions);
 	}
 	public void Select() {
 		StartCoroutine (Routine (Values.UI.EntityInfo.Aplha, 1f));

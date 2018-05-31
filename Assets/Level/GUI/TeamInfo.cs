@@ -20,7 +20,7 @@ public class TeamInfo : MonoBehaviour {
 			Relation r = new Relation ();
 			r.entity = players [i];
 			r.info = Instantiate (playerPanel, playerVerticalLayout).GetComponent<EntityInfo> ();
-			r.info.Init (r.entity.Name, r.entity.image);
+			r.info.Init (r.entity.Name, r.entity.image, r.entity.actionsPerTurn);
 			playersInfo.Add (r);
 		}
 		if (enemies != null) {
@@ -29,18 +29,32 @@ public class TeamInfo : MonoBehaviour {
 				Relation r = new Relation ();
 				r.entity = enemies [i];
 				r.info = Instantiate (enemyPanel, enemyVerticalLayout).GetComponent<EntityInfo> ();
-				r.info.Init (r.entity.Name, r.entity.image);
+				r.info.Init (r.entity.Name, r.entity.image, r.entity.actionsPerTurn);
 				enemiesInfo.Add (r);
 			}
 		}
 	}
+	public void RestartActions() {
+		Debug.Log ("RestartActions");
+		for (int i = 0; i < playersInfo.Count; ++i) {
+			if (playersInfo [i].entity != null)
+				playersInfo [i].info.RecoverActions (playersInfo [i].entity.actionsPerTurn);
+		}
+		if(enemiesInfo != null)
+			for (int i = 0; i < enemiesInfo.Count; ++i) {
+				if (enemiesInfo [i].entity != null)
+					enemiesInfo [i].info.RecoverActions (enemiesInfo [i].entity.actionsPerTurn);
+			}
+	}
 
 	EntityInfo selectedPlayer;
+	Relation relationPlayer;
 	public void SelectPlayer(Player player) {
 		for (int i = 0; i < playersInfo.Count; ++i) {
 			if (player == playersInfo [i].entity) {
 				playersInfo [i].info.Select ();
 				selectedPlayer = playersInfo [i].info;
+				relationPlayer = playersInfo [i];
 				return;
 			}
 		}
@@ -48,17 +62,23 @@ public class TeamInfo : MonoBehaviour {
 	public void ClearSelectPlayer() {
 		selectedPlayer.Unselect ();
 		selectedPlayer = null;
+		relationPlayer = null;
 	}
 	public void KillPlayer(Player player) {
 
 	}
+	public void UseActionPlayer() {
+		relationPlayer.info.UseAction ();
+	}
 
 	EntityInfo selectedEnemy;
+	Relation relationEnemy;
 	public void SelectEnemy(Enemy enemy) {
 		for (int i = 0; i < enemiesInfo.Count; ++i) {
 			if (enemy == enemiesInfo [i].entity) {
 				enemiesInfo [i].info.Select ();
 				selectedEnemy = enemiesInfo [i].info;
+				relationEnemy = enemiesInfo [i];
 				return;
 			}
 		}
@@ -67,8 +87,12 @@ public class TeamInfo : MonoBehaviour {
 		if (selectedEnemy == null) return;
 		selectedEnemy.Unselect ();
 		selectedEnemy = null;
+		relationEnemy = null;
 	}
 	public void KillEnemy(Enemy enemy) {
 
+	}
+	public void UseActionEnemy() {
+		relationEnemy.info.UseAction ();
 	}
 }

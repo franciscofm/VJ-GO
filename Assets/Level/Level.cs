@@ -95,7 +95,6 @@ public class Level : MonoBehaviour {
 			yield return null;
 		blocked = false;
 		if (players.Count > 1 || enemies.Count > 0) {
-            //Debug.Log("Hola");
 			teamInfoEnabled = true;
 			teamInfo.Init (players, enemies);
 			//TODO: HUD entra aqui
@@ -163,6 +162,7 @@ public class Level : MonoBehaviour {
 	}
 	//Called by Enemy after IA
 	public virtual void EndActionEnemy(Enemy current) {
+		teamInfo.UseActionEnemy ();
 		teamInfo.ClearSelectEnemy ();
 		if (!playerTurn) {
 			for (int i = 0; i < enemies.Count; ++i)
@@ -171,6 +171,7 @@ public class Level : MonoBehaviour {
 					return;
 				}
 			playerTurn = true;
+			teamInfo.RestartActions ();
 			if(players.Count > 0)
 				cam.Focus (players [0].transform);
 			EndTurn ();
@@ -284,6 +285,7 @@ public class Level : MonoBehaviour {
 			if (spot == selectedPlayerDestinations [i]) {
 				UnmarkBridges (selectedPlayer);
 				if (teamInfoEnabled) {
+					teamInfo.UseActionPlayer ();
 					teamInfo.ClearSelectPlayer ();
 					teamInfo.ClearSelectEnemy ();
 				}
