@@ -30,6 +30,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1245001520916344
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 224260523480327360}
+  - component: {fileID: 222165270438908944}
+  - component: {fileID: 114695394141682396}
+  m_Layer: 5
+  m_Name: PanelOutside
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1337261735883408
 GameObject:
   m_ObjectHideFlags: 1
@@ -334,12 +351,12 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: a9169a7c86deafe4f89f4bf62a5f5d35, type: 3}
     m_FontSize: 35
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 3
-    m_MaxSize: 40
+    m_MaxSize: 60
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -450,6 +467,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clickPanel: {fileID: 1052130012802558}
   panel: {fileID: 224425438719322002}
+  panelOutside: {fileID: 224260523480327360}
   leftImageRect: {fileID: 224525986453139486}
   rightImageRect: {fileID: 224316697856000350}
   leftOutside: {fileID: 224843231661783404}
@@ -576,6 +594,33 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114695394141682396
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1245001520916344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.08529408, g: 0.42647058, b: 0, a: 0.197}
+  m_RaycastTarget: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
 --- !u!114 &114707372377252114
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -643,6 +688,12 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!222 &222165270438908944
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1245001520916344}
 --- !u!222 &222193220362235012
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -759,6 +810,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 107.4303}
   m_SizeDelta: {x: 0, y: 382}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &224260523480327360
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1245001520916344}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 224425438719322002}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: -191.57996}
+  m_SizeDelta: {x: 1920, y: 383}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224316697856000350
 RectTransform:
   m_ObjectHideFlags: 1
@@ -767,7 +836,7 @@ RectTransform:
   m_GameObject: {fileID: 1655782966435466}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224425438719322002}
   m_RootOrder: 5
@@ -795,6 +864,7 @@ RectTransform:
   - {fileID: 224316697856000350}
   - {fileID: 224871958449329032}
   - {fileID: 224486603403769538}
+  - {fileID: 224260523480327360}
   m_Father: {fileID: 224438600431347562}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

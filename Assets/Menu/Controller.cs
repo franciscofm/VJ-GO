@@ -45,6 +45,13 @@ namespace Menu {
 		public int keyboardFocus;
 		public enum Focus { Menu, Tutorial, SelectLevel }
 		public Focus focus;
+		[Header("Options UI")]
+		public GameObject optionsUI;
+		public Dropdown lenguageDropdown;
+		public Slider globalSlider;
+		public Slider voiceSlider;
+		public Slider effectsSlider;
+		public Slider musicSlider;
 
 		[Header("Public debug")]
 		public bool inGame;
@@ -359,6 +366,40 @@ namespace Menu {
 				mask.anchoredPosition = new Vector2(0f,Mathf.Lerp(anchoredPositionY, 0f, t/d));
 			}
 			if (callback != null) callback ();
+		}
+
+		//optionsUI
+		public void StartOptionsUI() {
+
+		}
+		public void ShowOptionsUI() {
+			for (int i = 0; i < lenguageDropdown.options.Count; ++i) {
+				if (lenguageDropdown.options [i].text == DataManager.ConfState.Lenguage) {
+					lenguageDropdown.value = i;
+					i = lenguageDropdown.options.Count + 1;
+				}
+			}
+			globalSlider.value = DataManager.ConfState.GlobalVolume;
+			voiceSlider.value = DataManager.ConfState.VoiceVolume;
+			effectsSlider.value = DataManager.ConfState.EffectVolume;
+			musicSlider.value = DataManager.ConfState.MusicVolume;
+			optionsUI.SetActive (true);
+		}
+		public void EraseOptions() {
+			DataManager.EraseData ();
+			DataManager.LoadData ();
+		}
+		public void ExitOptions() {
+			optionsUI.SetActive (false);
+		}
+		public void ApplyOptions() {
+			DataManager.ConfState.Lenguage = lenguageDropdown.options [lenguageDropdown.value].text;
+			DataManager.ConfState.GlobalVolume = globalSlider.value;
+			DataManager.ConfState.VoiceVolume = voiceSlider.value;
+			DataManager.ConfState.EffectVolume = effectsSlider.value;
+			DataManager.ConfState.MusicVolume = musicSlider.value;
+			DataManager.SaveData ();
+			optionsUI.SetActive (false);
 		}
 
 		//levelSelect
