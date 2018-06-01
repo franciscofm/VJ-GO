@@ -136,7 +136,7 @@ public class Chat : MonoBehaviour {
 	void Next() {
 		++i;
 		if (i < dialog.Count) {
-			Write (dialog [i].text);
+			Write (GetText(dialog [i]));
 			if (dialog [i].position == Position.Left) { //lado izq
 				if (!focusLeft) {
 					StartCoroutine(ScaleRoutine(rightImageRect, 1f, Values.UI.Chat.ImageScale, Values.UI.Chat.ImageTransition));
@@ -209,6 +209,19 @@ public class Chat : MonoBehaviour {
 
 		} else 
 			Finish ();
+	}
+	string GetText(Phrase phrase) {
+		string lan = DataManager.ConfState.Lenguage;
+		string text = "";
+		switch (lan) {
+		case "English":
+			text = phrase.translations [0].text;
+			break;
+		case "Español":
+			text = phrase.translations [1].text;
+			break;
+		}
+		return text;
 	}
 	void Finish() {
 		StopAllCoroutines ();

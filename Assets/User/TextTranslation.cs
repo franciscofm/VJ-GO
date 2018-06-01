@@ -5,15 +5,6 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Text))]
 public class TextTranslation : MonoBehaviour {
 
-	[System.Serializable]
-	public class Translation { 
-		public string lan; 
-		public string text; 
-		public Translation(string l, string t) {
-			lan = l;
-			text = t;
-		}
-	}
 	public Translation[] translations = new Translation[] { new Translation("English", ""), new Translation("Español","") };
 	IEnumerator Start () {
 		yield return new WaitForEndOfFrame ();
@@ -27,5 +18,15 @@ public class TextTranslation : MonoBehaviour {
 			text.text = translations [1].text;
 			break;
 		}
+	}
+}
+
+[System.Serializable]
+public class Translation { 
+	public string lan; 
+	public string text; 
+	public Translation(string l, string t) {
+		lan = l;
+		text = t;
 	}
 }

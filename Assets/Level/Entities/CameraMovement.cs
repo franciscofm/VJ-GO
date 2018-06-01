@@ -141,8 +141,6 @@ public class CameraMovement : MonoBehaviour {
 	//Camera effects
 	public PostProcessingProfile profile;
 	public void Blue() {
-		//basicSettings.temperature = -100f;
-		Debug.Log("Called");
 		var colorGrading = profile.colorGrading.settings;
 		colorGrading.basic.temperature = -100f;
 		profile.colorGrading.settings = colorGrading;

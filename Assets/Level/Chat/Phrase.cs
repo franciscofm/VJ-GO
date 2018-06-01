@@ -6,6 +6,7 @@ public class Phrase : ScriptableObject {
 	public Sprite image;
 	public int id;
 	public bool inverted;
-	public string text;
+
+	public Translation[] translations = new Translation[] { new Translation("English", ""), new Translation("Español","") };
 }
 public enum Position { Left, Right }
