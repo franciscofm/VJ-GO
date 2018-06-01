@@ -1573,7 +1573,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 723678414
+  randomSeed: -256337814
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -5097,7 +5097,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafe2020ed6b5a0418f4a11939f5a913, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineMaterial: {fileID: 2100000, guid: 7c782c71e399f95409dd5c669a9fb1e7, type: 2}
+  lineMaterial: {fileID: 2100000, guid: 6ac70c22e1315a243b0bc32ddd64f8cf, type: 2}
   width: 0.05
 --- !u!23 &1914488827
 MeshRenderer:
