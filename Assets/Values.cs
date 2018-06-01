@@ -33,6 +33,11 @@ public static class Values {
 		
 	}
 
+	public static class Music {
+		public const float TurnOn = 3f;
+		public const float TurnOff = 2f;
+	}
+
 	public static class Spot {
 		public const float OffsetLines = 0.6f;
 	}

@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
 
+using Audio;
+
 public class Level : MonoBehaviour {
 	
 	public static Level instance;
@@ -28,6 +30,10 @@ public class Level : MonoBehaviour {
 	public GameObject line;
 	public Material bridgeNormalMaterial;
 	public Material bridgeMarkedMaterial;
+
+	[Header("Music & Sounds")]
+	public AudioClip music;
+	Sound musicSound;
 
 	[Header("Private")]
 	public uint turn;
@@ -77,6 +83,9 @@ public class Level : MonoBehaviour {
 		cam.zoomScale = Values.Camera.ZoomMax;
 		cam.Focus (players [0].transform);
 
+		musicSound = ManagerSound.PlaySound (music, cam.transform, true, ManagerSound.Type.Music);
+		StartCoroutine (ChangeVolumeRoutine (musicSound.source, 0f, musicSound.source.volume, Values.Music.TurnOn));
+
 		StartCoroutine(DrawBridges ());
 		Start2 ();
 		gameInitialized = true;
@@ -98,6 +107,15 @@ public class Level : MonoBehaviour {
 			teamInfoEnabled = true;
 			teamInfo.Init (players, enemies);
 			//TODO: HUD entra aqui
+		}
+	}
+	protected virtual IEnumerator ChangeVolumeRoutine(AudioSource source, float a, float b, float d) {
+		source.volume = a;
+		float t = 0f;
+		while (t < d) {
+			yield return null;
+			t += Time.deltaTime;
+			source.volume = Mathf.Lerp (a, b, t / d);
 		}
 	}
 
@@ -218,6 +236,7 @@ public class Level : MonoBehaviour {
 	protected virtual void EndLevel() {
 		if (finishedPlayers == totalPlayers) { 
 			Debug.Log ("Passed level");
+			StartCoroutine (ChangeVolumeRoutine (musicSound.source, musicSound.source.volume, 0f, Values.Music.TurnOn));
 			if(!debug)
 				menu.FinishLevel ();
 		} else Debug.Log ("Failed level");

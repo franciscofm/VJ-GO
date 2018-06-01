@@ -23,6 +23,18 @@ namespace Audio {
 
 			source.Play ();
 		}
+		public void Init(AudioClip clip, bool loop, float volume, Transform parent) {
+			this.clip = clip;
+			this.loop = loop;
+
+			source.clip = clip;
+			source.volume = volume;
+
+			transform.parent = parent;
+			transform.localPosition = Vector3.zero;
+
+			source.Play ();
+		}
 
 		public void Stop() {
 			source.Stop ();

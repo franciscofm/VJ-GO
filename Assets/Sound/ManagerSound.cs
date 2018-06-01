@@ -24,6 +24,31 @@ namespace Audio {
 		public static void Init(GameObject sourceModel) {
 			Source = sourceModel;
 		}
+		public static Sound PlaySound(AudioClip clip, Transform parent, bool looped = false, Type type = Type.Effect) {
+
+			if (clip == null) Error ("clip is NULL.");
+
+			//Type and list reference
+			float volume = VolumeGlobal;
+			switch (type) {
+			case Type.Effect:
+				volume *= VolumeEffects;
+				break;
+			case Type.Music:
+				volume *= VolumeMusic;
+				break;
+			case Type.Narration:
+				volume += VolumeNarrations;
+				break;
+			}
+
+			//Source creation
+			GameObject source = GameObject.Instantiate (Source);
+			Sound sound = source.GetComponent<Sound>();
+			sound.Init (clip, looped, volume, parent);
+
+			return sound;
+		}
 		public static Sound PlaySound(AudioClip clip, Vector3 position, bool looped = false, Type type = Type.Effect) {
 
 			if (clip == null) Error ("clip is NULL.");
