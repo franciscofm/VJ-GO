@@ -14,6 +14,10 @@ public class Console : MonoBehaviour {
 		god = false;
 	}
 
+	public void Focus() {
+		input.Select ();
+	}
+
 	public virtual void ReadConsole() {
 		Debug.Log (input.text);
 		switch (input.text) {
@@ -31,12 +35,13 @@ public class Console : MonoBehaviour {
 			break;
 		case "h4h4l0l":
 			#if UNITY_EDITOR
-			UnityEditor.EditorApplication.isPlaying = false;
+				UnityEditor.EditorApplication.isPlaying = false;
 			#else
-			Application.Quit();
+				Application.Quit();
 			#endif
 			break;
 		}
+		level.HideConsole ();
 		gameObject.SetActive (false);
 	}
 }

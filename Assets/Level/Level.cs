@@ -278,9 +278,14 @@ public class Level : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.Delete)) {
 			//Debug.Log ("Open console");
 			console.SetActive (true);
+			console.GetComponent<Console> ().Focus ();
 			consoleActive = true;
+			cam.console = true;
 		}
   	}
+	public virtual void HideConsole() {
+		cam.console = false;
+	}
 
 	public Player selectedPlayer;
 	public List<Spot> selectedPlayerDestinations;

@@ -72,6 +72,7 @@ namespace Menu {
 		void Awake() {
 			LevelUI.controller = this;
 			Level.menu = this;
+			instance = this;
 
 			DataManager.LoadData ();
 			ManagerSound.Init (soundSource);

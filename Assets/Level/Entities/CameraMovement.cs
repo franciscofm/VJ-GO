@@ -11,6 +11,7 @@ public class CameraMovement : MonoBehaviour {
 	public bool requested = false;
 	public bool showing = false;
 	public bool focusing = false;
+	public bool console = false;
 	IEnumerator routine;
 
 	Transform parent;
@@ -114,7 +115,7 @@ public class CameraMovement : MonoBehaviour {
 		parent.position = Vector3.Lerp (parent.position, finalPos, Time.deltaTime * speed);
 	}
 	void GetInput() {
-		if (Input.anyKey) {
+		if (Input.anyKey && !console) {
 			float x = Input.GetAxisRaw ("Horizontal");
 			float z = Input.GetAxisRaw ("Vertical");
 
