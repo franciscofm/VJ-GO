@@ -14,6 +14,9 @@ public class Level : MonoBehaviour {
 	[Header("Testing")]
 	public bool debug = true;
 	public GameObject eventSystem;
+	public GameObject console;
+	bool consoleActive = false;
+
 	[Header("Scene references")]
 	public TeamInfo teamInfo;
 	public Chat chat;
@@ -82,6 +85,7 @@ public class Level : MonoBehaviour {
 		finishedPlayers = 0;
 		teamInfoEnabled = false;
 		bridgesDrawn = false;
+		godMode = false;
 
 		cam.cameraRotation = (players [0].transform.position - cam.transform.position).normalized;
 		cam.zoomScale = Values.Camera.ZoomMax;
@@ -90,7 +94,8 @@ public class Level : MonoBehaviour {
 			musicSound = ManagerSound.PlaySound (music, cam.transform, true, ManagerSound.Type.Music);
 			StartCoroutine (ChangeVolumeRoutine (musicSound.source, 0f, musicSound.source.volume, Values.Music.TurnOn));
 		} else {
-			Debug.Log ("Missing audio in level " + Menu.Controller.instance.loadedLevelName);
+			if(!debug)
+				Debug.Log ("Missing audio in level " + Menu.Controller.instance.loadedLevelName);
 		}
 
 		StartCoroutine(DrawBridges ());
@@ -242,8 +247,9 @@ public class Level : MonoBehaviour {
 	//Called by EndActionPlayer
 	protected virtual void EndLevel() {
 		if (finishedPlayers == totalPlayers) { 
-			Debug.Log ("Passed level");
-			StartCoroutine (ChangeVolumeRoutine (musicSound.source, musicSound.source.volume, 0f, Values.Music.TurnOn));
+			NormalMode ();
+			if (music != null)
+				StartCoroutine (ChangeVolumeRoutine (musicSound.source, musicSound.source.volume, 0f, Values.Music.TurnOn));
 			if(!debug)
 				menu.FinishLevel ();
 		} else Debug.Log ("Failed level");
@@ -263,10 +269,18 @@ public class Level : MonoBehaviour {
 		float delta = Time.deltaTime;
 		levelDuration += delta;
 		Update2 (delta);
+		KeyboardInput ();
 	}
 	protected virtual void Update2(float delta) {
 
 	}
+	protected virtual void KeyboardInput() {
+		if (Input.GetKeyDown (KeyCode.Delete)) {
+			//Debug.Log ("Open console");
+			console.SetActive (true);
+			consoleActive = true;
+		}
+  	}
 
 	public Player selectedPlayer;
 	public List<Spot> selectedPlayerDestinations;
@@ -323,29 +337,51 @@ public class Level : MonoBehaviour {
 		if (selectedPlayer == null || selectedPlayerDestinations == null) return;
 		if (selectedPlayer.actionsLeft <= 0) return;
 		if (spot.occupied) return;
-		bool found = false;
-		for (int i = 0; !found && i < selectedPlayerDestinations.Count; ++i) {
-			if (spot == selectedPlayerDestinations [i]) {
-				UnmarkBridges (selectedPlayer);
-				if (teamInfoEnabled) {
-					teamInfo.UseActionPlayer ();
-					teamInfo.ClearSelectPlayer ();
-					teamInfo.ClearSelectEnemy ();
+		if (godMode) {
+			UnmarkBridges (selectedPlayer);
+			if (teamInfoEnabled) {
+				teamInfo.UseActionPlayer ();
+				teamInfo.ClearSelectPlayer ();
+				teamInfo.ClearSelectEnemy ();
+			}
+			selectedEnemy = null;
+
+			entityActing = true;
+			cam.Follow (selectedPlayer.transform);
+			selectedPlayer.Move (selectedPlayer, spot, 1f, curveMovement, delegate {
+				cam.FreeCamera ();
+				EndActionPlayer (selectedPlayer);
+				selectedPlayer = null;
+				selectedPlayerDestinations = null;
+				entityActing = false;
+			});
+
+			--selectedPlayer.actionsLeft;
+		} else {
+			bool found = false;
+			for (int i = 0; !found && i < selectedPlayerDestinations.Count; ++i) {
+				if (spot == selectedPlayerDestinations [i]) {
+					UnmarkBridges (selectedPlayer);
+					if (teamInfoEnabled) {
+						teamInfo.UseActionPlayer ();
+						teamInfo.ClearSelectPlayer ();
+						teamInfo.ClearSelectEnemy ();
+					}
+					selectedEnemy = null;
+
+					entityActing = true;
+					cam.Follow (selectedPlayer.transform);
+					selectedPlayer.Move (selectedPlayer, spot, 1f, curveMovement, delegate {
+						cam.FreeCamera ();
+						EndActionPlayer (selectedPlayer);
+						selectedPlayer = null;
+						selectedPlayerDestinations = null;
+						entityActing = false;
+					});
+
+					--selectedPlayer.actionsLeft;
+					found = true;
 				}
-				selectedEnemy = null;
-
-				entityActing = true;
-				cam.Follow (selectedPlayer.transform);
-				selectedPlayer.Move (selectedPlayer, spot, 1f, curveMovement, delegate {
-					cam.FreeCamera();
-					EndActionPlayer(selectedPlayer);
-					selectedPlayer = null;
-					selectedPlayerDestinations = null;
-					entityActing = false;
-				});
-
-				--selectedPlayer.actionsLeft;
-				found = true;
 			}
 		}
 	}
@@ -379,5 +415,19 @@ public class Level : MonoBehaviour {
 	}
 	public float GetCompletion() {
 		return (1f + pickedBonus) / (1f + totalBonus);
+	}
+
+	//Console
+	bool godMode;
+	public virtual void GodMode() {
+		cam.Blue ();
+		godMode = true;
+	}
+	public virtual void NormalMode() {
+		cam.Normal ();
+		godMode = false;
+	}
+	public virtual void SkipLevel() {
+		menu.FinishLevel ();
 	}
 }

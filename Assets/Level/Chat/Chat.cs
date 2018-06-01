@@ -6,6 +6,8 @@ using System;
 
 public class Chat : MonoBehaviour {
 	public GameObject clickPanel;
+	public AudioClip textClip;
+	AudioSource audioSource;
 	[Header("Panel")]
 	public RectTransform panel;
 	public RectTransform panelOutside;
@@ -45,6 +47,10 @@ public class Chat : MonoBehaviour {
 		leftImageRect.position = leftImageHiddenPos;
 		rightImageRect.position = rightImageHiddenPos;
 		panel.position = panelHiddenPos;
+
+		GameObject camParent = Camera.main.gameObject;
+		audioSource = camParent.AddComponent<AudioSource> ();
+		audioSource.clip = textClip;
 
 		initialized = true;
 	}
@@ -90,6 +96,7 @@ public class Chat : MonoBehaviour {
 		CustomYieldInstruction wait = new WaitForSecondsRealtime (Values.UI.Chat.TimePerCharacter);
 		this.text.text = "";
 		for (int i = 0; i < textToWrite.Length; ++i) {
+			audioSource.Play ();
 			this.text.text = string.Concat (this.text.text, textToWrite [i]);
 			yield return wait;
 		}

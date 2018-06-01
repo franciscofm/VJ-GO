@@ -750,6 +750,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debug: 1
   eventSystem: {fileID: 847866279}
+  console: {fileID: 0}
   teamInfo: {fileID: 0}
   chat: {fileID: 0}
   cam: {fileID: 156151565}

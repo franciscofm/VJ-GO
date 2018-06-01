@@ -9,6 +9,7 @@ namespace Menu {
 		public Image Image;
 		public Text Name;
 		public Text Description;
+		public float completion;
 		public Image Completion;
 		public Text CompletionText;
 		public string Scene;
@@ -25,6 +26,7 @@ namespace Menu {
 			Name.text = name;
 			Description.text = description;
 			Image.sprite = image;
+			this.completion = completion;
 			Completion.fillAmount = completion;
 			CompletionText.text = 100 * ((int)completion) + "%";
 		}
@@ -67,7 +69,7 @@ namespace Menu {
 
 		public void Select() {
 			//Debug.Log ("Selected");
-			controller.SelectLevel (this.Scene);
+			controller.SelectLevel (this);
 		}
 	}
 }

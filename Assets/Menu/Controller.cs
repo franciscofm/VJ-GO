@@ -429,8 +429,18 @@ namespace Menu {
 				levelUIs.Add (level);
 			}
 		}
-		public void SelectLevel(string level) {
-			StartCoroutine (SelectLevelRoutine (level));
+		public void SelectLevel(LevelUI lUI) {
+			if (lUI.completion > 0f)
+				StartCoroutine (SelectLevelRoutine (lUI.Scene));
+			else {
+				for(int i=0; i<levelUIs.Count; ++i) {
+					if (lUI.Scene == levelUIs [i].Scene) {
+						if (i == 0) { StartCoroutine (SelectLevelRoutine (lUI.Scene)); return; }
+						if(levelUIs[i-1].completion > 0f) { StartCoroutine (SelectLevelRoutine (lUI.Scene)); return; }
+						return;
+					}
+				}
+			}
 		}
 		IEnumerator SelectLevelRoutine (string level) {
 			//Hide UIs

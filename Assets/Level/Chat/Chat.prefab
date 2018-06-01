@@ -466,6 +466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clickPanel: {fileID: 1052130012802558}
+  textClip: {fileID: 8300000, guid: a58630f82dbd7364298837a02e792943, type: 3}
   panel: {fileID: 224425438719322002}
   panelOutside: {fileID: 224260523480327360}
   leftImageRect: {fileID: 224525986453139486}

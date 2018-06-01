@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PostProcessing;
 
 public class CameraMovement : MonoBehaviour {
 
@@ -30,6 +31,8 @@ public class CameraMovement : MonoBehaviour {
 		zoomMax = Values.Camera.ZoomMax;
 		offsetNear = Values.Camera.OffsetNear;
 		speed = Values.Camera.Speed;
+
+		profile = GetComponent<PostProcessingBehaviour> ().profile;
 	}
 
 	public void Follow(Transform target) {
@@ -132,5 +135,21 @@ public class CameraMovement : MonoBehaviour {
 	IEnumerator WaitRoutine() {
 		yield return new WaitForSeconds (Values.Camera.FreeRelocationTime);
 		target = Level.instance.RequestTarget ();
+	}
+
+
+	//Camera effects
+	public PostProcessingProfile profile;
+	public void Blue() {
+		//basicSettings.temperature = -100f;
+		Debug.Log("Called");
+		var colorGrading = profile.colorGrading.settings;
+		colorGrading.basic.temperature = -100f;
+		profile.colorGrading.settings = colorGrading;
+	}
+	public void Normal() {
+		var colorGrading = profile.colorGrading.settings;
+		colorGrading.basic.temperature = 0;
+		profile.colorGrading.settings = colorGrading;
 	}
 }
