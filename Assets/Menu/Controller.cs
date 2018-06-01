@@ -57,6 +57,7 @@ namespace Menu {
 		public Slider voiceSlider;
 		public Slider effectsSlider;
 		public Slider musicSlider;
+		public GameObject licensePanel;
 
 		[Header("Public debug")]
 		public bool inGame;
@@ -394,6 +395,7 @@ namespace Menu {
 		public void EraseOptions() {
 			DataManager.EraseData ();
 			DataManager.LoadData ();
+			ShowOptionsUI ();
 		}
 		public void ExitOptions() {
 			optionsUI.SetActive (false);
@@ -406,6 +408,9 @@ namespace Menu {
 			DataManager.ConfState.MusicVolume = musicSlider.value;
 			DataManager.SaveData ();
 			optionsUI.SetActive (false);
+		}
+		public void LicenseOptions(bool active) {
+			licensePanel.SetActive (active);
 		}
 
 		//levelSelect

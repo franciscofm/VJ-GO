@@ -56,12 +56,13 @@ public class Spot : MonoBehaviour {
 			bridges.Remove (b.spot);
 			bridgesToLines.RemoveAt (0);
 
-			for (int i = 0; i < b.spot.bridgesToLines.Count; ++i) {
+			bool found = false;
+			for (int i = 0; i < b.spot.bridgesToLines.Count && !found; ++i) {
 				if (b.spot.bridgesToLines [i].spot == this) {
 					BridgeToLine b2 = b.spot.bridgesToLines [i];
 					b.spot.bridges.Remove (b2.spot);
 					b.spot.bridgesToLines.Remove (b.spot.bridgesToLines [i]);
-					return;
+					found = true;
 				}
 			}
 		}

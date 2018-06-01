@@ -793,6 +793,9 @@ MonoBehaviour:
     type: 2}
   bridgeMarkedMaterial: {fileID: 2100000, guid: fd9f7fa6c9d77bf42b04efa4c851222a,
     type: 2}
+  music: {fileID: 8300000, guid: df5731cc7a074f84e891b420906742b5, type: 3}
+  soundSource: {fileID: 1872945685876928, guid: b2a3667b7b1947949b9ac96c0b39998a,
+    type: 2}
   turn: 0
   playerTurn: 0
   teamTurn: 0

@@ -13,7 +13,7 @@ public static class DataManager {
 	public static bool Loaded;
 
 	public static User LoadData() {
-		Debug.Log ("Loading data...");
+		//Debug.Log ("Loading data...");
 		string PersistantPath = Application.persistentDataPath;
 		string DirectoryPath = Path.Combine (PersistantPath, "Saves");
 		string SavePath = Path.Combine (DirectoryPath, "User.binary");
@@ -34,7 +34,7 @@ public static class DataManager {
 		return SaveState;
 	}
 	public static User CreateData() {
-		Debug.Log ("Creating data...");
+		//Debug.Log ("Creating data...");
 		SaveState = new User ();
 		SaveState.Registries = new List<LevelRegistry> ();
 
@@ -67,15 +67,16 @@ public static class DataManager {
 		string SavePath = Path.Combine (DirectoryPath, "User.binary");
 		string ConfPath = Path.Combine (DirectoryPath, "Cond.json");
 
+		//Debug.Log (SavePath);
 		if (!File.Exists(SavePath))
 			return false;
 		File.Delete (SavePath);
-		Debug.Log ("Deleted data...");
+		//Debug.Log ("Deleted data...");
 
 		if (!File.Exists(ConfPath))
 			return false;
 		File.Delete (ConfPath);
-		Debug.Log ("Deleted config...");
+		//Debug.Log ("Deleted config...");
 
 		return true;
 	}

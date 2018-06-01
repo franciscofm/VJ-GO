@@ -10,7 +10,6 @@ public class Level : MonoBehaviour {
 	
 	public static Level instance;
 	public static Menu.Controller menu;
-	public GameObject soundSource;
 
 	[Header("Testing")]
 	public bool debug = true;
@@ -34,6 +33,7 @@ public class Level : MonoBehaviour {
 
 	[Header("Music & Sounds")]
 	public AudioClip music;
+	public GameObject soundSource;
 	Sound musicSound;
 
 	[Header("Private")]
