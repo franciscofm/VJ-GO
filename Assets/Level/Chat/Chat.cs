@@ -212,6 +212,7 @@ public class Chat : MonoBehaviour {
 	}
 	string GetText(Phrase phrase) {
 		string lan = DataManager.ConfState.Lenguage;
+		Debug.Log (lan + " " + phrase.translations [0].text);
 		string text = "";
 		switch (lan) {
 		case "English":

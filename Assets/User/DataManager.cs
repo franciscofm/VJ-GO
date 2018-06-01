@@ -89,7 +89,7 @@ public static class DataManager {
 			Lenguage = "Catalan";
 			break;
 		case SystemLanguage.Spanish:
-			Lenguage = "Spanish";
+			Lenguage = "Español";
 			break;
 		default:
 			Lenguage = "English";
