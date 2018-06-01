@@ -15,4 +15,4 @@ MonoBehaviour:
   Name: The beginning
   Description: Start the path. Start the journey. Start it.
   Bonuses: 0
-  Image: {fileID: 0}
+  Image: {fileID: 21300000, guid: f7f837b842a765648bf8eae1f03c67df, type: 3}

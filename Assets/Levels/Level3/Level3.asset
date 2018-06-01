@@ -11,8 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8a65dc9b920bde43ad61c6e3bfc2cf1, type: 3}
   m_Name: Level3
   m_EditorClassIdentifier: 
-  Scene: Level1
-  Name: The beginning
-  Description: Start the path. Start the journey. Start it.
-  Bonuses: 0
-  Image: {fileID: 0}
+  Scene: Level 3
+  Name: Precious gold
+  Description: It's mine....
+  Bonuses: 1
+  Image: {fileID: 21300000, guid: 40fe3048c0b91ad439e39d188fcf1338, type: 3}

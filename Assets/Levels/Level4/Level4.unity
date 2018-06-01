@@ -1630,7 +1630,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c90020c84e5443a409a46a6dad70f509, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 1
+  debug: 0
   eventSystem: {fileID: 847866279}
   console: {fileID: 0}
   teamInfo: {fileID: 316438503}
@@ -1676,7 +1676,7 @@ MonoBehaviour:
     type: 2}
   bridgeMarkedMaterial: {fileID: 2100000, guid: fd9f7fa6c9d77bf42b04efa4c851222a,
     type: 2}
-  music: {fileID: 8300000, guid: c550d0f9ccb7cd041ba1594d229ae046, type: 3}
+  music: {fileID: 8300000, guid: 89f68e433f258f440af25b347359788e, type: 3}
   soundSource: {fileID: 1872945685876928, guid: b2a3667b7b1947949b9ac96c0b39998a,
     type: 2}
   turn: 0

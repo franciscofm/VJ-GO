@@ -1900,7 +1900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c90020c84e5443a409a46a6dad70f509, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 1
+  debug: 0
   eventSystem: {fileID: 847866279}
   console: {fileID: 0}
   teamInfo: {fileID: 316438503}
