@@ -10,6 +10,7 @@ public class Level : MonoBehaviour {
 	
 	public static Level instance;
 	public static Menu.Controller menu;
+	public GameObject soundSource;
 
 	[Header("Testing")]
 	public bool debug = true;
@@ -33,7 +34,6 @@ public class Level : MonoBehaviour {
 
 	[Header("Music & Sounds")]
 	public AudioClip music;
-	public GameObject soundSource;
 	Sound musicSound;
 
 	[Header("Private")]
@@ -90,6 +90,7 @@ public class Level : MonoBehaviour {
 			musicSound = ManagerSound.PlaySound (music, cam.transform, true, ManagerSound.Type.Music);
 			StartCoroutine (ChangeVolumeRoutine (musicSound.source, 0f, musicSound.source.volume, Values.Music.TurnOn));
 		} else {
+            if(!debug)
 			Debug.Log ("Missing audio in level " + Menu.Controller.instance.loadedLevelName);
 		}
 

@@ -23,7 +23,7 @@ public class TriggerSpot : Spot {
     public Player player;
     private bool moveUp;
     public bool up;
-    public float topPosition = 4.8f;
+    public float topPosition = 4.7f;
 
     void Start()
     {
@@ -44,6 +44,7 @@ public class TriggerSpot : Spot {
             Debug.Log("Move");
             if (moveUp)
             {
+                Debug.Log("MoveUp");
                 movedUpSpot = platforms[i];
                 connectionsBySpot = connectionSpots[i].connections;
                 Vector3 endPos = new Vector3(platforms[i].transform.position.x, platforms[i].transform.position.y + topPosition, platforms[i].transform.position.z);
@@ -58,6 +59,7 @@ public class TriggerSpot : Spot {
             }
             else
             {
+                Debug.Log("MoveDown");
                 movedDownSpot = platforms[i];
                 Vector3 endPos = new Vector3(platforms[i].transform.position.x, platforms[i].transform.position.y - topPosition, platforms[i].transform.position.z);
                 Move(platforms[i], 1f, endPos, curve);
