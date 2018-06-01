@@ -5,9 +5,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+using Audio;
+
 namespace Menu {
 	
 	public class Controller : MonoBehaviour {
+
+		public GameObject soundSource;
+
 		[Header("Menu Scene")]
 		public GameObject menuScene;
 		public GameObject cubeHiddenEdges;
@@ -67,6 +72,7 @@ namespace Menu {
 			Level.menu = this;
 
 			DataManager.LoadData ();
+			ManagerSound.Init (soundSource);
 		}
 		IEnumerator Start() {
 			menuScene.SetActive (true);

@@ -10,6 +10,7 @@ public class Level : MonoBehaviour {
 	
 	public static Level instance;
 	public static Menu.Controller menu;
+	public GameObject soundSource;
 
 	[Header("Testing")]
 	public bool debug = true;
@@ -61,6 +62,9 @@ public class Level : MonoBehaviour {
 
 		Entity.level = this;
 		Bonus.level = this;
+
+		if (ManagerSound.Source == null)
+			ManagerSound.Init (soundSource);
 	}
 
 
@@ -82,9 +86,12 @@ public class Level : MonoBehaviour {
 		cam.cameraRotation = (players [0].transform.position - cam.transform.position).normalized;
 		cam.zoomScale = Values.Camera.ZoomMax;
 		cam.Focus (players [0].transform);
-
-		musicSound = ManagerSound.PlaySound (music, cam.transform, true, ManagerSound.Type.Music);
-		StartCoroutine (ChangeVolumeRoutine (musicSound.source, 0f, musicSound.source.volume, Values.Music.TurnOn));
+		if (music != null) {
+			musicSound = ManagerSound.PlaySound (music, cam.transform, true, ManagerSound.Type.Music);
+			StartCoroutine (ChangeVolumeRoutine (musicSound.source, 0f, musicSound.source.volume, Values.Music.TurnOn));
+		} else {
+			Debug.Log ("Missing audio in level " + Menu.Controller.instance.loadedLevelName);
+		}
 
 		StartCoroutine(DrawBridges ());
 		Start2 ();
