@@ -136,6 +136,23 @@ public class Level : MonoBehaviour {
 		start.AddLine (line, end);
 		end.AddLine (line, start);
 	}
+	public virtual LineRenderer DrawBridgeVisual(Spot start, Spot end) {
+		GameObject t = GameObject.Instantiate (this.line, start.transform);
+		t.transform.position = (start.transform.position + end.transform.position) * 0.5f;
+		#if UNITY_EDITOR 
+		t.name = start.gameObject.name + " to " + end.gameObject.name; 
+		#endif
+		LineRenderer line = t.GetComponent<LineRenderer> ();
+		line.positionCount = 2;
+		line.material = bridgeNormalMaterial;
+
+		Vector3 dir = end.transform.position - start.transform.position;
+		dir = dir.normalized * Values.Spot.OffsetLines;
+		line.SetPosition (0, start.transform.position + dir);
+		line.SetPosition (1, end.transform.position - dir);
+
+		return line;
+	}
 
 	//Called after select spot and moving a player
 	protected virtual void EndActionPlayer(Player current) {
@@ -294,6 +311,7 @@ public class Level : MonoBehaviour {
 				entityActing = true;
 				cam.Follow (selectedPlayer.transform);
 				selectedPlayer.Move (selectedPlayer, spot, 1f, curveMovement, delegate {
+					cam.FreeCamera();
 					EndActionPlayer(selectedPlayer);
 					selectedPlayer = null;
 					selectedPlayerDestinations = null;

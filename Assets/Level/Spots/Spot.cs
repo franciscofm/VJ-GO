@@ -34,16 +34,37 @@ public class Spot : MonoBehaviour {
 	}
 	public void AddBridge(Spot spot) {
 		bridges.Add (spot);
+		spot.bridges.Add (this);
+
+		LineRenderer line = Level.instance.DrawBridgeVisual (this, spot);
+
+		BridgeToLine bTL = new BridgeToLine ();
+		bTL.spot = spot;
+		bTL.line = line;
+		bridgesToLines.Add(bTL);
+		bTL = new BridgeToLine ();
+		bTL.spot = this;
+		bTL.line = line;
+		spot.bridgesToLines.Add (bTL);
 	}
 
-	public void DestroyBridges() {
-		while (bridges.Count > 0) {
-			bridges [0].RemoveBridge (this);
-			bridges.RemoveAt (0);
+	public void DestroyAllBridges() {
+		while (bridgesToLines.Count > 0) {
+			BridgeToLine b = bridgesToLines [0];
+
+			Destroy (b.line);
+			bridges.Remove (b.spot);
+			bridgesToLines.RemoveAt (0);
+
+			for (int i = 0; i < b.spot.bridgesToLines.Count; ++i) {
+				if (b.spot.bridgesToLines [i].spot == this) {
+					BridgeToLine b2 = b.spot.bridgesToLines [i];
+					b.spot.bridges.Remove (b2.spot);
+					b.spot.bridgesToLines.Remove (b.spot.bridgesToLines [i]);
+					return;
+				}
+			}
 		}
-	}
-	public void RemoveBridge(Spot spot) {
-		bridges.Remove (spot);
 	}
 
 	public void AddLine(LineRenderer line, Spot spot) {

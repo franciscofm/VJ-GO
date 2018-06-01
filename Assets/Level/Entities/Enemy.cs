@@ -5,17 +5,20 @@ using UnityEngine;
 public class Enemy : Entity {
 
 	public List<Spot> Route;
-
+	public float moveSpeed = 0.6f;
 	int currentSpot = -1;
 	public virtual void IA() {
 		//Debug.Log ("Hello");
 		if (actionsLeft <= 0) return;
 		if (currentSpot < 0) currentSpot = Route.IndexOf (spot);
-		Move (this, Route [(currentSpot + 1) % Route.Count], 0.2f, Level.instance.curveMovement, delegate {
-			++currentSpot;
-			Level.instance.EndActionEnemy (this);
-		});
 		--actionsLeft;
+		if(Route [(currentSpot + 1) % Route.Count].occupied)
+			Level.instance.EndActionEnemy (this);
+		else
+			Move (this, Route [(currentSpot + 1) % Route.Count], moveSpeed, Level.instance.curveMovement, delegate {
+				++currentSpot;
+				Level.instance.EndActionEnemy (this);
+			});
 	}
 
 	public Entity target;
