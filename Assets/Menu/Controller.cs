@@ -177,13 +177,13 @@ namespace Menu {
 					int previousFocus = keyboardFocus;
 					bool changed = false;
 					if (Input.GetKeyDown (KeyCode.S)) {
-						keyboardFocus = Math.Min (keyboardFocus + 2, scrollViewContent.childCount - 1);
+						keyboardFocus = Math.Min (keyboardFocus + 2, ScrollViewSize() - 1);
 						changed = true;
 					} else if (Input.GetKeyDown (KeyCode.W)) {
 						keyboardFocus = Math.Max (keyboardFocus - 2, 0);
 						changed = true;
 					} else if (Input.GetKeyDown (KeyCode.D)) {
-						keyboardFocus = Math.Min (keyboardFocus + 1, scrollViewContent.childCount - 1);
+						keyboardFocus = Math.Min (keyboardFocus + 1, ScrollViewSize() - 1);
 						changed = true;
 					} else if (Input.GetKeyDown (KeyCode.A)) {
 						keyboardFocus = Math.Max (keyboardFocus - 1, 0);
@@ -196,6 +196,9 @@ namespace Menu {
 				}
 				break;
 			}
+		}
+		int ScrollViewSize() {
+			return (scrollViewContent.childCount * 2) + scrollViewContent.GetChild(scrollViewContent.childCount - 1).childCount;
 		}
 		public void MouseFocus(int focus) {
 			Debug.Log (focus);
