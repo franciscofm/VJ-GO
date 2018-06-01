@@ -31,6 +31,8 @@ namespace Menu {
 		public Transform textExit;
 		public Transform startExit, endExit;
 		public Image fadeScreen;
+		public Transform[] selectables;
+		public Transform selection;
 		[Header("Tutorial UI")]
 		public GameObject tutorialUI;
 		public RectTransform panelTutorial;
@@ -143,6 +145,8 @@ namespace Menu {
 					if (keyboardFocus < 0)
 						keyboardFocus = 2;
 				}
+				selection.parent = selectables [keyboardFocus];
+				selection.transform.localPosition = Vector2.zero;
 				if (Input.GetKeyDown (KeyCode.Space)) {
 					switch(keyboardFocus) {
 					case 0:
@@ -191,6 +195,11 @@ namespace Menu {
 				}
 				break;
 			}
+		}
+		public void MouseFocus(int focus) {
+			Debug.Log (focus);
+			levelUIs [keyboardFocus].Unfocus ();
+			keyboardFocus = focus;
 		}
 
 		IEnumerator WaitRoutine(float t, Action callback) {

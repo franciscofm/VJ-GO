@@ -15,4 +15,8 @@ MonoBehaviour:
   image: {fileID: 21300000, guid: 41c8e2bf7c0d4a340b2f4e372adb6f1b, type: 3}
   id: 1
   inverted: 0
-  text: Select me and select a connected spot to move me around.
+  translations:
+  - lan: English
+    text: Select me and click connected spots to move me around.
+  - lan: "Espa\xF1ol"
+    text: Seleccioname y elige bases conectadas para moverme por el mapa.

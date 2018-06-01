@@ -15,4 +15,8 @@ MonoBehaviour:
   image: {fileID: 21300000, guid: 41c8e2bf7c0d4a340b2f4e372adb6f1b, type: 3}
   id: 1
   inverted: 0
-  text: Take me to a marked spot to finish the level.
+  translations:
+  - lan: English
+    text: Take me to the marked spot to finish the level.
+  - lan: "Espa\xF1ol"
+    text: Llevame hasta la base marcada para acabar el nivel.

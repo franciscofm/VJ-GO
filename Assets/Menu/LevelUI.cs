@@ -51,6 +51,11 @@ namespace Menu {
 			}
 		}
 
+		public void MouseFocus() {
+			int focusValue = (transform.parent.GetSiblingIndex() * 2) + transform.GetSiblingIndex();
+			controller.MouseFocus (focusValue);
+			Focus ();
+		}
 		public void Focus() {
 			StartCoroutine (ScaleRoutine (1f, Values.Menu.SelectLevel.LevelUIScale));
 		}
