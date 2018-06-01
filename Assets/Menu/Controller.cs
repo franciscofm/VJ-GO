@@ -15,7 +15,7 @@ namespace Menu {
 		public GameObject cubesShown2Edges;
 		public Light spotLight;
 		public Animator animatorScene;
-		public Camera camera;
+		public Camera _camera;
 		public AudioClip selectLevelSound;
 		public AudioSource sceneSource;
 		[Header("Menu UI")]

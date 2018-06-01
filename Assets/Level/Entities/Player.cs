@@ -13,7 +13,7 @@ public class Player : Entity {
 	public AudioSource audioSource;
 
 	protected override void Start2 () {
-		enabled = false;
+		_enabled = false;
 		bodyMaterial.SetColor ("_Emission", color);
 		bodyMaterial.SetFloat("_DissolveAmount", disolveHidden);
 		lines = new GameObject[linesParent.childCount];
@@ -22,7 +22,7 @@ public class Player : Entity {
 			lines [i].SetActive (false);
 		}
 		StartCoroutine (DisolveRoutine (disolveHidden, disolveShown, false, delegate {
-			enabled = true;
+			_enabled = true;
 		}));
 		if (disolveSound != null) {
 			if (audioSource == null)

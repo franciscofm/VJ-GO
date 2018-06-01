@@ -23,7 +23,7 @@ public class Entity : MonoBehaviour {
 	public Animator anim;
 	public Transform linesParent;
 	protected GameObject[] lines;
-	protected bool enabled = true;
+	protected bool _enabled = true;
 
 	void OnMouseUp() {
 		level.Select (this);
