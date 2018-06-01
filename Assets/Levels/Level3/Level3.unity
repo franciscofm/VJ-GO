@@ -696,7 +696,7 @@ Transform:
   m_Children:
   - {fileID: 229685077}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &229685076
 GameObject:
@@ -1022,7 +1022,7 @@ Transform:
   m_Children:
   - {fileID: 156151564}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: -59.713, z: 0}
 --- !u!4 &549890433 stripped
 Transform:
@@ -1092,38 +1092,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &693145593
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1594176570433028, guid: 3a7a19e4260e0704fb8a1802eece4057,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 693145594}
-  m_Layer: 0
-  m_Name: Diamond
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &693145594
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4698784573781154, guid: 3a7a19e4260e0704fb8a1802eece4057,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 693145593}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.8775301, y: 5.8000164, z: -3.2762647}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &726922310
 GameObject:
   m_ObjectHideFlags: 0
@@ -1308,7 +1278,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &812391448
 GameObject:
@@ -1379,7 +1349,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4343307032998508, guid: 18854c64da801014597d024c95d12322, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 10.923765
+      value: 11.19
       objectReference: {fileID: 0}
     - target: {fileID: 4343307032998508, guid: 18854c64da801014597d024c95d12322, type: 2}
       propertyPath: m_LocalPosition.y
@@ -1387,7 +1357,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4343307032998508, guid: 18854c64da801014597d024c95d12322, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 18.630018
+      value: 18.8
       objectReference: {fileID: 0}
     - target: {fileID: 4343307032998508, guid: 18854c64da801014597d024c95d12322, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1421,7 +1391,8 @@ Prefab:
       propertyPath: m_LocalPosition.x
       value: 0.76
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114236433322999582, guid: 18854c64da801014597d024c95d12322, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 18854c64da801014597d024c95d12322, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &847866279
@@ -1484,7 +1455,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &877443984
 Prefab:
@@ -1531,7 +1502,7 @@ Prefab:
     - target: {fileID: 224921775022170430, guid: e01d1788828263640a661f908828f3d6,
         type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 224921775022170430, guid: e01d1788828263640a661f908828f3d6,
         type: 2}
@@ -1715,7 +1686,7 @@ Transform:
   m_Children:
   - {fileID: 549890433}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1050472791
 GameObject:
@@ -1830,7 +1801,7 @@ Transform:
   - {fileID: 1117648121}
   - {fileID: 1359945227}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1102642271
 GameObject:
@@ -5708,8 +5679,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1475650068}
-  - component: {fileID: 1475650070}
   - component: {fileID: 1475650069}
+  - component: {fileID: 1475650071}
   m_Layer: 9
   m_Name: Spot (5)
   m_TagString: Untagged
@@ -5744,7 +5715,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.32, y: 0.16, z: 1.32}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1475650070
+--- !u!114 &1475650071
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -5752,7 +5723,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1475650067}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d28520b8e78fb24bbfc119c05cbe486, type: 3}
+  m_Script: {fileID: 11500000, guid: a5663376c64f8f04b8e0fa4b4f787031, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
@@ -5760,6 +5731,40 @@ MonoBehaviour:
   occupation: {fileID: 0}
   bridges:
   - {fileID: 1839244781}
+  when: 0
+  platforms:
+  - {fileID: 1533468485}
+  - {fileID: 1885220183}
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  triggerSpot: {fileID: 1475650071}
+  ConnectSpot1: {fileID: 1475650071}
+  ConnectSpot2: {fileID: 1338051092}
+  player: {fileID: 1493661631}
+  up: 0
+  topPosition: 4.9
+--- !u!114 &1493661631 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000675125425078, guid: 07499f093aa95c645a5498d4e2d75402,
+    type: 2}
+  m_PrefabInternal: {fileID: 346270876}
+  m_Script: {fileID: 11500000, guid: 4f8e7d5dd229b9440a4e5229a20f58df, type: 3}
 --- !u!1 &1533468482
 GameObject:
   m_ObjectHideFlags: 0
@@ -6036,7 +6041,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1836106637
+  randomSeed: 1978200298
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -12961,7 +12966,7 @@ MonoBehaviour:
   occupation: {fileID: 0}
   bridges:
   - {fileID: 1979874567}
-  - {fileID: 1475650070}
+  - {fileID: 1475650071}
 --- !u!4 &1839244782
 Transform:
   m_ObjectHideFlags: 0
@@ -13079,6 +13084,7 @@ MonoBehaviour:
   occupation: {fileID: 0}
   bridges:
   - {fileID: 1979874567}
+  - {fileID: 1359945229}
 --- !u!4 &1885220184
 Transform:
   m_ObjectHideFlags: 0
