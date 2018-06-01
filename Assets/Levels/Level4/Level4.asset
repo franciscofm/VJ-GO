@@ -9,10 +9,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d8a65dc9b920bde43ad61c6e3bfc2cf1, type: 3}
-  m_Name: Level2
+  m_Name: Level4
   m_EditorClassIdentifier: 
   Scene: Level1
-  Name: 
+  Name: The beginning
   Description: Start the path. Start the journey. Start it.
   Bonuses: 0
   Image: {fileID: 0}
