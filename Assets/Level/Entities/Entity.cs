@@ -53,6 +53,7 @@ public class Entity : MonoBehaviour {
 	}
 	protected virtual IEnumerator MoveRoutine(Entity entity, Spot spot, float duration, AnimationCurve curve, Action endAction = null) {
 		entity.spot.Leave ();
+		entity.transform.rotation = Quaternion.LookRotation (spot.transform.position - entity.transform.position);
 		entity.spot.occupied = false;
 		entity.spot.occupation = null;
 		entity.spot = null;
