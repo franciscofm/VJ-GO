@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: Level5
   m_EditorClassIdentifier: 
   Scene: Level5
-  Name: 
-  Description: 
+  Name: There are also foes
+  Description: That's it, enemies, stupid, but annoying
   Bonuses: 1
-  Image: {fileID: 0}
+  Image: {fileID: 21300000, guid: 1abd5ff6bc096f34ab0ef52ceeccfa85, type: 3}
